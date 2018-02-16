@@ -6,4 +6,4 @@
 - [ ] Medaljer class
 
 
-:heavy_plus_sign
+:heavy_plus_sign:
