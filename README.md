@@ -1,6 +1,6 @@
 # gruppe32_handin_2018
 
-- [ ] Nasjoner class
+- [x] Nasjoner class
 - [ ] Gren class
 - [ ] Ovelse class
 - [ ] Medaljer class
