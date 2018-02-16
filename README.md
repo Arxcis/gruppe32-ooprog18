@@ -4,3 +4,6 @@
 - [ ] Gren class
 - [ ] Ovelse class
 - [ ] Medaljer class
+
+
+:heavy_plus_sign
