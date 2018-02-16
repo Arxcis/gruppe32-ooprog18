@@ -1,13 +1,7 @@
 # gruppe32_handin_2018
 
 
-:heavy_plus_sign:  Nasjoner class <br>
+## Progress report - Checklist -> https://hackmd.io/s/S1aMvBVPz
 
-:heavy_minus_sign: Gren class <br>
-
-:heavy_minus_sign:  Ovelse class <br>
-
-:heavy_minus_sign:  Medaljer class <br>
-
-Emoji reference - https://bitbucket.org/DACOFFEY/wiki/wiki/BITBUCKET/EMOJI/Emoji <br>
+Edit-link - https://hackmd.io/KwFgRuIAwgtAJgQwBz1iYBjAbLRIQBGWbAMwFNhzSxhDlzCg <br>
 
