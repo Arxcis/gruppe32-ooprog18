@@ -5,12 +5,23 @@ SET(CMAKE_BUILD_TYPE Debug)
 
 add_executable(gruppe32 "${CMAKE_SOURCE_DIR}/src/main.cpp")
 
+target_sources(gruppe32
+    PRIVATE "${CMAKE_SOURCE_DIR}/src/ListTool2b.cpp"
+)
+
+
 set_target_properties(gruppe32
     PROPERTIES
     CXX_STANDARD 17
     RUNTIME_OUTPUT_DIRECTORY "${CMAKE_SOURCE_DIR}/bin"
     LIBRARY_OUTPUT_DIRECTORY "${CMAKE_SOURCE_DIR}/bin"
 )
+
+target_include_directories(gruppe32
+    PRIVATE "${CMAKE_SOURCE_DIR}/include"
+)
+
+
 
 if (WIN32)
 target_compile_options(gruppe32
