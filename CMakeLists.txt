@@ -7,6 +7,9 @@ add_executable(gruppe32 "${CMAKE_SOURCE_DIR}/src/main.cpp")
 
 target_sources(gruppe32
     PRIVATE "${CMAKE_SOURCE_DIR}/src/ListTool2b.cpp"
+    PRIVATE "${CMAKE_SOURCE_DIR}/src/DB.cpp"
+    PRIVATE "${CMAKE_SOURCE_DIR}/src/IO.cpp"
+    PRIVATE "${CMAKE_SOURCE_DIR}/src/App.cpp"
 )
 
 
