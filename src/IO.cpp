@@ -4,27 +4,46 @@ namespace gruppe32::IO
 {
 using namespace gruppe32;
 
-void printMenu(const std::unordered_map<App::CommandID, App::Command>& commands) {
-
+void printline() 
+{  
+    std::cout << '\n';    
 }
 
-auto readCommand(const std::unordered_map<App::CommandID, App::Command>& validCommands)  -> std::pair<App::CommandID, App::Command> {
+//  @brief A wrapper for std::cout which adds a \n at the end of each print.
+void printMenu(const std::map<App::CommandID, App::Command>& commands) 
+{
+    printline();
+    printline("*********************************************************");
+    printline("------------------------- MENU ------------------------- ");
+    printline("*********************************************************");
+
+    for (const auto& cmd : commands) {
+        printline(char(cmd.first), " - ", cmd.second.helptext);
+    }
+    printline("*********************************************************");
+}
+
+auto readCommand(const std::map<App::CommandID, App::Command>& validCommands)  -> std::pair<App::CommandID, App::Command> {
     std::string commandstring{};
     for(;;) 
     {
         std::getline(std::cin, commandstring);
-        if (commandstring.size() != 1) {
-            std::cout << "commandstring string too long\n";
+        if (commandstring.size() > 1) {
+            printline("Commandstring string too long");
+            continue;
+        }
+
+        if (commandstring.size() < 1) {
+            printline("Please type something");
             continue;
         }
 
         for(const auto& command : validCommands) {
-            std::cout << "command: " << command.first << " commandtext" << command.second.helptext<< '\n';
             if (std::tolower(command.first) == (commandstring[0])) {
                 return command;
             }
         }
-        std::cout << "command not valid\n";
+        printline("Command not valid");
     }
 }
 }

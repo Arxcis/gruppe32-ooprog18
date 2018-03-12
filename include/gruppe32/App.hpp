@@ -3,7 +3,7 @@
 #include <cassert>
 #include <string>
 #include <iostream>
-#include <unordered_map>
+#include <map>
 
 #include <gruppe32/DB.hpp>
 #include <gruppe32/IO.hpp>
@@ -49,7 +49,7 @@ enum CommandID : char
 
 struct Command {
     std::string helptext;
-    std::unordered_map<CommandID, Command> subcmd{};
+    std::map<CommandID, Command> subcmd{};
 };
 
 /**
