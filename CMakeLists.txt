@@ -1,7 +1,6 @@
 project(gruppe32)
 cmake_minimum_required(VERSION 3.8 FATAL_ERROR)
 
-SET(CMAKE_BUILD_TYPE Debug)
 
 add_executable(gruppe32 "${CMAKE_SOURCE_DIR}/src/main.cpp")
 
@@ -21,9 +20,7 @@ target_include_directories(gruppe32
     PRIVATE "${CMAKE_SOURCE_DIR}/include"
 )
 
-
-
-if (WIN32)
+if (MCVS)	
 target_compile_options(gruppe32
 	PRIVATE "/std:c++latest"
 )
