@@ -2,6 +2,7 @@
 
 namespace gruppe32::App 
 {
+    
 const static std::map<CommandID, Command> mainCommands
 {
 

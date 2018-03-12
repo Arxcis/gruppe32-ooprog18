@@ -11,12 +11,6 @@
 namespace gruppe32::App 
 {
 
-enum ReturnCode 
-{
-    AGAIN,
-    BACK,
-    EXIT   
-};
 
 enum CommandID : char 
 {
@@ -58,9 +52,9 @@ struct Command {
  * @param int - blah
  * @return int - blah
  */
-ReturnCode skrivAlleSpillere(DB::Context ctx);
-ReturnCode skrivSpiller(DB::Context ctx, const size_t number);
-ReturnCode skrivSpiller(DB::Context ctx, const char * name);
+void skrivAlleSpillere(DB::Context ctx);
+void skrivSpiller(DB::Context ctx, const size_t number);
+void skrivSpiller(DB::Context ctx, const char * name);
 void run(DB::Context ctx);
 
 
