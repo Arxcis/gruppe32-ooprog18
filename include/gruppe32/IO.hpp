@@ -3,6 +3,7 @@
 #include <iostream>
 #include <map>
 #include <gruppe32/App.hpp>
+#include <cctype>
 
 // Forward declaration
 namespace gruppe32::App {
