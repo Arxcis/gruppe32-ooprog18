@@ -64,109 +64,124 @@ void run(DB::Context ctx)
     // Main menu
     for(;;) 
     {   
-        IO::printMenu(mainCommands);
-        const auto [cmdID, _] = IO::readCommand(mainCommands);
+    IO::printMenu(mainCommands);
+    const auto [cmdID, _] = IO::readCommand(mainCommands);
 
+    switch(cmdID) 
+    {
+    case CMD_SPILLER:
+    
+    break;
+
+    case CMD_IDRETT:
+    
+    break;
+
+    case CMD_NY: 
+    {
+        for(;;) 
+        {
+        IO::printMenu(mainCommands.at(CMD_NY).subcmd);
+        auto [cmdID, _] = IO::readCommand(mainCommands.at(CMD_NY).subcmd);
+        
         switch(cmdID) 
         {
-        case CMD_SPILLER:
-        
+        case CMD_NY_SPILLER:
         break;
 
-        case CMD_IDRETT:
-        
+        case CMD_NY_IDRETT:
         break;
 
-        case CMD_NY: 
-        {
-            for(;;) 
-            {
-                IO::printMenu(mainCommands.at(CMD_NY).subcmd);
-                auto [cmdID, _] = IO::readCommand(mainCommands.at(CMD_NY).subcmd);
-                
-                switch(cmdID) 
-                {
-                    case CMD_NY_SPILLER:
-                    break;
-
-                    case CMD_NY_IDRETT:
-                    break;
-
-                    case CMD_NY_DIVISJON:
-                    break;
-
-                    default:
-                        break;
-                }
-
-                if(cmdID == CMD_BACK) {
-                    break;
-                }
-                if (cmdID == CMD_QUIT) {
-                    return;
-                }
-            }
-        break;
-        }
-
-        case CMD_FJERN:
-        {
-            for(;;) 
-            {   
-                IO::printMenu(mainCommands.at(CMD_FJERN).subcmd);
-                auto [cmdID, _] = IO::readCommand(mainCommands.at(CMD_FJERN).subcmd);
-
-                if(cmdID == CMD_BACK) {
-                    break;
-                }
-                if (cmdID == CMD_QUIT) {
-                    return;
-                }
-            }        
-        break;
-        }
-
-
-        case CMD_TERMIN:
-        
-        break;
-
-        case CMD_KAMP:
-        
-        break;
-
-        case CMD_TABELL:
-        
-        break;
-
-        case CMD_RESULTAT:
-        
-        break;
-
-        case CMD_LAG:
-        
-        break;
-
-        case CMD_ENDRE:
-        
-        break;
-
-        case CMD_SCORERE:
-        
-        break;
-
-        case CMD_QUIT:
-        
+        case CMD_NY_DIVISJON:
         break;
 
         default:
-            break;
+        break;
         }
 
+        if(cmdID == CMD_BACK) {
+            break;
+        }
         if (cmdID == CMD_QUIT) {
             return;
         }
+        } // end for
+    break;
     }
+
+    case CMD_FJERN:
+    {
+        for(;;) 
+        {   
+        IO::printMenu(mainCommands.at(CMD_FJERN).subcmd);
+        auto [cmdID, _] = IO::readCommand(mainCommands.at(CMD_FJERN).subcmd);
+
+        switch(cmdID) 
+        {
+        case CMD_FJERN_SPILLER:
+        break;
+
+        case CMD_FJERN_IDRETT:
+        break;
+
+        case CMD_FJERN_DIVISJON:
+        break;
+
+        default:
+        break;
+        }
+
+        if(cmdID == CMD_BACK) {
+            break;
+        }
+        if (cmdID == CMD_QUIT) {
+            return;
+        }
+        } // end for
+    break;
+    }
+
+
+    case CMD_TERMIN:
+    
+    break;
+
+    case CMD_KAMP:
+    
+    break;
+
+    case CMD_TABELL:
+    
+    break;
+
+    case CMD_RESULTAT:
+    
+    break;
+
+    case CMD_LAG:
+    
+    break;
+
+    case CMD_ENDRE:
+    
+    break;
+
+    case CMD_SCORERE:
+    
+    break;
+
+    case CMD_QUIT:
+    
+    break;
+
+    default:
+        break;
+    }
+
+    if (cmdID == CMD_QUIT) {
+        return;
+    }
+    } // end for
 }
 
 } // end namespace
