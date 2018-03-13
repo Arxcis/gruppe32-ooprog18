@@ -2,80 +2,96 @@
 
 namespace gruppe32::App 
 {
-    
-const static std::map<CommandID, Command> mainCommands
-{
-
-    {
-        CMD_SPILLER, Command{"skriv Alle Spillerne eller spiller med <nr> / <navn>", 
-            {
-                { CMD_SPILLER_ALLE, Command{"skriv Alle Spillerne eller spiller med <nr> / <navn>"} },
-                {CMD_BACK,    Command{  "Back" }},     
-                {CMD_QUIT,    Command{  "Quit" }}  
-            }
-        }
-    },
-    {
-        CMD_IDRETT, Command{"skriv Alle Idrettene eller idretten med <navn>", 
-            {
-                { CMD_IDRETT_ALLE, Command{"skriv Alle Idrettene eller idretten med <navn>"} },
-                {CMD_BACK,    Command{  "Back" }},     
-                {CMD_QUIT,    Command{  "Quit" }}  
-            }
-        }
-    },
-    {
-        CMD_NY, Command{"Ny Spiller, Idrett eller Divisjon/avdeling", 
-            {
-                { CMD_NY_SPILLER, Command{"Ny Spiller"} },
-                { CMD_NY_IDRETT, Command{"Ny Idrett"} },
-                { CMD_NY_DIVISJON, Command{"Ny Divisjon/avdeling"} },
-                {CMD_BACK,    Command{  "Back" }},     
-                {CMD_QUIT,    Command{  "Quit" }}  
-            }
-        }
-    },
-    {
-        CMD_FJERN, Command{"Fjern Spiller, Idrett eller Divisjon/avdeling", 
-            {
-                { CMD_FJERN_SPILLER, Command{"Fjern Spiller"} },
-                { CMD_FJERN_IDRETT, Command{"Fjern Idrett"} },
-                { CMD_FJERN_DIVISJON, Command{"Fjern Divisjon/avdeling"} },
-                {CMD_BACK,    Command{  "Back" }},     
-                {CMD_QUIT,    Command{  "Quit" }}
-            }
-        }
-    },
-
-    {CMD_TERMIN, Command{  "skriv terminListe for en gitt divisjon/avdeling til skjerm eller fil" }},   
-    {CMD_KAMP,   Command{  "skriv (resultatet av) alle Kampene en gitt dato for en hel idrett eller en divisjon/avdeling til skjerm eller fil" }},     
-    {CMD_TABELL,  Command{  "skriv Tabell(er) for en hel idrett eller en divisjon/avdeling til skjerm eller fil" }},   
-    {CMD_RESULTAT, Command{  "lese Resultatliste inn fra fil" }}, 
-    {CMD_LAG,     Command{  "Data om alle spillerne på et lag" }},      
-    {CMD_ENDRE,   Command{  "Endre/redigere (spillerne på et lag)" }},    
-    {CMD_SCORERE, Command{  "skriv 10-på-topp liste av toppsCorerne for en gitt divisjon/avdeling eller et gitt lag til skjerm eller fil" }},  
-    {CMD_QUIT,    Command{  "Quit" }}  
-};
 
 
 void run(DB::Context ctx) 
 {
+    using CommandMap = std::map<CommandID, Command>;
+    using string = std::string;
+
+    const CommandMap commandMap
+{
+    {
+        CMD_SPILLER, Command{
+            string(1,CMD_SPILLER),
+            "Skriv Alle Spillerne eller spiller med <nr> / <navn>", 
+            "Info spiller(e)",
+            {
+                { CMD_SPILLER_ALLE, Command{"skriv Alle Spillerne eller spiller med <nr> / <navn>"} },
+                { CMD_BACK,    Command{     string(1,CMD_BACK), "Back" }},     
+                { CMD_QUIT,    Command{     string(1,CMD_QUIT), "Quit" }}   
+            },
+        }
+    },
+    {
+        CMD_IDRETT, Command{
+            string(1,CMD_IDRETT),
+            "Skriv Alle Idrettene eller idretten med <navn>", 
+            "Info Idrett(er)",
+            {
+                { CMD_IDRETT_ALLE, Command{"skriv Alle Idrettene eller idretten med <navn>"} },
+                { CMD_BACK,    Command{     string(1,CMD_BACK), "Back" }},     
+                { CMD_QUIT,    Command{     string(1,CMD_QUIT), "Quit" }}  
+            },
+        }
+    },
+    {
+        CMD_NY, Command{
+            string(1,CMD_NY),
+            "Ny Spiller, Idrett eller Divisjon/avdeling", 
+            "Ny Spiller",
+            {
+                { CMD_NY_SPILLER, Command{ string(1,CMD_NY_SPILLER), "Ny Spiller"} },
+                { CMD_NY_IDRETT, Command{  string(1,CMD_NY_IDRETT), "Ny Idrett"} },
+                { CMD_NY_DIVISJON, Command{string(1,CMD_NY_DIVISJON), "Ny Divisjon/avdeling"} },
+                { CMD_BACK,    Command{     string(1,CMD_BACK), "Back" }},     
+                { CMD_QUIT,    Command{     string(1,CMD_QUIT), "Quit" }}  
+            },
+        }
+    },
+    {
+        CMD_FJERN, Command{
+            string(1,CMD_FJERN),
+            "Fjern Spiller, Idrett eller Divisjon/avdeling", 
+            "Fjern",
+            {
+                { CMD_FJERN_SPILLER, Command{ string(1,CMD_FJERN_SPILLER), "Fjern Spiller"} },
+                { CMD_FJERN_IDRETT,  Command{ string(1,CMD_FJERN_IDRETT), "Fjern Idrett"} },
+                { CMD_FJERN_DIVISJON,Command{ string(1,CMD_FJERN_DIVISJON), "Fjern Divisjon/avdeling"} },
+                { CMD_BACK,          Command{ string(1,CMD_BACK), "Back" }},     
+                { CMD_QUIT,          Command{ string(1,CMD_QUIT), "Quit" }}
+            },
+        }
+    },
+
+    {CMD_TERMIN, Command{ string(1,CMD_FJERN), "Skriv terminListe for en gitt divisjon/avdeling til skjerm eller fil", "Termininfo"}},   
+    {CMD_KAMP,   Command{ string(1,CMD_KAMP),  "Skriv (resultatet av) alle Kampene en gitt dato for en hel idrett eller en divisjon/avdeling til skjerm eller fil" , "Kampinfo"}},     
+    {CMD_TABELL,  Command{ string(1,CMD_TABELL), "skriv Tabell(er) for en hel idrett eller en divisjon/avdeling til skjerm eller fil", "Tabellinfo"}},   
+    {CMD_RESULTAT, Command{ string(1,CMD_RESULTAT),"Lese Resultatliste inn fra fil", "Leser Resultatliste ..."}}, 
+    {CMD_LAG,     Command{ string(1,CMD_LAG), "Data om alle spillerne på et lag", "Laginfo"}},      
+    {CMD_ENDRE,   Command{ string(1,CMD_ENDRE), "Endre/redigere (spillerne på et lag)", "Endre spiller på lag"}},    
+    {CMD_SCORERE, Command{ string(1,CMD_SCORERE), "Skriv 10-på-topp liste av toppsCorerne for en gitt divisjon/avdeling eller et gitt lag til skjerm eller fil", "Toppscorere"}},  
+    {CMD_QUIT,    Command{ string(1,CMD_QUIT), "Quit" }}  
+};
+
+
     std::cout << "App running \n";
 
 // Main menu
 for(;;) 
 {   
-    IO::printMenu(mainCommands);
-    auto [cmdID, _] = IO::readCommand(mainCommands);
+    IO::printMenu(commandMap, "MAIN");
+    auto [cmdID, _] = IO::readCommand(commandMap);
 
     switch(cmdID) 
     {
     case CMD_SPILLER:
-    cmdID = [&]() -> App::CommandID {
+    cmdID = [&commandMap]() -> App::CommandID {
         for(;;) 
         {
-            IO::printMenu(mainCommands.at(CMD_SPILLER).subcmd);
-            auto [cmdID, _] = IO::readCommand(mainCommands.at(CMD_SPILLER).subcmd);
+            auto command = commandMap.at(CMD_SPILLER);
+            IO::printMenu(command.subcmd, command.title);
+            auto [cmdID, _] = IO::readCommand(command.subcmd);
 
             if(cmdID == CMD_BACK || cmdID == CMD_QUIT) {
                 return cmdID;
@@ -85,12 +101,12 @@ for(;;)
     break;
 
     case CMD_IDRETT:
-    cmdID = [&]() -> App::CommandID {
+    cmdID = [&commandMap]() -> App::CommandID {
         for(;;) 
         {   
-            auto subcommands = mainCommands.at(CMD_IDRETT).subcmd;
-            IO::printMenu(subcommands);
-            auto [cmdID, _] = IO::readCommand(subcommands);
+            auto command = commandMap.at(CMD_IDRETT);
+            IO::printMenu(command.subcmd, command.title);
+            auto [cmdID, _] = IO::readCommand(command.subcmd);
             
             if(cmdID == CMD_BACK || cmdID == CMD_QUIT) {
                 return cmdID;
@@ -100,21 +116,31 @@ for(;;)
     break;
 
     case CMD_NY: 
-    cmdID = [&]() -> App::CommandID {
+    cmdID = [&commandMap]() -> App::CommandID {
         for(;;) 
         {
-            IO::printMenu(mainCommands.at(CMD_NY).subcmd);
-            auto [cmdID, _] = IO::readCommand(mainCommands.at(CMD_NY).subcmd);
+            auto command = commandMap.at(CMD_IDRETT);
+            IO::printMenu(command.subcmd, command.title);
+            auto [cmdID, _] = IO::readCommand(commandMap.at(CMD_NY).subcmd);
             
             switch(cmdID) 
             {
             case CMD_NY_SPILLER:
+            [&commandMap](){
+        
+            }();
             break;
 
             case CMD_NY_IDRETT:
+            [&commandMap](){
+        
+            }();
             break;
 
             case CMD_NY_DIVISJON:
+            [&commandMap](){
+        
+            }();
             break;
 
             default:
@@ -129,21 +155,31 @@ for(;;)
     break;
 
     case CMD_FJERN:
-    cmdID = [&]() -> App::CommandID {
+    cmdID = [&commandMap]() -> App::CommandID {
         for(;;) 
         {   
-            IO::printMenu(mainCommands.at(CMD_FJERN).subcmd);
-            auto [cmdID, _] = IO::readCommand(mainCommands.at(CMD_FJERN).subcmd);
+            auto command = commandMap.at(CMD_FJERN);
+            IO::printMenu(command.subcmd, command.title);
+            auto [cmdID, _] = IO::readCommand(command.subcmd);
 
             switch(cmdID) 
             {
             case CMD_FJERN_SPILLER:
+            [&commandMap](){
+        
+            }();
             break;
 
             case CMD_FJERN_IDRETT:
+            [&commandMap](){
+        
+            }();
             break;
 
             case CMD_FJERN_DIVISJON:
+            [&commandMap](){
+        
+            }();
             break;
 
             default:
@@ -158,35 +194,51 @@ for(;;)
     break;
 
     case CMD_TERMIN:
-    
+    [&commandMap](){
+
+    }();    
     break;
 
     case CMD_KAMP:
-    
+    [&commandMap](){
+
+    }();
     break;
 
     case CMD_TABELL:
-    
+    [&commandMap](){
+
+    }();
     break;
 
     case CMD_RESULTAT:
-    
+    [&commandMap](){
+
+    }();
     break;
 
     case CMD_LAG:
-    
+    [&commandMap](){
+
+    }();
     break;
 
     case CMD_ENDRE:
-    
+    [&commandMap](){
+
+    }();
     break;
 
     case CMD_SCORERE:
-    
+    [&commandMap](){
+
+    }();
     break;
 
     case CMD_QUIT:
-    
+    [&commandMap](){
+
+    }();
     break;
 
     default:
