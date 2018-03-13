@@ -34,7 +34,7 @@ void deleteDivisjon(DB::Context& ctx);
 
 
 // print to terminal
-void printTermin(const DB::Context& ctx);
+void printTerminDivisjon(const DB::Context& ctx);
 void printResultatKampDivisjon(const DB::Context& ctx);
 void printResultatKampIdrett(const DB::Context& ctx);
 void printTabellDivisjon(const DB::Context& ctx);
@@ -53,5 +53,7 @@ void printLagSpillerdata(const DB::Context& ctx);
 void insertLagSpiller(DB::Context& ctx);
 void removeLagSpiller(DB::Context& ctx);
 
+void printToppscorerTopp10Divisjon(const DB::Context& ctx);
+void printToppscorerTopp10Lag(const DB::Context& ctx);
 
 } // end namespace gruppe32::App
