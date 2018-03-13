@@ -1,6 +1,7 @@
 ## Referanseliste
 
 ### 2018-03-13
+* Doxygen configuration format manual - https://www.stack.nl/~dimitri/doxygen/manual/config.html
 * string literal ""s operator - http://en.cppreference.com/w/cpp/string/basic_string/operator%22%22s
 
 
