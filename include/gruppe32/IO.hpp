@@ -21,7 +21,8 @@ using CommandMap = std::map<Terminal::CommandID, Terminal::Command>;
 using CommandPair = std::pair<Terminal::CommandID, Terminal::Command>;
 
 
-void printMenu(const CommandMap& commands, const std::string& title);
+void printSubMenu(const CommandMap& commands, const std::string& title, const std::string& parentTitle = "HOME");
+void printMenu(const CommandMap& commands, const std::string& title = "HOME");
 auto readCommand(const CommandMap& validCommands) -> CommandPair;
 
 void printline();
