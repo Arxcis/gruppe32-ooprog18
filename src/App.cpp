@@ -81,7 +81,7 @@ void printTabellIdrett(const DB::Context& ctx)
 }
 
 // or print to file
-void writeTermin(const DB::Context& ctx) 
+void writeTerminDivisjon(const DB::Context& ctx) 
 {
     IO::printline("writeTermin()");
 }

@@ -35,7 +35,17 @@ enum CommandID : char
 
     CMD_TERMIN   = 'L',
     CMD_KAMP     = 'K',
+        CMD_KAMP_IDRETT       = 'A',
+        CMD_KAMP_IDRETT_FIL   = 'B',
+        CMD_KAMP_DIVISJON     = 'C',
+        CMD_KAMP_DIVISJON_FIL = 'D',
+
     CMD_TABELL   = 'T',
+        CMD_TABELL_IDRETT       = 'A',
+        CMD_TABELL_IDRETT_FIL   = 'B',
+        CMD_TABELL_DIVISJON     = 'C',
+        CMD_TABELL_DIVISJON_FIL = 'D',
+
     CMD_RESULTAT = 'R',
     CMD_LAG      = 'D',
     CMD_ENDRE    = 'E',

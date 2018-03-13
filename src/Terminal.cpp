@@ -65,14 +65,44 @@ const Command::Map commandMap
         }
     },
 
-    {CMD_TERMIN, Command{ string(1,CMD_TERMIN), "Skriv terminListe for en gitt divisjon/avdeling til skjerm eller fil", "Termininfo"}},   
-    {CMD_KAMP,   Command{ string(1,CMD_KAMP),  "Skriv (resultatet av) alle Kampene en gitt dato for en hel idrett eller en divisjon/avdeling til skjerm eller fil" , "Kampinfo"}},     
-    {CMD_TABELL,  Command{ string(1,CMD_TABELL), "skriv Tabell(er) for en hel idrett eller en divisjon/avdeling til skjerm eller fil", "Tabellinfo"}},   
-    {CMD_RESULTAT, Command{ string(1,CMD_RESULTAT),"Lese Resultatliste inn fra fil", "Leser Resultatliste ..."}}, 
-    {CMD_LAG,     Command{ string(1,CMD_LAG), "Data om alle spillerne på et lag", "Laginfo"}},      
-    {CMD_ENDRE,   Command{ string(1,CMD_ENDRE), "Endre/redigere (spillerne på et lag)", "Endre spiller på lag"}},    
-    {CMD_SCORERE, Command{ string(1,CMD_SCORERE), "Skriv 10-på-topp liste av toppsCorerne for en gitt divisjon/avdeling eller et gitt lag til skjerm eller fil", "Toppscorere"}},  
-    { CMD_QUIT,         Command{ string(1,CMD_QUIT), "Quit the application" }}   
+    {   CMD_TERMIN, Command{ string(1,CMD_TERMIN), "Skriv terminListe for en gitt divisjon/avdeling til skjerm eller fil", "Termininfo"}},   
+    {
+        CMD_KAMP, Command{ 
+            string(1,CMD_KAMP),  
+            "Skriv (resultatet av) alle Kampene en gitt dato for en hel idrett eller en divisjon/avdeling til skjerm eller fil" , 
+            "Kampinfo",
+            {
+                {CMD_KAMP_IDRETT,       Command{ string(1, CMD_KAMP_IDRETT), "Skriv alle kamper for en IDRETT"}},
+                {CMD_KAMP_IDRETT_FIL,       Command{ string(1, CMD_KAMP_IDRETT_FIL), "Skriv alle kamper for en IDRETT til fil"}},
+                {CMD_KAMP_DIVISJON,     Command{ string(1, CMD_KAMP_DIVISJON), "Skriv alle kamper for en DIVISJON"}},
+                {CMD_KAMP_DIVISJON_FIL, Command{ string(1, CMD_KAMP_DIVISJON_FIL), "Skriv alle kamper for en DIVISJON til fil"}},
+            },
+        }
+    },     
+    {
+        CMD_TABELL, Command{ 
+            string(1,CMD_TABELL), 
+            "skriv Tabell(er) for en hel idrett eller en divisjon/avdeling til skjerm eller fil",
+            "Tabellinfo",
+            {
+                {CMD_TABELL_IDRETT,       Command{ string(1, CMD_TABELL_IDRETT), "Skriv alle tabell(er) for en IDRETT"}},
+                {CMD_TABELL_IDRETT_FIL,   Command{ string(1, CMD_TABELL_IDRETT_FIL), "Skriv alle tabell(er) for en IDRETT til fil"}},
+                {CMD_TABELL_DIVISJON,     Command{ string(1, CMD_TABELL_DIVISJON), "Skriv alle tabell(er) for en DIVISJON"}},
+                {CMD_TABELL_DIVISJON_FIL, Command{ string(1, CMD_TABELL_DIVISJON_FIL), "Skriv alle tabell(er) for en DIVISJON til fil"}},
+            },
+        }
+    },   
+    {   CMD_RESULTAT, Command{ string(1,CMD_RESULTAT),"Lese Resultatliste inn fra fil", "Leser Resultatliste ..."}}, 
+    {   CMD_LAG,     Command{ string(1,CMD_LAG), "Data om alle spillerne på et lag", "Laginfo"}},      
+    {   CMD_ENDRE,   Command{ string(1,CMD_ENDRE), "Endre/redigere (spillerne på et lag)", "Endre spiller på lag"}},    
+    {   
+        CMD_SCORERE, Command{ 
+            string(1,CMD_SCORERE), 
+            "Skriv 10-på-topp liste av toppsCorerne for en gitt divisjon/avdeling eller et gitt lag til skjerm eller fil", 
+            "Toppscorere"
+        }
+    },  
+    {   CMD_QUIT,         Command{ string(1,CMD_QUIT), "Quit the application" }}   
 };
 
 
@@ -166,7 +196,7 @@ for(;;)
         for(;;) 
         {   
             auto command = commandMap.at(CMD_FJERN);
-            IO::printMenu(command.subcmd, command.title);
+            IO::printMenu(command.subcmd, "MAIN > " + command.title);
             auto [cmdID, _] = IO::readCommand(command.subcmd);
 
             switch(cmdID) 
