@@ -112,7 +112,7 @@ void printLagSpillerdata(const DB::Context& ctx)
 {
     IO::printline("printLagSpillerdata()");
 }
-void insertLagSpiller(DB::Context& ctx) 
+void insertLagSpiller(DB::Context& ctx)
 {
     IO::printline("insertLagSpiller()");
 }
@@ -122,21 +122,21 @@ void removeLagSpiller(DB::Context& ctx)
 }
 
 
-void printToppscorerTopp10Divisjon(const DB::Context& ctx)
+void printTopp10Divisjon(const DB::Context& ctx)
 {
     IO::printline("printToppscorerTopp10Divisjon()");
 }
-void printToppscorerTopp10Lag(const DB::Context& ctx)
+void printTopp10Lag(const DB::Context& ctx)
 {
     IO::printline("printToppscorerTopp10Lag()");
 }
 
 
-void writeToppscorerTopp10Divisjon(const DB::Context& ctx)
+void writeTopp10Divisjon(const DB::Context& ctx)
 {
     IO::printline("writeToppscorerTopp10Divisjon()");
 }
-void writeToppscorerTopp10Lag(const DB::Context& ctx)
+void writeTopp10Lag(const DB::Context& ctx)
 {
     IO::printline("writeToppscorerTopp10Lag()");
 }

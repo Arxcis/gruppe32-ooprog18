@@ -373,19 +373,19 @@ for(;;)
             switch(subcmdID)
             {
             case CMD_TOPPSCORE_DIVISJON:
-                App::printToppscorerTopp10Divisjon(ctx);
+                App::printTopp10Divisjon(ctx);
             break;
 
             case CMD_TOPPSCORE_DIVISJON_FIL:
-                App::writeToppscorerTopp10Divisjon(ctx);
+                App::writeTopp10Divisjon(ctx);
             break;
 
             case CMD_TOPPSCORE_LAG:
-                App::printToppscorerTopp10Lag(ctx);
+                App::printTopp10Lag(ctx);
             break;
 
             case CMD_TOPPSCORE_LAG_FIL:
-                App::writeToppscorerTopp10Lag(ctx);
+                App::writeTopp10Lag(ctx);
             break;
 
 

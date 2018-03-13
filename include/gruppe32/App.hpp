@@ -11,12 +11,6 @@
 namespace gruppe32::App 
 {
 
-/**
- * short description. - Doxygen example
- * detailed description.
- * @param int - blah
- * @return int - blah
- */
 void printSpillereAll(const DB::Context& ctx);
 void printSpillereByName(const DB::Context& ctx, const std::string name);
 void printSpillereByNumber(const DB::Context& ctx, const std::size_t number);
@@ -53,12 +47,12 @@ void printLagSpillerdata(const DB::Context& ctx);
 void insertLagSpiller(DB::Context& ctx);
 void removeLagSpiller(DB::Context& ctx);
 
+// Topp 10
+void printTopp10Divisjon(const DB::Context& ctx);
+void printTopp10Lag(const DB::Context& ctx);
 
-void printToppscorerTopp10Divisjon(const DB::Context& ctx);
-void printToppscorerTopp10Lag(const DB::Context& ctx);
-
-void writeToppscorerTopp10Divisjon(const DB::Context& ctx);
-void writeToppscorerTopp10Lag(const DB::Context& ctx);
+void writeTopp10Divisjon(const DB::Context& ctx);
+void writeTopp10Lag(const DB::Context& ctx);
 
 
 
