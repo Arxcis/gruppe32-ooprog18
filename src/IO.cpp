@@ -12,13 +12,19 @@ void printline()
 //  @brief A wrapper for std::cout which adds a \n at the end of each print.
 void printMenu(const CommandMap& commands, const std::string& title) 
 {
+    const std::size_t columnSymbolWidth = 6;
     printline();
     printline("*********************************************************");
     printline("** ", title);
     printline("*********************************************************");
 
-    for (const auto& cmd : commands) {
-        printline("*  ",char(cmd.first), " - ", cmd.second.help);
+    for (const auto& [_, command] : commands) {
+        std::cout  << "*   "
+                   << std::setw(columnSymbolWidth) 
+                   << std::left
+                   << command.symbol 
+                   <<  " - "
+                   << command.help << '\n';
     }
     printline("*********************************************************");
 }

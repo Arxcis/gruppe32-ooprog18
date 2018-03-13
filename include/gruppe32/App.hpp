@@ -16,9 +16,12 @@ enum CommandID : char
 {
     CMD_SPILLER          = 'S',
         CMD_SPILLER_ALLE = 'A',
+        CMD_SPILLER_NR   = 'R',
+        CMD_SPILLER_NAVN = 'N',
 
     CMD_IDRETT          = 'I',
         CMD_IDRETT_ALLE = 'A',
+        CMD_IDRETT_NAVN = 'N',
 
     CMD_NY              = 'N',
         CMD_NY_SPILLER  = 'S',
@@ -42,6 +45,8 @@ enum CommandID : char
  };
 
 struct Command {
+    using Map = std::map<CommandID, Command>;
+
     std::string symbol = "<no symbol>";
     std::string help   = "<no help>";
     std::string title  = "<no title>";
@@ -57,7 +62,7 @@ struct Command {
 void skrivAlleSpillere(DB::Context ctx);
 void skrivSpiller(DB::Context ctx, const size_t number);
 void skrivSpiller(DB::Context ctx, const char * name);
-void run(DB::Context ctx);
+void run(DB::Context& ctx);
 
 
 } // end namespace
