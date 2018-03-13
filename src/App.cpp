@@ -2,186 +2,135 @@
 
 namespace gruppe32::App 
 {
-const static std::map<CommandID, Command> mainCommands
+
+/**
+ * short description. - Doxygen example
+ * detailed description.
+ * @param int - blah
+ * @return int - blah
+ */
+void printSpillereAll(const DB::Context& ctx) 
 {
-
-    {
-        CMD_SPILLER, Command{"skriv Alle Spillerne eller spiller med <nr> / <navn>", 
-            {
-                { CMD_SPILLER_ALLE, Command{"skriv Alle Spillerne eller spiller med <nr> / <navn>"} },
-                {CMD_BACK,    Command{  "Back" }},     
-                {CMD_QUIT,    Command{  "Quit" }}  
-            }
-        }
-    },
-    {
-        CMD_IDRETT, Command{"skriv Alle Idrettene eller idretten med <navn>", 
-            {
-                { CMD_IDRETT_ALLE, Command{"skriv Alle Idrettene eller idretten med <navn>"} },
-                {CMD_BACK,    Command{  "Back" }},     
-                {CMD_QUIT,    Command{  "Quit" }}  
-            }
-        }
-    },
-    {
-        CMD_NY, Command{"Ny Spiller, Idrett eller Divisjon/avdeling", 
-            {
-                { CMD_NY_SPILLER, Command{"Ny Spiller"} },
-                { CMD_NY_IDRETT, Command{"Ny Idrett"} },
-                { CMD_NY_DIVISJON, Command{"Ny Divisjon/avdeling"} },
-                {CMD_BACK,    Command{  "Back" }},     
-                {CMD_QUIT,    Command{  "Quit" }}  
-            }
-        }
-    },
-    {
-        CMD_FJERN, Command{"Fjern Spiller, Idrett eller Divisjon/avdeling", 
-            {
-                { CMD_FJERN_SPILLER, Command{"Fjern Spiller"} },
-                { CMD_FJERN_IDRETT, Command{"Fjern Idrett"} },
-                { CMD_FJERN_DIVISJON, Command{"Fjern Divisjon/avdeling"} },
-                {CMD_BACK,    Command{  "Back" }},     
-                {CMD_QUIT,    Command{  "Quit" }}
-            }
-        }
-    },
-
-    {CMD_TERMIN, Command{  "skriv terminListe for en gitt divisjon/avdeling til skjerm eller fil" }},   
-    {CMD_KAMP,   Command{  "skriv (resultatet av) alle Kampene en gitt dato for en hel idrett eller en divisjon/avdeling til skjerm eller fil" }},     
-    {CMD_TABELL,  Command{  "skriv Tabell(er) for en hel idrett eller en divisjon/avdeling til skjerm eller fil" }},   
-    {CMD_RESULTAT, Command{  "lese Resultatliste inn fra fil" }}, 
-    {CMD_LAG,     Command{  "Data om alle spillerne på et lag" }},      
-    {CMD_ENDRE,   Command{  "Endre/redigere (spillerne på et lag)" }},    
-    {CMD_SCORERE, Command{  "skriv 10-på-topp liste av toppsCorerne for en gitt divisjon/avdeling eller et gitt lag til skjerm eller fil" }},  
-    {CMD_QUIT,    Command{  "Quit" }}  
-};
-
-
-void run(DB::Context ctx) 
+    IO::printline("printSpillereAll()");
+}
+void printSpillereByName(const DB::Context& ctx) 
 {
-    std::cout << "App running \n";
-
-    // Main menu
-    for(;;) 
-    {   
-    IO::printMenu(mainCommands);
-    const auto [cmdID, _] = IO::readCommand(mainCommands);
-
-    switch(cmdID) 
-    {
-    case CMD_SPILLER:
-    
-    break;
-
-    case CMD_IDRETT:
-    
-    break;
-
-    case CMD_NY: 
-    {
-        for(;;) 
-        {
-        IO::printMenu(mainCommands.at(CMD_NY).subcmd);
-        auto [cmdID, _] = IO::readCommand(mainCommands.at(CMD_NY).subcmd);
-        
-        switch(cmdID) 
-        {
-        case CMD_NY_SPILLER:
-        break;
-
-        case CMD_NY_IDRETT:
-        break;
-
-        case CMD_NY_DIVISJON:
-        break;
-
-        default:
-        break;
-        }
-
-        if(cmdID == CMD_BACK) {
-            break;
-        }
-        if (cmdID == CMD_QUIT) {
-            return;
-        }
-        } // end for
-    break;
-    }
-
-    case CMD_FJERN:
-    {
-        for(;;) 
-        {   
-        IO::printMenu(mainCommands.at(CMD_FJERN).subcmd);
-        auto [cmdID, _] = IO::readCommand(mainCommands.at(CMD_FJERN).subcmd);
-
-        switch(cmdID) 
-        {
-        case CMD_FJERN_SPILLER:
-        break;
-
-        case CMD_FJERN_IDRETT:
-        break;
-
-        case CMD_FJERN_DIVISJON:
-        break;
-
-        default:
-        break;
-        }
-
-        if(cmdID == CMD_BACK) {
-            break;
-        }
-        if (cmdID == CMD_QUIT) {
-            return;
-        }
-        } // end for
-    break;
-    }
-
-
-    case CMD_TERMIN:
-    
-    break;
-
-    case CMD_KAMP:
-    
-    break;
-
-    case CMD_TABELL:
-    
-    break;
-
-    case CMD_RESULTAT:
-    
-    break;
-
-    case CMD_LAG:
-    
-    break;
-
-    case CMD_ENDRE:
-    
-    break;
-
-    case CMD_SCORERE:
-    
-    break;
-
-    case CMD_QUIT:
-    
-    break;
-
-    default:
-        break;
-    }
-
-    if (cmdID == CMD_QUIT) {
-        return;
-    }
-    } // end for
+    IO::printline("printSpillereByName()");
+}
+void printSpillereByNumber(const DB::Context& ctx) 
+{
+    IO::printline("printSpillereByNumber()");
 }
 
-} // end namespace
+void printIdretterAll(const DB::Context& ctx) 
+{
+    IO::printline("printIdretterAll()");
+}
+void printIdretterByName(const DB::Context& ctx) 
+{
+    IO::printline("printIdretterByName()");
+}
+
+void createSpiller(DB::Context& ctx) 
+{
+    IO::printline("createSpiller()");
+}
+void createIdrett(DB::Context& ctx) 
+{
+    IO::printline("createIdrett()");
+}
+void createDivisjon(DB::Context& ctx) 
+{
+    IO::printline("createDivisjon()");
+}
+
+void deleteSpiller(DB::Context& ctx) 
+{
+    IO::printline("deleteSpiller()");
+}
+void deleteIdrett(DB::Context& ctx) 
+{
+    IO::printline("deleteIdrett()");
+}
+void deleteDivisjon(DB::Context& ctx) 
+{
+    IO::printline("deleteDivisjon()");
+}
+
+
+// print to terminal
+void printTerminDivisjon(const DB::Context& ctx) 
+{
+    IO::printline("printTerminDivisjon()");
+}
+void printResultatKampDivisjon(const DB::Context& ctx) 
+{
+    IO::printline("printResultatKampDivisjon()");
+}
+void printResultatKampIdrett(const DB::Context& ctx) 
+{
+    IO::printline("printResultatKampIdrett()");
+}
+void printTabellDivisjon(const DB::Context& ctx) 
+{
+    IO::printline("printTabellDivisjon()");
+}
+void printTabellIdrett(const DB::Context& ctx) 
+{
+    IO::printline("printTabellIdrett()");
+}
+
+// or print to file
+void writeTerminDivisjon(const DB::Context& ctx) 
+{
+    IO::printline("writeTermin()");
+}
+void writeResultatKampDivisjon(const DB::Context& ctx) 
+{
+    IO::printline("writeResultatKampDivisjon()");
+}
+void writeResultatKampIdrett(const DB::Context& ctx) 
+{
+    IO::printline("writeResultatKampIdrett()");
+}
+void writeTabellDivisjon(const DB::Context& ctx) 
+{
+    IO::printline("writeTabellDivisjon()");
+}
+void writeTabellIdrett(const DB::Context& ctx) 
+{
+    IO::printline("writeTabellIdrett()");
+}
+
+void readResultatliste(DB::Context& ctx) 
+{
+    IO::printline("readResultatliste()");
+}
+
+void printLagSpillerdata(const DB::Context& ctx) 
+{
+    IO::printline("printLagSpillerdata()");
+}
+void insertLagSpiller(DB::Context& ctx) 
+{
+    IO::printline("insertLagSpiller()");
+}
+void removeLagSpiller(DB::Context& ctx) 
+{
+    IO::printline("removeLagSpiller()");
+}
+
+
+void printToppscorerTopp10Divisjon(const DB::Context& ctx)
+{
+    IO::printline("printToppscorerTopp10Divisjon()");
+}
+void printToppscorerTopp10Lag(const DB::Context& ctx)
+{
+    IO::printline("printToppscorerTopp10Lag()");
+}
+
+
+
+
+} // end namespace gruppe32::App

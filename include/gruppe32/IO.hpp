@@ -1,20 +1,28 @@
 #pragma once
 
 #include <iostream>
+#include <iomanip>
+#include <utility>
 #include <map>
-#include <gruppe32/App.hpp>
+#include <string>
 #include <cctype>
+#include <gruppe32/Terminal.hpp>
 
 // Forward declaration
-namespace gruppe32::App {
+namespace gruppe32::Terminal {
     enum CommandID : char;
     struct Command;
 }
 
 namespace gruppe32::IO  
 {
-void printMenu(const std::map<App::CommandID, App::Command>& commands);
-auto readCommand(const std::map<App::CommandID, App::Command>& validCommands) -> std::pair<App::CommandID, App::Command>;
+
+using CommandMap = std::map<Terminal::CommandID, Terminal::Command>;
+using CommandPair = std::pair<Terminal::CommandID, Terminal::Command>;
+
+
+void printMenu(const CommandMap& commands, const std::string& title);
+auto readCommand(const CommandMap& validCommands) -> CommandPair;
 
 void printline();
 

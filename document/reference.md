@@ -1,1 +1,8 @@
-##Referanseliste
+## Referanseliste
+
+
+### 2018-03-13
+
+* compile with Visual Studio and CMake  - https://dmerej.info/blog/post/cmake-visual-studio-and-the-command-line/
+* visual studio c++17 progress - https://blogs.msdn.microsoft.com/vcblog/2017/12/19/c17-progress-in-vs-2017-15-5-and-15-6/
+* cpp compiler support - https://en.cppreference.com/w/cpp/compiler_support

@@ -1,4 +1,5 @@
 
+
 .DS_Store
 
 bin/
@@ -7,3 +8,4 @@ cmake/
 
 .vs/
 .vscode/
+CppProperties.json
