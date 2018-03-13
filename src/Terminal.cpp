@@ -76,6 +76,8 @@ const Command::Map commandMap
                 {CMD_KAMP_IDRETT_FIL,       Command{ string(1, CMD_KAMP_IDRETT_FIL), "Skriv alle kamper for en IDRETT til fil"}},
                 {CMD_KAMP_DIVISJON,     Command{ string(1, CMD_KAMP_DIVISJON), "Skriv alle kamper for en DIVISJON"}},
                 {CMD_KAMP_DIVISJON_FIL, Command{ string(1, CMD_KAMP_DIVISJON_FIL), "Skriv alle kamper for en DIVISJON til fil"}},
+                { CMD_BACK,         Command{ string(1,CMD_BACK), "Back to last menu" }},     
+                { CMD_QUIT,         Command{ string(1,CMD_QUIT), "Quit the application" }}   
             },
         }
     },     
@@ -89,17 +91,35 @@ const Command::Map commandMap
                 {CMD_TABELL_IDRETT_FIL,   Command{ string(1, CMD_TABELL_IDRETT_FIL), "Skriv alle tabell(er) for en IDRETT til fil"}},
                 {CMD_TABELL_DIVISJON,     Command{ string(1, CMD_TABELL_DIVISJON), "Skriv alle tabell(er) for en DIVISJON"}},
                 {CMD_TABELL_DIVISJON_FIL, Command{ string(1, CMD_TABELL_DIVISJON_FIL), "Skriv alle tabell(er) for en DIVISJON til fil"}},
+                { CMD_BACK,         Command{ string(1,CMD_BACK), "Back to last menu" }},     
+                { CMD_QUIT,         Command{ string(1,CMD_QUIT), "Quit the application" }}   
             },
         }
     },   
     {   CMD_RESULTAT, Command{ string(1,CMD_RESULTAT),"Lese Resultatliste inn fra fil", "Leser Resultatliste ..."}}, 
     {   CMD_LAG,     Command{ string(1,CMD_LAG), "Data om alle spillerne på et lag", "Laginfo"}},      
-    {   CMD_ENDRE,   Command{ string(1,CMD_ENDRE), "Endre/redigere (spillerne på et lag)", "Endre spiller på lag"}},    
     {   
-        CMD_SCORERE, Command{ 
-            string(1,CMD_SCORERE), 
+        CMD_ENDRE, Command{ 
+            string(1,CMD_ENDRE), 
+            "Endre/redigere (spillerne på et lag)", 
+            "Endre spiller på lag",
+            {
+                { CMD_BACK,         Command{ string(1,CMD_BACK), "Back to last menu" }},     
+                { CMD_QUIT,         Command{ string(1,CMD_QUIT), "Quit the application" }}   
+
+            },
+        }
+    },    
+    {   
+        CMD_TOPPSCORE, Command{ 
+            string(1,CMD_TOPPSCORE), 
             "Skriv 10-på-topp liste av toppsCorerne for en gitt divisjon/avdeling eller et gitt lag til skjerm eller fil", 
-            "Toppscorere"
+            "Toppscorere",
+            {
+                { CMD_BACK,         Command{ string(1,CMD_BACK), "Back to last menu" }},     
+                { CMD_QUIT,         Command{ string(1,CMD_QUIT), "Quit the application" }}   
+
+            },
         }
     },  
     {   CMD_QUIT,         Command{ string(1,CMD_QUIT), "Quit the application" }}   
@@ -161,22 +181,15 @@ for(;;)
             switch(subcmdID)
             {
             case CMD_NY_SPILLER:
-            [&ctx](){
                 App::createSpiller(ctx);
-            }();
             break;
 
             case CMD_NY_IDRETT:
-            [&ctx](){
                 App::createIdrett(ctx);
-        
-            }();
             break;
 
             case CMD_NY_DIVISJON:
-            [&ctx](){
                 App::createDivisjon(ctx);        
-            }();
             break;
 
             case CMD_BACK:
@@ -202,21 +215,15 @@ for(;;)
             switch(subcmdID)
             {
             case CMD_FJERN_SPILLER:
-            [&ctx](){
                 App::deleteSpiller(ctx);
-            }();
             break;
 
             case CMD_FJERN_IDRETT:
-            [&ctx](){
                 App::deleteIdrett(ctx);        
-            }();
             break;
 
             case CMD_FJERN_DIVISJON:
-            [&ctx](){
                 App::deleteDivisjon(ctx);        
-            }();
             break;
 
             case CMD_BACK:
@@ -231,61 +238,150 @@ for(;;)
     break;
 
     case CMD_TERMIN:
-    [&commandMap, &ctx](){
         App::printTerminDivisjon(ctx);
-    }();    
     break;
 
     case CMD_KAMP:
-    [&commandMap, &ctx](){
-        App::printResultatKampDivisjon(ctx);
-        /* @TOOD        
-        App::printResultatKampIdrett(ctx);
-        App::writeResultatKampDivisjon(ctx);
-        App::writeResultatKampIdrett(ctx);
-        */
+    cmdID = [&commandMap, &ctx]() -> CommandID {
+        for(;;) 
+        {
+            auto command = commandMap.at(CMD_KAMP);
+            IO::printMenu(command.subcmd, command.title);
+            auto [subcmdID, _] = IO::readCommand(commandMap.at(CMD_KAMP).subcmd);
+            
+            switch(subcmdID)
+            {
+            case CMD_KAMP_DIVISJON:
+                App::printResultatKampDivisjon(ctx);
+            break;
+
+            case CMD_KAMP_DIVISJON_FIL:
+                App::writeResultatKampDivisjon(ctx);
+            break;
+
+            case CMD_KAMP_IDRETT:
+                App::printResultatKampIdrett(ctx);
+            break;
+
+            case CMD_KAMP_IDRETT_FIL:
+                App::writeResultatKampIdrett(ctx);
+            break;
+
+            case CMD_BACK:
+            case CMD_QUIT:
+                return subcmdID;
+                break;
+
+            default:
+                assert(false && "Command Should never happen!!");
+            }
+        }
     }();
     break;
 
     case CMD_TABELL:
-    [&commandMap, &ctx](){
-        App::printTabellDivisjon(ctx); 
-        /* @todo 
-        App::printTabellIdrett(ctx);
-        App::writeTabellDivisjon(ctx);
-        App::writeTabellIdrett(ctx);
-        */
+    cmdID = [&commandMap, &ctx]() -> CommandID {
+        for(;;) 
+        {
+            auto command = commandMap.at(CMD_TABELL);
+            IO::printMenu(command.subcmd, command.title);
+            auto [subcmdID, _] = IO::readCommand(commandMap.at(CMD_TABELL).subcmd);
+            
+            switch(subcmdID)
+            {
+            case CMD_TABELL_DIVISJON:
+                App::printTabellDivisjon(ctx); 
+            break;
+
+            case CMD_TABELL_DIVISJON_FIL:
+                App::writeTabellDivisjon(ctx);
+            break;
+
+            case CMD_TABELL_IDRETT:
+                App::printTabellIdrett(ctx);
+            break;
+
+            case CMD_TABELL_IDRETT_FIL:
+                App::writeTabellIdrett(ctx);
+            break;
+
+            case CMD_BACK:
+            case CMD_QUIT:
+                return subcmdID;
+                break;
+
+            default:
+                assert(false && "Command Should never happen!!");
+            }
+        }
     }();
     break;
 
     case CMD_RESULTAT:
-    [&commandMap, &ctx](){
         App::readResultatliste(ctx);
-    }();
     break;
 
     case CMD_LAG:
-    [&commandMap, &ctx](){
         App::printLagSpillerdata(ctx);
-    }();
     break;
 
     case CMD_ENDRE:
-    [&commandMap, &ctx](){
-        App::insertLagSpiller(ctx); 
-        /* @TODO 
-        App::removeLagSpiller(ctx);
-        */
+    cmdID = [&commandMap, &ctx](){
+        for(;;) {
+
+            auto command = commandMap.at(CMD_ENDRE);
+            IO::printMenu(command.subcmd, command.title);
+            auto [subcmdID, _] = IO::readCommand(commandMap.at(CMD_ENDRE).subcmd);
+
+            switch(subcmdID)
+            {
+            case CMD_ENDRE_LEGG_TIL_SPILLER:
+                App::insertLagSpiller(ctx); 
+            break;
+
+            case CMD_ENDRE_FJERN_SPILLER:
+                App::removeLagSpiller(ctx);
+            break;
+
+            case CMD_BACK:
+            case CMD_QUIT:
+                return subcmdID;
+                break;
+
+            default:
+                assert(false && "Command Should never happen!!");
+            }            
+        }
     }();
     break;
 
-    case CMD_SCORERE:
-    [&commandMap, &ctx](){
+    case CMD_TOPPSCORE:
+    cmdID = [&commandMap, &ctx](){
+        for(;;) {
+            
+            auto command = commandMap.at(CMD_TOPPSCORE);
+            IO::printMenu(command.subcmd, command.title);
+            auto [subcmdID, _] = IO::readCommand(commandMap.at(CMD_TOPPSCORE).subcmd);
 
-        App::printToppscorerTopp10Divisjon(ctx);
-        /* @TODO
-        App::printToppscorerTopp10Lag(ctx);
-        */
+            switch(subcmdID)
+            {
+            case CMD_TOPPSCORE_DIVISJON:
+                App::printToppscorerTopp10Divisjon(ctx);
+            break;
+
+            case CMD_TOPPSCORE_LAG:
+                App::printToppscorerTopp10Lag(ctx);
+            break;
+
+            case CMD_BACK:
+            case CMD_QUIT:
+                return subcmdID;
+                break;
+
+            default:
+                assert(false && "Command Should never happen!!");
+            }            
+        }
     }();
     break;
 
