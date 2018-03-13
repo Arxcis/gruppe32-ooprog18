@@ -9,7 +9,7 @@ void printline()
     std::cout << '\n';    
 }
 
-//  @brief A wrapper for std::cout which adds a \n at the end of each print.
+
 void printSubMenu(const CommandMap & commands, const std::string & title, const std::string & parentTitle)
 {
 	printMenu(commands, parentTitle + " -> " + title);
