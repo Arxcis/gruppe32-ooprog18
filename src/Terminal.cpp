@@ -122,12 +122,12 @@ for(;;)
         {
             auto command = commandMap.at(CMD_SPILLER);
             IO::printMenu(command.subcmd, command.title);
-            auto [cmdID, _] = IO::readCommand(command.subcmd);
+            auto [subcmdID, _] = IO::readCommand(command.subcmd);
 
             App::printSpillereAll(ctx);
 
-            if(cmdID == CMD_BACK || cmdID == CMD_QUIT) {
-                return cmdID;
+            if(subcmdID == CMD_BACK || subcmdID == CMD_QUIT) {
+                return subcmdID;
             }
         }
     }();
@@ -139,12 +139,12 @@ for(;;)
         {   
             auto command = commandMap.at(CMD_IDRETT);
             IO::printMenu(command.subcmd, command.title);
-            auto [cmdID, _] = IO::readCommand(command.subcmd);
+            auto [subcmdID, _] = IO::readCommand(command.subcmd);
             
             App::printIdretterAll(ctx);
 
-            if(cmdID == CMD_BACK || cmdID == CMD_QUIT) {
-                return cmdID;
+            if(subcmdID == CMD_BACK || subcmdID == CMD_QUIT) {
+                return subcmdID;
             }
         }
     }();
@@ -156,9 +156,9 @@ for(;;)
         {
             auto command = commandMap.at(CMD_NY);
             IO::printMenu(command.subcmd, command.title);
-            auto [cmdID, _] = IO::readCommand(commandMap.at(CMD_NY).subcmd);
+            auto [subcmdID, _] = IO::readCommand(commandMap.at(CMD_NY).subcmd);
             
-            switch(cmdID) 
+            switch(subcmdID)
             {
             case CMD_NY_SPILLER:
             [&ctx](){
@@ -181,7 +181,7 @@ for(;;)
 
             case CMD_BACK:
             case CMD_QUIT:
-                return cmdID;
+                return subcmdID;
                 break;
 
             default:
@@ -197,9 +197,9 @@ for(;;)
         {   
             auto command = commandMap.at(CMD_FJERN);
             IO::printMenu(command.subcmd, "MAIN > " + command.title);
-            auto [cmdID, _] = IO::readCommand(command.subcmd);
+            auto [subcmdID, _] = IO::readCommand(command.subcmd);
 
-            switch(cmdID) 
+            switch(subcmdID)
             {
             case CMD_FJERN_SPILLER:
             [&ctx](){
@@ -221,7 +221,7 @@ for(;;)
 
             case CMD_BACK:
             case CMD_QUIT:
-                return cmdID;
+                return subcmdID;
 
             default:
                 assert(false && "Command Should never happen!!");    
