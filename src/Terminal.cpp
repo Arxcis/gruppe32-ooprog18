@@ -76,7 +76,7 @@ const Command::Map commandMap
             "Kampinfo",
             {
                 {CMD_KAMP_IDRETT,       Command{ string(1, CMD_KAMP_IDRETT), "Skriv alle kamper for en IDRETT"}},
-                {CMD_KAMP_IDRETT_FIL,       Command{ string(1, CMD_KAMP_IDRETT_FIL), "Skriv alle kamper for en IDRETT til fil"}},
+                {CMD_KAMP_IDRETT_FIL,   Command{ string(1, CMD_KAMP_IDRETT_FIL), "Skriv alle kamper for en IDRETT til fil"}},
                 {CMD_KAMP_DIVISJON,     Command{ string(1, CMD_KAMP_DIVISJON), "Skriv alle kamper for en DIVISJON"}},
                 {CMD_KAMP_DIVISJON_FIL, Command{ string(1, CMD_KAMP_DIVISJON_FIL), "Skriv alle kamper for en DIVISJON til fil"}},
                 commandBackPair,
@@ -107,6 +107,8 @@ const Command::Map commandMap
             "Endre/redigere (spillerne på et lag)", 
             "Endre spiller på lag",
             {
+                {CMD_ENDRE_LEGG_TIL_SPILLER, Command{ string(1, CMD_ENDRE_LEGG_TIL_SPILLER), "Legg til spiller til lag"}},
+                {CMD_ENDRE_FJERN_SPILLER,    Command{ string(1, CMD_ENDRE_FJERN_SPILLER),    "Fjern spiller fra lag"}},
                 commandBackPair,
                 commandQuitPair
             },
@@ -115,9 +117,13 @@ const Command::Map commandMap
     {   
         CMD_TOPPSCORE, Command{ 
             string(1,CMD_TOPPSCORE), 
-            "Skriv 10-på-topp liste av toppsCorerne for en gitt divisjon/avdeling eller et gitt lag til skjerm eller fil", 
+            "Skriv 10-på-topp liste av toppsCorerne", 
             "Toppscorere",
             {
+                {CMD_TOPPSCORE_LAG,          Command{ string(1, CMD_TOPPSCORE_LAG),          "Topp 10 for LAG"}},
+                {CMD_TOPPSCORE_LAG_FIL,      Command{ string(1, CMD_TOPPSCORE_LAG_FIL),      "Topp 10 for LAG til fil"}},
+                {CMD_TOPPSCORE_DIVISJON,     Command{ string(1, CMD_TOPPSCORE_DIVISJON),     "Topp 10 for DIVISJON"}},
+                {CMD_TOPPSCORE_DIVISJON_FIL, Command{ string(1, CMD_TOPPSCORE_DIVISJON_FIL), "Topp 10 for DIVISJON til fil"}},
                 commandBackPair,
                 commandQuitPair
             },
@@ -370,9 +376,18 @@ for(;;)
                 App::printToppscorerTopp10Divisjon(ctx);
             break;
 
+            case CMD_TOPPSCORE_DIVISJON_FIL:
+                App::printToppscorerTopp10Divisjon(ctx);
+            break;
+
             case CMD_TOPPSCORE_LAG:
                 App::printToppscorerTopp10Lag(ctx);
             break;
+
+            case CMD_TOPPSCORE_LAG_FIL:
+                App::printToppscorerTopp10Lag(ctx);
+            break;
+
 
             case CMD_BACK:
             case CMD_QUIT:

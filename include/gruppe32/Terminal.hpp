@@ -35,16 +35,16 @@ enum CommandID : char
 
     CMD_TERMIN   = 'L',
     CMD_KAMP     = 'K',
-        CMD_KAMP_IDRETT       = 'X',
-        CMD_KAMP_IDRETT_FIL   = 'Y',
-        CMD_KAMP_DIVISJON     = 'Z',
-        CMD_KAMP_DIVISJON_FIL = 'W',
+        CMD_KAMP_IDRETT       = 'W',
+        CMD_KAMP_IDRETT_FIL   = 'X',
+        CMD_KAMP_DIVISJON     = 'Y',
+        CMD_KAMP_DIVISJON_FIL = 'Z',
 
     CMD_TABELL   = 'T',
-        CMD_TABELL_IDRETT       = 'X',
-        CMD_TABELL_IDRETT_FIL   = 'Y',
-        CMD_TABELL_DIVISJON     = 'Z',
-        CMD_TABELL_DIVISJON_FIL = 'W',
+        CMD_TABELL_IDRETT       = 'W',
+        CMD_TABELL_IDRETT_FIL   = 'X',
+        CMD_TABELL_DIVISJON     = 'Y',
+        CMD_TABELL_DIVISJON_FIL = 'Z',
 
     CMD_RESULTAT = 'R',
     CMD_LAG      = 'D',
@@ -53,8 +53,10 @@ enum CommandID : char
         CMD_ENDRE_FJERN_SPILLER    = 'Y',
 
     CMD_TOPPSCORE  = 'C',
-        CMD_TOPPSCORE_DIVISJON = 'X',
-        CMD_TOPPSCORE_LAG      = 'Y',
+        CMD_TOPPSCORE_DIVISJON     = 'W',
+        CMD_TOPPSCORE_DIVISJON_FIL = 'X',
+        CMD_TOPPSCORE_LAG          = 'Y',
+        CMD_TOPPSCORE_LAG_FIL      = 'Z',
 
     CMD_BACK     = 'B',
     CMD_QUIT     = 'Q'
