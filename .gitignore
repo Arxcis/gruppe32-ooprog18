@@ -1,11 +1,17 @@
 
+# Doxygen
+document/html/
+document/latex/
 
+# Mac
 .DS_Store
 
+# CMake
 bin/
 build/
 cmake/
 
+# VScode / VS
 .vs/
 .vscode/
 CppProperties.json
