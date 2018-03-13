@@ -71,11 +71,32 @@ for(;;)
     switch(cmdID) 
     {
     case CMD_SPILLER:
-    
+    cmdID = [&]() -> App::CommandID {
+        for(;;) 
+        {
+            IO::printMenu(mainCommands.at(CMD_SPILLER).subcmd);
+            auto [cmdID, _] = IO::readCommand(mainCommands.at(CMD_SPILLER).subcmd);
+
+            if(cmdID == CMD_BACK || cmdID == CMD_QUIT) {
+                return cmdID;
+            }
+        }
+    }();
     break;
 
     case CMD_IDRETT:
-    
+    cmdID = [&]() -> App::CommandID {
+        for(;;) 
+        {   
+            auto subcommands = mainCommands.at(CMD_IDRETT).subcmd;
+            IO::printMenu(subcommands);
+            auto [cmdID, _] = IO::readCommand(subcommands);
+            
+            if(cmdID == CMD_BACK || cmdID == CMD_QUIT) {
+                return cmdID;
+            }
+        }
+    }();
     break;
 
     case CMD_NY: 
