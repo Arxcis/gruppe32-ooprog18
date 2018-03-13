@@ -10,23 +10,27 @@ void printline()
 }
 
 //  @brief A wrapper for std::cout which adds a \n at the end of each print.
-void printMenu(const CommandMap& commands, const std::string& title) 
+void printSubMenu(const CommandMap & commands, const std::string & title, const std::string & parentTitle)
 {
-    const std::size_t columnSymbolWidth = 6;
-    printline();
-    printline("*********************************************************");
-    printline("** ", title);
-    printline("*********************************************************");
+	printMenu(commands, parentTitle + " -> " + title);
+}
+void printMenu(const CommandMap & commands, const std::string & title)
+{
+	const std::size_t columnSymbolWidth = 6;
+	printline();
+	printline("*********************************************************");
+	printline("** ", title);
+	printline("*********************************************************");
 
-    for (const auto& [_, command] : commands) {
-        std::cout  << "*   "
-                   << std::setw(columnSymbolWidth) 
-                   << std::left
-                   << command.symbol 
-                   <<  " - "
-                   << command.help << '\n';
-    }
-    printline("*********************************************************");
+	for (const auto&[_, command] : commands) {
+		std::cout << "*   "
+			<< std::setw(columnSymbolWidth)
+			<< std::left
+			<< command.symbol
+			<< " - "
+			<< command.help << '\n';
+	}
+	printline("*********************************************************");
 }
 
 auto readCommand(const CommandMap& validCommands)  -> CommandPair {

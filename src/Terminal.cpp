@@ -138,7 +138,7 @@ const Command::Map commandMap
 // Main menu
 for(;;) 
 {   
-    IO::printMenu(commandMap, "MAIN");
+    IO::printMenu(commandMap, "HOME");
     auto [cmdID, _] = IO::readCommand(commandMap);
 
     switch(cmdID) 
@@ -148,7 +148,7 @@ for(;;)
         for(;;) 
         {
             auto command = commandMap.at(CMD_SPILLER);
-            IO::printMenu(command.subcmd, command.title);
+            IO::printSubMenu(command.subcmd, command.title);
             auto [subcmdID, _] = IO::readCommand(command.subcmd);
 
             App::printSpillereAll(ctx);
@@ -165,7 +165,7 @@ for(;;)
         for(;;) 
         {   
             auto command = commandMap.at(CMD_IDRETT);
-            IO::printMenu(command.subcmd, command.title);
+            IO::printSubMenu(command.subcmd, command.title);
             auto [subcmdID, _] = IO::readCommand(command.subcmd);
             
             App::printIdretterAll(ctx);
@@ -182,7 +182,7 @@ for(;;)
         for(;;) 
         {
             auto command = commandMap.at(CMD_NY);
-            IO::printMenu(command.subcmd, command.title);
+            IO::printSubMenu(command.subcmd, command.title);
             auto [subcmdID, _] = IO::readCommand(commandMap.at(CMD_NY).subcmd);
             
             switch(subcmdID)
@@ -216,7 +216,7 @@ for(;;)
         for(;;) 
         {   
             auto command = commandMap.at(CMD_FJERN);
-            IO::printMenu(command.subcmd, "MAIN > " + command.title);
+            IO::printSubMenu(command.subcmd, command.title);
             auto [subcmdID, _] = IO::readCommand(command.subcmd);
 
             switch(subcmdID)
@@ -253,7 +253,7 @@ for(;;)
         for(;;) 
         {
             auto command = commandMap.at(CMD_KAMP);
-            IO::printMenu(command.subcmd, command.title);
+            IO::printSubMenu(command.subcmd, command.title);
             auto [subcmdID, _] = IO::readCommand(commandMap.at(CMD_KAMP).subcmd);
             
             switch(subcmdID)
@@ -291,7 +291,7 @@ for(;;)
         for(;;) 
         {
             auto command = commandMap.at(CMD_TABELL);
-            IO::printMenu(command.subcmd, command.title);
+            IO::printSubMenu(command.subcmd, command.title);
             auto [subcmdID, _] = IO::readCommand(commandMap.at(CMD_TABELL).subcmd);
             
             switch(subcmdID)
@@ -337,7 +337,7 @@ for(;;)
         for(;;) {
 
             auto command = commandMap.at(CMD_ENDRE);
-            IO::printMenu(command.subcmd, command.title);
+            IO::printSubMenu(command.subcmd, command.title);
             auto [subcmdID, _] = IO::readCommand(commandMap.at(CMD_ENDRE).subcmd);
 
             switch(subcmdID)
@@ -367,7 +367,7 @@ for(;;)
         for(;;) {
             
             auto command = commandMap.at(CMD_TOPPSCORE);
-            IO::printMenu(command.subcmd, command.title);
+            IO::printSubMenu(command.subcmd, command.title);
             auto [subcmdID, _] = IO::readCommand(commandMap.at(CMD_TOPPSCORE).subcmd);
 
             switch(subcmdID)
