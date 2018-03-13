@@ -62,11 +62,11 @@ void run(DB::Context ctx)
 {
     std::cout << "App running \n";
 
-    // Main menu
-    for(;;) 
-    {   
+// Main menu
+for(;;) 
+{   
     IO::printMenu(mainCommands);
-    const auto [cmdID, _] = IO::readCommand(mainCommands);
+    auto [cmdID, _] = IO::readCommand(mainCommands);
 
     switch(cmdID) 
     {
@@ -79,69 +79,62 @@ void run(DB::Context ctx)
     break;
 
     case CMD_NY: 
-    {
+    cmdID = [&]() -> App::CommandID {
         for(;;) 
         {
-        IO::printMenu(mainCommands.at(CMD_NY).subcmd);
-        auto [cmdID, _] = IO::readCommand(mainCommands.at(CMD_NY).subcmd);
-        
-        switch(cmdID) 
-        {
-        case CMD_NY_SPILLER:
-        break;
-
-        case CMD_NY_IDRETT:
-        break;
-
-        case CMD_NY_DIVISJON:
-        break;
-
-        default:
-        break;
-        }
-
-        if(cmdID == CMD_BACK) {
+            IO::printMenu(mainCommands.at(CMD_NY).subcmd);
+            auto [cmdID, _] = IO::readCommand(mainCommands.at(CMD_NY).subcmd);
+            
+            switch(cmdID) 
+            {
+            case CMD_NY_SPILLER:
             break;
+
+            case CMD_NY_IDRETT:
+            break;
+
+            case CMD_NY_DIVISJON:
+            break;
+
+            default:
+            break;
+            }
+
+            if(cmdID == CMD_BACK || cmdID == CMD_QUIT) {
+                return cmdID;
+            }
         }
-        if (cmdID == CMD_QUIT) {
-            return;
-        }
-        } // end for
+    }();
     break;
-    }
 
     case CMD_FJERN:
-    {
+    cmdID = [&]() -> App::CommandID {
         for(;;) 
         {   
-        IO::printMenu(mainCommands.at(CMD_FJERN).subcmd);
-        auto [cmdID, _] = IO::readCommand(mainCommands.at(CMD_FJERN).subcmd);
+            IO::printMenu(mainCommands.at(CMD_FJERN).subcmd);
+            auto [cmdID, _] = IO::readCommand(mainCommands.at(CMD_FJERN).subcmd);
 
-        switch(cmdID) 
-        {
-        case CMD_FJERN_SPILLER:
-        break;
-
-        case CMD_FJERN_IDRETT:
-        break;
-
-        case CMD_FJERN_DIVISJON:
-        break;
-
-        default:
-        break;
-        }
-
-        if(cmdID == CMD_BACK) {
+            switch(cmdID) 
+            {
+            case CMD_FJERN_SPILLER:
             break;
-        }
-        if (cmdID == CMD_QUIT) {
-            return;
-        }
-        } // end for
-    break;
-    }
 
+            case CMD_FJERN_IDRETT:
+            break;
+
+            case CMD_FJERN_DIVISJON:
+            break;
+
+            default:
+            break;
+            }
+
+            if (cmdID == CMD_BACK || cmdID == CMD_QUIT) {
+                return cmdID;
+            }
+        }
+    }();
+    break;
 
     case CMD_TERMIN:
     
@@ -182,7 +175,6 @@ void run(DB::Context ctx)
     if (cmdID == CMD_QUIT) {
         return;
     }
-    } // end for
-}
-
-} // end namespace
+} // end for
+} // end App::run()
+} // end namespace App
