@@ -42,7 +42,9 @@ enum CommandID : char
  };
 
 struct Command {
-    std::string helptext;
+    std::string symbol = "<no symbol>";
+    std::string help   = "<no help>";
+    std::string title  = "<no title>";
     std::map<CommandID, Command> subcmd{};
 };
 
