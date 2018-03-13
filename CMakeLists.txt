@@ -8,6 +8,7 @@ target_sources(gruppe32
     PRIVATE "${CMAKE_SOURCE_DIR}/src/DB.cpp"
     PRIVATE "${CMAKE_SOURCE_DIR}/src/IO.cpp"
     PRIVATE "${CMAKE_SOURCE_DIR}/src/App.cpp"
+    PRIVATE "${CMAKE_SOURCE_DIR}/src/Terminal.cpp"
 )
 
 set_target_properties(gruppe32
