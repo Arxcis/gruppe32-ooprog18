@@ -18,11 +18,11 @@ namespace gruppe32::App
  * @return int - blah
  */
 void printSpillereAll(const DB::Context& ctx);
-void printSpillereByName(const DB::Context& ctx);
-void printSpillereByNumber(const DB::Context& ctx);
+void printSpillereByName(const DB::Context& ctx, const std::string name);
+void printSpillereByNumber(const DB::Context& ctx, const std::size_t number);
 
 void printIdretterAll(const DB::Context& ctx);
-void printIdretterByName(const DB::Context& ctx);
+void printIdretterByName(const DB::Context& ctx, const std::string name);
 
 void createSpiller(DB::Context& ctx);
 void createIdrett(DB::Context& ctx);
