@@ -25,6 +25,9 @@ void printSubMenu(const CommandMap& commands, const std::string& title, const st
 void printMenu(const CommandMap& commands, const std::string& title = "HOME");
 auto readCommand(const CommandMap& validCommands) -> CommandPair;
 
+auto readCommand_or_int_or_string(const CommandMap& validCommands) -> CommandPair;
+auto readCommand_or_string(const CommandMap& validCommands) -> CommandPair;
+
 void printline();
 
 
