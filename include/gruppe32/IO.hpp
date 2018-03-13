@@ -3,6 +3,7 @@
 #include <iostream>
 #include <utility>
 #include <map>
+#include <string>
 #include <cctype>
 #include <gruppe32/App.hpp>
 
@@ -15,8 +16,10 @@ namespace gruppe32::App {
 
 namespace gruppe32::IO  
 {
-void printMenu(const std::map<App::CommandID, App::Command>& commands);
-auto readCommand(const std::map<App::CommandID, App::Command>& validCommands) -> std::pair<App::CommandID, App::Command>;
+using CommandMap = std::map<App::CommandID, App::Command>;
+
+void printMenu(const CommandMap& commands, const std::string& title);
+auto readCommand(const CommandMap& validCommands) -> std::pair<App::CommandID, App::Command>;
 
 void printline();
 
