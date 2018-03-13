@@ -1,8 +1,11 @@
 #pragma once
 
 #include <iostream>
+#include <utility>
 #include <map>
+#include <cctype>
 #include <gruppe32/App.hpp>
+
 
 // Forward declaration
 namespace gruppe32::App {
