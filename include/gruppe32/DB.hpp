@@ -11,6 +11,7 @@ namespace gruppe32::DB
 using std::size_t;
 using std::vector;
 using std::array;
+using std::string;
 
 /**
  *
@@ -32,25 +33,38 @@ public:
     frode::List data{ frode::Sorted };
 };
 
+
+class Lag 
+{
+public:
+	constexpr static size_t MAX_SPILLERE = 50;
+private:
+	string navn;
+	string adresse;
+	array<size_t, MAX_SPILLERE> spillere;
+};
+
+
 class Resultat
 {
-	const size_t LENGTH_DATE = 9;
-	const size_t MAX_SPILLERE = 50;
+	constexpr static size_t LENGTH_DATE = 9;
 
-	array<char, DATE_LENGTH> dato;
+	array<char, LENGTH_DATE> dato;
 	bool overtid;
-	array<size_t, MAX_SPILLERE> hjemmeScorere;
-	array<size_t, MAX_SPILLERE> borteScorere;
-private:
+	array<size_t, Lag::MAX_SPILLERE> hjemmeScorere;
+	array<size_t, Lag::MAX_SPILLERE> borteScorere;
+public:
 	/*
 
 	size_t hjemmeMål, borteMål;
 	*/
 };
 
+
+
 class Divisjon
 {
-	const size_t MAX_LAG = 30;
+	constexpr static size_t MAX_LAG = 30;
 
 	string navn;
 	array<Lag, MAX_LAG> lag;
