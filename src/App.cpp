@@ -13,11 +13,11 @@ void printSpillereAll(const DB::Context& ctx)
 {
     IO::printline("printSpillereAll()");
 }
-void printSpillereByName(const DB::Context& ctx) 
+void printSpillereByName(const DB::Context& ctx, const std::string name) 
 {
     IO::printline("printSpillereByName()");
 }
-void printSpillereByNumber(const DB::Context& ctx) 
+void printSpillereByNumber(const DB::Context& ctx, const std::size_t number) 
 {
     IO::printline("printSpillereByNumber()");
 }
@@ -26,7 +26,8 @@ void printIdretterAll(const DB::Context& ctx)
 {
     IO::printline("printIdretterAll()");
 }
-void printIdretterByName(const DB::Context& ctx) 
+
+void printIdretterByName(const DB::Context& ctx, const std::string name) 
 {
     IO::printline("printIdretterByName()");
 }

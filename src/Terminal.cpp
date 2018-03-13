@@ -43,9 +43,9 @@ const Command::Map commandMap
         CMD_NY, Command{
             string(1,CMD_NY),
             "Ny Spiller, Idrett eller Divisjon/avdeling", 
-            "Ny Spiller",
+            "Lag ny",
             {
-                { CMD_NY_SPILLER, Command{ string(1,CMD_NY_SPILLER), "Ny Spiller"} },
+                { CMD_NY_SPILLER, Command{ string(1,CMD_NY_SPILLER), "Ny Spiller" } },
                 { CMD_NY_IDRETT, Command{  string(1,CMD_NY_IDRETT), "Ny Idrett"} },
                 { CMD_NY_DIVISJON, Command{string(1,CMD_NY_DIVISJON), "Ny Divisjon/avdeling"} },
                 commandBackPair,
