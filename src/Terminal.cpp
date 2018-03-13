@@ -138,7 +138,7 @@ const Command::Map commandMap
 // Main menu
 for(;;) 
 {   
-    IO::printMenu(commandMap, "HOME");
+    IO::printMenu(commandMap);
     auto [cmdID, _] = IO::readCommand(commandMap);
 
     switch(cmdID) 
