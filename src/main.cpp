@@ -3,8 +3,7 @@
 
 #include <frode/ListTool2b.h>
 #include <gruppe32/DB.hpp>
-#include <gruppe32/IO.hpp>
-#include <gruppe32/App.hpp>
+#include <gruppe32/Terminal.hpp>
 
 int main(int argc, char* argv[]) 
 {
@@ -14,6 +13,6 @@ int main(int argc, char* argv[])
         DB::Idrettene{},
         DB::Spillerne{}
     };
-    App::run(ctx);
+    Terminal::run(ctx);
     return 0;
 }

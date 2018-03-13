@@ -6,21 +6,24 @@
 #include <map>
 #include <string>
 #include <cctype>
-#include <gruppe32/App.hpp>
+#include <gruppe32/Terminal.hpp>
 
 
 // Forward declaration
-namespace gruppe32::App {
+namespace gruppe32::Terminal {
     enum CommandID : char;
     struct Command;
 }
 
 namespace gruppe32::IO  
 {
-using CommandMap = std::map<App::CommandID, App::Command>;
+
+using CommandMap = std::map<Terminal::CommandID, Terminal::Command>;
+using CommandPair = std::pair<Terminal::CommandID, Terminal::Command>;
+
 
 void printMenu(const CommandMap& commands, const std::string& title);
-auto readCommand(const CommandMap& validCommands) -> std::pair<App::CommandID, App::Command>;
+auto readCommand(const CommandMap& validCommands) -> CommandPair;
 
 void printline();
 

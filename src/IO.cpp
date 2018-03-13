@@ -29,7 +29,7 @@ void printMenu(const CommandMap& commands, const std::string& title)
     printline("*********************************************************");
 }
 
-auto readCommand(const CommandMap& validCommands)  -> std::pair<App::CommandID, App::Command> {
+auto readCommand(const CommandMap& validCommands)  -> CommandPair {
     std::string commandstring{};
     for(;;) 
     {
