@@ -11,58 +11,47 @@
 namespace gruppe32::App 
 {
 
-
-enum CommandID : char 
-{
-    CMD_SPILLER          = 'S',
-        CMD_SPILLER_ALLE = 'A',
-        CMD_SPILLER_NR   = 'R',
-        CMD_SPILLER_NAVN = 'N',
-
-    CMD_IDRETT          = 'I',
-        CMD_IDRETT_ALLE = 'A',
-        CMD_IDRETT_NAVN = 'N',
-
-    CMD_NY              = 'N',
-        CMD_NY_SPILLER  = 'S',
-        CMD_NY_IDRETT   = 'I',
-        CMD_NY_DIVISJON = 'D',
-
-    CMD_FJERN              = 'F',
-        CMD_FJERN_SPILLER  = 'S',
-        CMD_FJERN_IDRETT   = 'I',
-        CMD_FJERN_DIVISJON = 'D',
-
-    CMD_TERMIN   = 'L',
-    CMD_KAMP     = 'K',
-    CMD_TABELL   = 'T',
-    CMD_RESULTAT = 'R',
-    CMD_LAG      = 'D',
-    CMD_ENDRE    = 'E',
-    CMD_SCORERE  = 'C',
-    CMD_BACK     = 'B',
-    CMD_QUIT     = 'Q'
- };
-
-struct Command {
-    using Map = std::map<CommandID, Command>;
-
-    std::string symbol = "<no symbol>";
-    std::string help   = "<no help>";
-    std::string title  = "<no title>";
-    std::map<CommandID, Command> subcmd{};
-};
-
 /**
  * short description. - Doxygen example
  * detailed description.
  * @param int - blah
  * @return int - blah
  */
-void skrivAlleSpillere(DB::Context ctx);
-void skrivSpiller(DB::Context ctx, const size_t number);
-void skrivSpiller(DB::Context ctx, const char * name);
-void run(DB::Context& ctx);
+void printSpillereAll(const DB::Context& ctx);
+void printSpillereByName(const DB::Context& ctx);
+void printSpillereByNumber(const DB::Context& ctx);
+
+void printIdretterAll(const DB::Context& ctx);
+void printIdretterByName(const DB::Context& ctx);
+
+void createSpiller(DB::Context& ctx);
+void createIdrett(DB::Context& ctx);
+void createDivisjon(DB::Context& ctx);
+
+void deleteSpiller(DB::Context& ctx);
+void deleteIdrett(DB::Context& ctx);
+void deleteDivisjon(DB::Context& ctx);
 
 
-} // end namespace
+// print to terminal
+void printTermin(const DB::Context& ctx);
+void printResultatKampDivisjon(const DB::Context& ctx);
+void printResultatKampIdrett(const DB::Context& ctx);
+void printTabellDivisjon(const DB::Context& ctx);
+void printTabellIdrett(const DB::Context& ctx);
+
+// or print to file
+void writeTermin(const DB::Context& ctx);
+void writeResultatKampDivisjon(const DB::Context& ctx);
+void writeResultatKampIdrett(const DB::Context& ctx);
+void writeTabellDivisjon(const DB::Context& ctx);
+void writeTabellIdrett(const DB::Context& ctx);
+
+void readResultatliste(DB::Context& ctx);
+
+void printLagSpillerdata(const DB::Context& ctx);
+void insertLagSpiller(DB::Context& ctx);
+void removeLagSpiller(DB::Context& ctx);
+
+
+} // end namespace gruppe32::App
