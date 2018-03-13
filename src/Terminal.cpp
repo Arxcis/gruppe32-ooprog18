@@ -7,6 +7,9 @@ void run(DB::Context& ctx)
 {
     using string = std::string;
 
+    const Command::Pair commandBackPair = { CMD_BACK, Command{ string(1,CMD_BACK), "Back to last menu" }};     
+    const Command::Pair commandQuitPair = { CMD_QUIT, Command{ string(1,CMD_QUIT), "Quit the application"}};   
+    
 const Command::Map commandMap
 {
     {
@@ -18,8 +21,8 @@ const Command::Map commandMap
                 { CMD_SPILLER_ALLE, Command{ string(1, CMD_SPILLER_ALLE), "Skriv Alle Spillerne"} },
                 { CMD_SPILLER_NR,   Command{ "<navn>", "Skriv spiller med <navn>"}                },
                 { CMD_SPILLER_NAVN, Command{ "<nr>",   "Skriv spiller med <nr>"}                  },
-                { CMD_BACK,         Command{ string(1,CMD_BACK), "Back to last menu" }            },     
-                { CMD_QUIT,         Command{ string(1,CMD_QUIT), "Quit the application" }         }   
+                commandBackPair,
+                commandQuitPair
             },
         }
     },
@@ -31,8 +34,8 @@ const Command::Map commandMap
             {
                 { CMD_IDRETT_ALLE, Command{  string(1,CMD_IDRETT_ALLE), "Skriv Alle Idrettene"} },
                 { CMD_IDRETT_NAVN, Command{  "<navn>",                  "Skriv Idrett med <navn>"} },
-                { CMD_BACK,         Command{ string(1,CMD_BACK),        "Back to last menu" }},     
-                { CMD_QUIT,         Command{ string(1,CMD_QUIT),        "Quit the application" }}   
+                commandBackPair,
+                commandQuitPair
             },
         }
     },
@@ -45,8 +48,8 @@ const Command::Map commandMap
                 { CMD_NY_SPILLER, Command{ string(1,CMD_NY_SPILLER), "Ny Spiller"} },
                 { CMD_NY_IDRETT, Command{  string(1,CMD_NY_IDRETT), "Ny Idrett"} },
                 { CMD_NY_DIVISJON, Command{string(1,CMD_NY_DIVISJON), "Ny Divisjon/avdeling"} },
-                { CMD_BACK,         Command{ string(1,CMD_BACK), "Back to last menu" }},     
-                { CMD_QUIT,         Command{ string(1,CMD_QUIT), "Quit the application" }}   
+                commandBackPair,
+                commandQuitPair
             },
         }
     },
@@ -59,8 +62,8 @@ const Command::Map commandMap
                 { CMD_FJERN_SPILLER, Command{ string(1,CMD_FJERN_SPILLER), "Fjern Spiller"} },
                 { CMD_FJERN_IDRETT,  Command{ string(1,CMD_FJERN_IDRETT), "Fjern Idrett"} },
                 { CMD_FJERN_DIVISJON,Command{ string(1,CMD_FJERN_DIVISJON), "Fjern Divisjon/avdeling"} },
-                { CMD_BACK,         Command{ string(1,CMD_BACK), "Back to last menu" }},     
-                { CMD_QUIT,         Command{ string(1,CMD_QUIT), "Quit the application" }}   
+                commandBackPair,
+                commandQuitPair
             },
         }
     },
@@ -76,8 +79,8 @@ const Command::Map commandMap
                 {CMD_KAMP_IDRETT_FIL,       Command{ string(1, CMD_KAMP_IDRETT_FIL), "Skriv alle kamper for en IDRETT til fil"}},
                 {CMD_KAMP_DIVISJON,     Command{ string(1, CMD_KAMP_DIVISJON), "Skriv alle kamper for en DIVISJON"}},
                 {CMD_KAMP_DIVISJON_FIL, Command{ string(1, CMD_KAMP_DIVISJON_FIL), "Skriv alle kamper for en DIVISJON til fil"}},
-                { CMD_BACK,         Command{ string(1,CMD_BACK), "Back to last menu" }},     
-                { CMD_QUIT,         Command{ string(1,CMD_QUIT), "Quit the application" }}   
+                commandBackPair,
+                commandQuitPair
             },
         }
     },     
@@ -91,8 +94,8 @@ const Command::Map commandMap
                 {CMD_TABELL_IDRETT_FIL,   Command{ string(1, CMD_TABELL_IDRETT_FIL), "Skriv alle tabell(er) for en IDRETT til fil"}},
                 {CMD_TABELL_DIVISJON,     Command{ string(1, CMD_TABELL_DIVISJON), "Skriv alle tabell(er) for en DIVISJON"}},
                 {CMD_TABELL_DIVISJON_FIL, Command{ string(1, CMD_TABELL_DIVISJON_FIL), "Skriv alle tabell(er) for en DIVISJON til fil"}},
-                { CMD_BACK,         Command{ string(1,CMD_BACK), "Back to last menu" }},     
-                { CMD_QUIT,         Command{ string(1,CMD_QUIT), "Quit the application" }}   
+                commandBackPair,
+                commandQuitPair
             },
         }
     },   
@@ -104,9 +107,8 @@ const Command::Map commandMap
             "Endre/redigere (spillerne på et lag)", 
             "Endre spiller på lag",
             {
-                { CMD_BACK,         Command{ string(1,CMD_BACK), "Back to last menu" }},     
-                { CMD_QUIT,         Command{ string(1,CMD_QUIT), "Quit the application" }}   
-
+                commandBackPair,
+                commandQuitPair
             },
         }
     },    
@@ -116,13 +118,12 @@ const Command::Map commandMap
             "Skriv 10-på-topp liste av toppsCorerne for en gitt divisjon/avdeling eller et gitt lag til skjerm eller fil", 
             "Toppscorere",
             {
-                { CMD_BACK,         Command{ string(1,CMD_BACK), "Back to last menu" }},     
-                { CMD_QUIT,         Command{ string(1,CMD_QUIT), "Quit the application" }}   
-
+                commandBackPair,
+                commandQuitPair
             },
         }
     },  
-    {   CMD_QUIT,         Command{ string(1,CMD_QUIT), "Quit the application" }}   
+    commandQuitPair
 };
 
 
