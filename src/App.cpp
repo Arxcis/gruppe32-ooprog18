@@ -131,6 +131,15 @@ void printToppscorerTopp10Lag(const DB::Context& ctx)
 }
 
 
+void writeToppscorerTopp10Divisjon(const DB::Context& ctx)
+{
+    IO::printline("writeToppscorerTopp10Divisjon()");
+}
+void writeToppscorerTopp10Lag(const DB::Context& ctx)
+{
+    IO::printline("writeToppscorerTopp10Lag()");
+}
+
 
 
 } // end namespace gruppe32::App

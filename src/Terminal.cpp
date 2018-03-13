@@ -377,7 +377,7 @@ for(;;)
             break;
 
             case CMD_TOPPSCORE_DIVISJON_FIL:
-                App::printToppscorerTopp10Divisjon(ctx);
+                App::writeToppscorerTopp10Divisjon(ctx);
             break;
 
             case CMD_TOPPSCORE_LAG:
@@ -385,7 +385,7 @@ for(;;)
             break;
 
             case CMD_TOPPSCORE_LAG_FIL:
-                App::printToppscorerTopp10Lag(ctx);
+                App::writeToppscorerTopp10Lag(ctx);
             break;
 
 

@@ -57,6 +57,9 @@ void removeLagSpiller(DB::Context& ctx);
 void printToppscorerTopp10Divisjon(const DB::Context& ctx);
 void printToppscorerTopp10Lag(const DB::Context& ctx);
 
+void writeToppscorerTopp10Divisjon(const DB::Context& ctx);
+void writeToppscorerTopp10Lag(const DB::Context& ctx);
+
 
 
 } // end namespace gruppe32::App
