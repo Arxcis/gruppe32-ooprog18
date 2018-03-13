@@ -13,6 +13,7 @@ int main(int argc, char* argv[])
         DB::Idrettene{},
         DB::Spillerne{}
     };
+    
     Terminal::run(ctx);
     return 0;
 }
