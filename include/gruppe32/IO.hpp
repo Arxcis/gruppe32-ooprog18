@@ -6,7 +6,9 @@
 #include <map>
 #include <string>
 #include <cctype>
+
 #include <gruppe32/Terminal.hpp>
+#include <gruppe32/Valid.hpp>
 
 // Forward declaration
 namespace gruppe32::Terminal {
