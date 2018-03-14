@@ -1,41 +1,44 @@
 idrettCount: 2                   # Antall idretter
 idrettene:                       # Samling av idretter
-  - fotball:                     # idrettens navn
-    tabelltype: 0                # 0,1,2 enum
-    divisjonCount: 2             # Antall divisjoner
-    divisjonene:                 # samling av idrett>divisjon
+
+- name: 'fotball'                # idrettens navn
+  tabelltype: 0                # 0,1,2 enum
+  divisjonCount: 2             # Antall divisjoner
+  divisjonene:                 # samling av idrett>divisjon
       
-      - eliteserien:             # divisjonens navn
-        lagCount: 2              # antall lag
-        lag:                     # samling av idrett>divisjon>lag
+  - name: 'eliteserien'        # divisjonens navn
+    lagCount: 2              # antall lag
+    lag:                     # samling av idrett>divisjon>lag
           
-          - brann:                  # lagets navn
-            address: Bergen, Norway # lagets adresse
-            spillereneID:           # samling av spillerID-er
-              - 0                   # Ronny Knarvik ID
-              - 1                   # Huseklepp sin ID
+    - name: 'Brann'             # lagets navn
+      address: 'Bergen, Norway' # lagets adresse
+      spillereneID:           # samling av spillerID-er
+        - 0                   # Ronny Knarvik ID
+        - 1                   # Huseklepp sin ID
+      terminListe:
+        - '2012-03-01'
+        - '2012-07-02',"Rose"
 
-          - rosenborg:                   # lagets navn
-            address: Trondheim, Norway   # lagets adresse
-            spillereneID:                # samling av spillerID-er
-              - 2                        # Arild Østbø  sin ID
-              - 3                        # Andre Hansen sin ID
+    - navn: 'Rosenborg'              # lagets navn
+      address: 'Trondheim, Norway'   # lagets adresse
+      spillereneID:                # samling av spillerID-er
+        - 2                        # Arild Østbø  sin ID
+        - 3                        # Andre Hansen sin ID
       
-      - premierleague:            
-        lagCount: 2
-        lag:
-          - Manchester United:
-            address: Machester, United Kingdom
-            spillereneID:
-              - 4                # Alexis Sanchez sin ID
-              - 5                # Paul Pogba sin ID
+  - name: 'premierleague'
+    lagCount: 2
+    lag:
+    - name: 'Manchester United'
+      address: 'Machester, United Kingdom'
+      spillereneID:
+        - 4                # Alexis Sanchez sin ID
+        - 5                # Paul Pogba sin ID
 
-          - Tottenham Hotspur:
-            address: London, United Kingdom
-            spillereneID:
-              - 6                # Harry Kane sin ID
-              - 7                # Son Heung-min sin ID
+    - name: 'Tottenham Hotspur'
+      address: 'London, United Kingdom'
+      spillereneID:
+        - 6                # Harry Kane sin ID
+        - 7                # Son Heung-min sin ID
 
-  - Håndball:
+- name: 'Håndball'
     # osv. osv
-
