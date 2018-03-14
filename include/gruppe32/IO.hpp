@@ -3,9 +3,11 @@
 #include <iostream>
 #include <iomanip>
 #include <utility>
+#include <tuple>
 #include <map>
 #include <string>
 #include <cctype>
+#include <sstream>
 
 #include <gruppe32/Terminal.hpp>
 #include <gruppe32/Valid.hpp>
@@ -27,6 +29,11 @@ using CommandMap = std::map<Terminal::CommandID, Terminal::Command>;
 
 /// <summary>   The command pair. </summary>
 using CommandPair = std::pair<Terminal::CommandID, Terminal::Command>;
+
+using CommandPairWithData = std::tuple<Terminal::CommandID,
+                                       Terminal::Command,
+                                       std::size_t,         
+                                       std::string>;
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 /// <summary> Print a sub menu, with the navigation stack in the title. </summary>
@@ -67,7 +74,7 @@ auto readCommand(const CommandMap& validCommands) -> CommandPair;
 /// <param name="validCommands">    The valid commands. </param>
 /// <returns>   Either the command, number or name. </returns>
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-auto readEitherCommandNumberName (const CommandMap& validCommands) -> CommandPair;
+auto readEitherCommandNumberName (const CommandMap& validCommands) -> CommandPairWithData;
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 /// <summary>   Read either a command or a name, 
@@ -75,7 +82,7 @@ auto readEitherCommandNumberName (const CommandMap& validCommands) -> CommandPai
 /// <param name="validCommands">    The valid commands. </param>
 /// <returns>   Either the command or the name. </returns>
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-auto readEitherCommandName(const CommandMap& validCommands) -> CommandPair;
+auto readEitherCommandName(const CommandMap& validCommands) -> CommandPairWithData;
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 /// <summary>   Prints a newline </summary>
@@ -88,7 +95,10 @@ void printline();
 /// <param name="arg">  The content of the line to be printed. </param>
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 template<class Arg>
-constexpr void printline(Arg arg);
+constexpr void printline(Arg arg)
+{
+    std::cout << arg << '\n';
+}
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 /// <summary>   Print a line with all the given arguments. </summary>
@@ -98,6 +108,10 @@ constexpr void printline(Arg arg);
 /// <param name="args"> The tail of arguments which is passed on recursively. </param>
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 template<class Arg, class ...Args>
-constexpr void printline(Arg arg, Args ... args);
+constexpr void printline(Arg arg, Args ... args)
+{
+    std::cout << arg << ' ';
+    printline(std::forward<Args>(args)...);
+}
 
 } // end namespace
