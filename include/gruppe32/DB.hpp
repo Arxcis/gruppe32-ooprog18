@@ -5,6 +5,8 @@
 #include <array>
 #include <frode/ListTool2b.h>
 
+
+/// <summary> DB database </summary>
 namespace gruppe32::DB  
 {
 //Using directives:

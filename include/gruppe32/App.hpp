@@ -8,6 +8,8 @@
 #include <gruppe32/DB.hpp>
 #include <gruppe32/IO.hpp>
 
+
+/// <summary> APP Application </summary>
 namespace gruppe32::App 
 {
 
