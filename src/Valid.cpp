@@ -2,29 +2,39 @@
 
 namespace gruppe32::Valid
 {
-	bool isAsciiChar(const std::string& value)
-	{
-		return std::regex_match(value, Valid::regexAsciiChar);
-	}
+    using std::string;
+    using std::regex;
+    using std::regex_match;
 
-	bool isPostnummer(const std::string& value)
-	{
-		return true;
-	}
+    bool isAsciiChar(const string& value)
+    {
+        const static regex compiledRegex(Valid::regexAsciiChar);
+        return regex_match(value, compiledRegex);
+    }
 
-	bool isUint(const std::string& value)
-	{
-		return true;
-	}
+    bool isPostnummer(const string& value)
+    {
+        
+        const static regex compiledRegex(Valid::regexPostnummer);
+        return regex_match(value, compiledRegex);
+    }
 
-	bool isName(const std::string& value)
-	{
-		return true;
-	}
+    bool isUint(const string& value)
+    {
+        const static regex compiledRegex(Valid::regexUint);
+        return regex_match(value, compiledRegex);
+    }
 
-	bool isDate(const std::string& value)
-	{
-		return true;
-	}
+    bool isName(const string& value)
+    {
+        const static regex compiledRegex(Valid::regexName);
+        return regex_match(value, compiledRegex);
+    }
+
+    bool isDate(const string& value)
+    {
+        const static regex compiledRegex(Valid::regexDate);
+        return regex_match(value, compiledRegex);
+    }
 
 } // end namespace
