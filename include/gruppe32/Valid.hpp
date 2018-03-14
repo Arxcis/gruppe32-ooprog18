@@ -5,7 +5,9 @@
 #include <regex>
 
 #include <gruppe32/DB.hpp>
+#include <gruppe32/IO.hpp>
 
+/// <summary> Validates strings </summary>
 namespace gruppe32::Valid 
 {
     /// <summary> std::regex - validating single letter A-Z, a-z </summary>
