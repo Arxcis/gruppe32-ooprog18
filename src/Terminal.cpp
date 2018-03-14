@@ -149,13 +149,31 @@ for(;;)
         {
             auto command = commandMap.at(CMD_SPILLER);
             IO::printSubMenu(command.subcmd, command.title);
-            auto [subcmdID, _] = IO::readCommand(command.subcmd);
+            auto [subcmdID, _, nr, name] = IO::readEitherCommandNumberName(command.subcmd);
 
-            App::printSpillereAll(ctx);
+            switch (subcmdID)
+            {
+            case CMD_SPILLER_ALLE:
+                App::printSpillereAll(ctx);
+                break;
 
-            if(subcmdID == CMD_BACK || subcmdID == CMD_QUIT) {
+            case CMD_SPILLER_NAVN:
+                App::printSpillereByName(ctx, name);
+                break;
+
+            case CMD_SPILLER_NR:
+                App::printSpillereByNumber(ctx, nr);
+                break;
+
+            case CMD_BACK:
+            case CMD_QUIT:
                 return subcmdID;
+                break;
+
+            default:
+                assert(false && "Command Should never happen!!");
             }
+
         }
     }();
     break;
@@ -166,12 +184,25 @@ for(;;)
         {   
             auto command = commandMap.at(CMD_IDRETT);
             IO::printSubMenu(command.subcmd, command.title);
-            auto [subcmdID, _] = IO::readCommand(command.subcmd);
-            
-            App::printIdretterAll(ctx);
+            auto[subcmdID, _cmd, _nr, name] = IO::readEitherCommandName(command.subcmd);
 
-            if(subcmdID == CMD_BACK || subcmdID == CMD_QUIT) {
+            switch (subcmdID)
+            {
+            case CMD_IDRETT_ALLE:
+                App::printIdretterAll(ctx);
+                break;
+
+            case CMD_IDRETT_NAVN:
+                App::printIdretterByName(ctx, name);
+                break;
+
+            case CMD_BACK:
+            case CMD_QUIT:
                 return subcmdID;
+                break;
+
+            default:
+                assert(false && "Command Should never happen!!");
             }
         }
     }();

@@ -8,22 +8,6 @@ void printline()
     std::cout << '\n';    
 }
 
-
-template<class Arg>
-constexpr void printline(Arg arg)
-{  
-    std::cout << arg << '\n';    
-}
-
-
-template<class Arg, class ...Args>
-constexpr void printline(Arg arg, Args ... args)
-{ 
-    std::cout << arg << ' ';
-    printline(std::forward<Args>(args)...);  
-}
-
-
 void printSubMenu(const CommandMap & commands, const std::string & title, const std::string & parentTitle)
 {
     printMenu(commands, parentTitle + " -> " + title);
@@ -75,30 +59,98 @@ auto readCommand(const CommandMap& validCommands)  -> CommandPair {
 }
 
 
-auto readEitherCommandNumberName(const CommandMap & validCommands) -> CommandPair
+auto readEitherCommandNumberName(const CommandMap & validCommands) -> CommandPairWithData
 {
     std::string commandString{};
     for (;;)
     {
         std::getline(std::cin, commandString);
         
+        //TODO put into the ifs
+        bool userWroteAscii = Valid::isAsciiChar(commandString);
+        bool userWroteName = Valid::isName(commandString);
+        bool userWroteNumber = Valid::isUint(commandString);
 
-        for (const auto& command : validCommands) {
-                
-            if (std::tolower(command.first) == (commandString[0])) {
-                return command;
+
+        if (userWroteAscii)
+        {
+            Terminal::CommandID writtenCommand = (Terminal::CommandID)std::toupper(commandString[0]);
+            if (auto pair = validCommands.find(writtenCommand); pair != validCommands.end())
+            {
+                return {
+                    pair->first, //commandID
+                    pair->second, //command
+                    0,
+                    "NONE | NULL | nullptr | nil | \"\""
+                };
             }
+            printline("Unknown Asciichar-command!");
+            continue;
         }
-        printline("Command not valid");
+        else if (userWroteNumber)
+        {
+            auto cmd = validCommands.at(Terminal::CMD_SPILLER_NR);
+            std::stringstream strStream;
+            strStream << commandString;
+            std::size_t number;
+            strStream >> number;
+            return{
+                Terminal::CMD_SPILLER_NR,
+                cmd,
+                number,
+                "NONE | NULL | nullptr | nil | \"\""
+            };
+        }
+        else if (userWroteName)
+        {
+            auto cmd = validCommands.at(Terminal::CMD_SPILLER_NAVN);
+            return {
+                Terminal::CMD_SPILLER_NAVN,
+                cmd,
+                0,
+                commandString
+            };
+        }
+        printline("Unknown Command!!!");
     }
-    return CommandPair();
+    return CommandPairWithData();
 }
 
-
-auto readEitherCommandName(const CommandMap & validCommands) -> CommandPair
+auto readEitherCommandName(const CommandMap & validCommands) -> CommandPairWithData
 {
+    std::string commandString{};
+    for (;;)
+    {
+        std::getline(std::cin, commandString);
 
-    return CommandPair();
+        if (Valid::isAsciiChar(commandString))
+        {
+            Terminal::CommandID writtenCommand = (Terminal::CommandID)std::toupper(commandString[0]);
+            if (auto pair = validCommands.find(writtenCommand); pair != validCommands.end())
+            {
+                return {
+                    pair->first, //commandID
+                    pair->second, //command
+                    0,
+                    "NONE | NULL | nullptr | nil | \"\""
+                };
+            }
+            printline("Unknown Asciichar-command!");
+            continue;
+        }
+        else if (Valid::isName(commandString))
+        {
+            auto cmd = validCommands.at(Terminal::CMD_IDRETT_NAVN);
+            return {
+                Terminal::CMD_IDRETT_NAVN,
+                cmd,
+                0,
+                commandString
+            };
+        }
+        printline("Unknown Command!!!");
+    }
+    return CommandPairWithData();
 }
 
 } // end namespace
