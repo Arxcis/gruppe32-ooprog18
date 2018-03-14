@@ -2,9 +2,9 @@
 
 namespace gruppe32::IO  
 {
-using namespace gruppe32;
+using gruppe32::valid;
 
-void printline() 
+void printline()
 {  
     std::cout << '\n';    
 }
@@ -34,26 +34,52 @@ void printMenu(const CommandMap & commands, const std::string & title)
 }
 
 auto readCommand(const CommandMap& validCommands)  -> CommandPair {
-    std::string commandstring{};
+    std::string commandString{};
     for(;;) 
     {
-        std::getline(std::cin, commandstring);
-        if (commandstring.size() > 1) {
-            printline("Commandstring string too long");
+        std::getline(std::cin, commandString);
+        if (commandString.size() > 1) {
+            printline("commandString string too long");
             continue;
         }
 
-        if (commandstring.size() < 1) {
+        if (commandString.size() < 1) {
             printline("Please type something");
             continue;
         }
 
         for(const auto& command : validCommands) {
-            if (std::tolower(command.first) == (commandstring[0])) {
+            if (std::tolower(command.first) == (commandString[0])) {
                 return command;
             }
         }
         printline("Command not valid");
     }
 }
+auto readEitherCommandNumberName(const CommandMap & validCommands) -> CommandPair
+{
+	std::string commandString{};
+	for (;;)
+	{
+		std::getline(std::cin, commandString);
+		
+
+		for (const auto& command : validCommands) {
+			
+			if (std::tolower(command.first) == (commandString[0])) {
+				return command;
+			}
+		}
+		printline("Command not valid");
+	}
+	return CommandPair();
+}
+
+
+auto readEitherCommandName(const CommandMap & validCommands) -> CommandPair
+{
+
+	return CommandPair();
+}
+
 }

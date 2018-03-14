@@ -85,7 +85,7 @@ void printline();
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 /// <summary>	Print a line with the s given argument. </summary>
 /// <typeparam name="Arg">	Type of the argument. </typeparam>
-/// <param name="arg">	The argument. </param>
+/// <param name="arg">	The content of the line to be printed. </param>
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 template<class Arg>
 constexpr void printline(Arg arg) {  
