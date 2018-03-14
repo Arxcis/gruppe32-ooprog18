@@ -40,16 +40,25 @@ namespace gruppe32::Valid
     /// <summary> string - validating a day 'dd' in the range [01-31] </summary>
     constexpr char regexDay[] = R"(^0[1-9]$|^[12][0-9]$|^3[01]$)";
 
-    // <summary> string - validating a norwegian address. @robustness very-relaxed </summary>
+    /// <summary> string - validating a norwegian address. robustness is very-relaxed </summary>
     constexpr char regexAddress[]  = R"(^[A-Za-z0-9\ \. \-ÆØÅæøå]+$)";
 
     using std::string;
+
+    /// <summary> isAsciiChar() </summary>
     bool isAsciiChar(const string& value);
+    /// <summary> isPostnummer() </summary>
     bool isPostnummer(const string& value);
+    /// <summary> isUint() </summary>
     bool isUint(const string& value);
+    /// <summary> isName() </summary>
     bool isName(const string& value);
+    /// <summary> isYear() </summary>
     bool isYear(const string& value);
+    /// <summary> isMonth() </summary>
     bool isMonth(const string& value);
+    /// <summary> isDay() </summary>
     bool isDay(const string& value);
+    /// <summary> isAddress() </summary>
     bool isAddress(const string& value);
 }
