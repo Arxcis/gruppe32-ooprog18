@@ -1,0 +1,26 @@
+divisjon:
+navn: 'Eliteserien'      
+
+lageneCount: 2              
+lagene:                               
+
+- navn: 'Brann'          
+  adresse: 'Bergen, Norway'
+  spillereneCount: 2
+  spillereneID: [0,1]  # 0=Ronny Knarvik, 1=Erik Huseklepp
+
+- navn: 'Rosenborg'      
+  adresse: 'Trondheim, Norway' 
+  spillereneCount: 2
+  spillereneID: [2,3]  # 2=Arild Østbø,3=Andre Hansen
+
+terminlisteCount: 2
+terminliste:
+
+- dato: 2012-03-19
+  hjemmelag: 'Brann'
+  bortelag: 'Rosenborg'
+
+- dato: 2013-03-19
+  hjemmelag: 'Rosenborg'
+  bortelag: 'Brann'
