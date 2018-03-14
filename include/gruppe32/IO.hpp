@@ -88,9 +88,7 @@ void printline();
 /// <param name="arg">	The content of the line to be printed. </param>
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 template<class Arg>
-constexpr void printline(Arg arg) {  
-    std::cout << arg << '\n';    
-}
+constexpr void printline(Arg arg);
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 /// <summary>	Print a line with all the given arguments. </summary>
@@ -100,9 +98,6 @@ constexpr void printline(Arg arg) {
 /// <param name="args">	The tail of arguments which is passed on recursively. </param>
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 template<class Arg, class ...Args>
-constexpr void printline(Arg arg, Args ... args) { 
-    std::cout << arg << ' ';
-    printline(std::forward<Args>(args)...);  
-}
+constexpr void printline(Arg arg, Args ... args);
 
 } // end namespace

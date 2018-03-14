@@ -2,7 +2,6 @@
 
 namespace gruppe32::IO  
 {
-using gruppe32::valid;
 
 void printline()
 {  
@@ -10,10 +9,25 @@ void printline()
 }
 
 
+template<class Arg>
+constexpr void printline(Arg arg) {  
+    std::cout << arg << '\n';    
+}
+
+
+template<class Arg, class ...Args>
+constexpr void printline(Arg arg, Args ... args) { 
+    std::cout << arg << ' ';
+    printline(std::forward<Args>(args)...);  
+}
+
+
 void printSubMenu(const CommandMap & commands, const std::string & title, const std::string & parentTitle)
 {
 	printMenu(commands, parentTitle + " -> " + title);
 }
+
+
 void printMenu(const CommandMap & commands, const std::string & title)
 {
 	const std::size_t columnSymbolWidth = 6;
@@ -32,6 +46,7 @@ void printMenu(const CommandMap & commands, const std::string & title)
 	}
 	printline("*********************************************************");
 }
+
 
 auto readCommand(const CommandMap& validCommands)  -> CommandPair {
     std::string commandString{};
@@ -56,6 +71,8 @@ auto readCommand(const CommandMap& validCommands)  -> CommandPair {
         printline("Command not valid");
     }
 }
+
+
 auto readEitherCommandNumberName(const CommandMap & validCommands) -> CommandPair
 {
 	std::string commandString{};
@@ -65,7 +82,7 @@ auto readEitherCommandNumberName(const CommandMap & validCommands) -> CommandPai
 		
 
 		for (const auto& command : validCommands) {
-			
+    			
 			if (std::tolower(command.first) == (commandString[0])) {
 				return command;
 			}
@@ -82,4 +99,4 @@ auto readEitherCommandName(const CommandMap & validCommands) -> CommandPair
 	return CommandPair();
 }
 
-}
+} // end namespace
