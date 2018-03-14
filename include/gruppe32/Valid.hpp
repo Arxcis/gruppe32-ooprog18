@@ -7,7 +7,7 @@
 #include <gruppe32/DB.hpp>
 #include <gruppe32/IO.hpp>
 
-/// <summary> Validates strings </summary>
+/// <summary> String validation module </summary>
 namespace gruppe32::Valid 
 {
     /// <summary> string - validating single letter A-Z, a-z </summary>

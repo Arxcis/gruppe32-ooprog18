@@ -1,6 +1,7 @@
 #pragma once
 
-namespace frode {
+/// <summary> A toolbox for a singly-linked list </summary>
+namespace listtool {
 /* 
 |  FILE        :   ListTool2B.h
 |
@@ -17,23 +18,13 @@ namespace frode {
 |>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 */       
 
-//
-//  ENUM:
-//
 enum ListType  { LIFO, FIFO, Sorted };  //  Allowed list-types.
 
-
-//
-//  CLASS  -  Necessary predeclarations:
-//
 class NumElement;
 class TextElement;
 
 
-//
-// @CLASS
-//  Base class 'Element':
-//
+/// <summary> Base class for alle node->elements </summary>
 class Element {
   private:
     char elementType;                      //  Type of element: 'B'(ase), 
@@ -50,10 +41,7 @@ class Element {
 };                                      //   redefined insided derived classes:
 
 
-//
-// @CLASS
-//  Base class for all numeric sorted elements:
-//
+/// <summary> Makes it possible to store node->elements using an int key </summary>
 class NumElement: public Element  {
   protected:
     int number;                            //  ID-number.
@@ -65,10 +53,7 @@ class NumElement: public Element  {
 };                                         //    with element's.
 
 
-//
-// @CLASS 
-//  Base class for all text/string sorted elements:
-//
+/// <summary> Makes it possible to store node->elements using a string key </summary>
 class TextElement: public Element  {
   private:
     void strcpy2(char* s, const char* t);   //  Selfmade  "strcpy"
@@ -84,9 +69,7 @@ class TextElement: public Element  {
 };                                          //    with element's.
 
 
-//
-// @CLASS 
-//
+/// <summary> Container for list nodes </summary>
 class List  {
   private:
     struct Node  {                          //  Internal @struct 'node'.

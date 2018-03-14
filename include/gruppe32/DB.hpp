@@ -6,7 +6,7 @@
 #include <frode/ListTool2b.h>
 
 
-/// <summary> DB database </summary>
+/// <summary> Database definitions </summary>
 namespace gruppe32::DB  
 {
 //Using directives:
@@ -32,7 +32,7 @@ class Spillerne
 {
     size_t count;
 public:
-    frode::List data{ frode::Sorted };
+    listtool::List data{ listtool::Sorted };
 };
 
 
@@ -98,7 +98,7 @@ class Idrettene
 {
     size_t count;
 public:
-    frode::List data { frode::Sorted };
+    listtool::List data { listtool::Sorted };
 };
 
 struct Context 

@@ -21,7 +21,7 @@
 #include <cstring>                               //  strlen, strcmp
 #include <frode/ListTool2b.h>                          //  Definition of classes.
 
-namespace frode 
+namespace listtool 
 {
 
 using namespace std;

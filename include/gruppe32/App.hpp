@@ -9,7 +9,7 @@
 #include <gruppe32/IO.hpp>
 
 
-/// <summary> APP Application </summary>
+/// <summary> Functions which satifised the functional requirements </summary>
 namespace gruppe32::App 
 {
 

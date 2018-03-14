@@ -10,7 +10,7 @@
 #include <gruppe32/App.hpp>
 
 
-/// <summary> Terminal - running you through the menus and accepting commands. </summary>
+/// <summary> Running you through the menus and accepting commands. </summary>
 namespace gruppe32::Terminal
 {
 

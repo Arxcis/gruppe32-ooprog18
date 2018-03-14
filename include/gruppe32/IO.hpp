@@ -18,7 +18,7 @@ namespace gruppe32::Terminal {
 
 
 
-/// <summary> IO input output </summary>
+/// <summary> Input and Ouput functions </summary>
 namespace gruppe32::IO  
 {
 
