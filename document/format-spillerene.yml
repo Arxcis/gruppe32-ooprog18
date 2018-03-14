@@ -1,0 +1,35 @@
+spillereneCount: 8
+spillerene:
+
+- id: 0 
+  navn: 'Ronny Knarvik'
+  addresse: 'Bergen, Norway'
+
+- id: 1 
+  navn: 'Erik Huseklepp'
+  addresse: 'Bergen, Norway'
+
+- id: 2 
+  navn: 'Arild Østebø'
+  addresse: 'Trondheim, Norway'
+
+- id: 3 
+  navn: 'Andre Hansen'
+  addresse: 'Trondheim, Norway'
+
+- id: 4 
+  navn: 'Alexis Sanchez'
+  addresse: 'Manchester, United Kingdom'
+
+- id: 5 
+  navn: 'Paul Pogba'
+  addresse: 'Manchester, United Kingdom'
+
+- id: 6 
+  navn: 'Harry Kane'
+  addresse: 'London, United Kingdom'
+
+- id: 7
+  navn: 'Son Hueng-min'
+  addresse: 'London, United Kingdom'
+

@@ -1,0 +1,63 @@
+idretteneCount: 2                
+idrettene:                    
+
+- navn: 'Fotball'             
+  tabelltype: 0              # 0,1,2 enum
+  
+  divisjoneneCount: 2             
+  divisjonene:               
+  
+  - navn: 'Eliteserien'      
+
+    lageneCount: 2              
+    lagene:                               
+  
+    - navn: 'Brann'          
+      adresse: 'Bergen, Norway'
+      spillereneCount: 2
+      spillereneID: [0,1]  # 0=Ronny Knarvik, 1=Erik Huseklepp
+
+    - navn: 'Rosenborg'      
+      adresse: 'Trondheim, Norway' 
+      spillereneCount: 2
+      spillereneID: [2,3]  # 2=Arild Østbø,3=Andre Hansen
+
+    terminlisteCount: 2
+    terminliste:
+  
+    - dato: 2012-03-19
+      hjemmelag: 'Brann'
+      bortelag: 'Rosenborg'
+  
+    - dato: 2013-03-19
+      hjemmelag: 'Rosenborg'
+      bortelag: 'Brann'
+
+  - navn: 'premierleague'
+
+    lageneCount: 2
+    lagene:
+  
+    - navn: 'Manchester United'
+      adresse: 'Machester, United Kingdom'
+      spillereneCount: 2
+      spillereneID: [4,5] # 4=Alexis Sanchez, 5=Paul Pogba
+
+    - navn: 'Tottenham Hotspur'
+      adresse: 'London, United Kingdom'
+      spillereneCount: 2
+      spillereneID: [6,7] # 6=Harry Kane,7=Son Heung-min
+
+    terminlisteCount: 2
+    terminliste:
+    
+    - dato: 2012-03-19
+      hjemmelag: 'Manchester United'
+      bortelag: 'Tottenham Hotspur'
+  
+    - dato: 2013-03-19
+      hjemmelag: 'Tottenham Hotspur'
+      bortelag: 'Manchester United'
+
+- navn: 'Håndball'
+    # osv. osv
