@@ -8,54 +8,72 @@
 namespace gruppe32::Test
 {
 
+constexpr auto printFailed = [](const auto n, const auto msg, const auto result, const auto expectedResult)
+{
+    std::cout << "-- test " << n << ": "
+              << msg
+              << " -- !_FAIL_! Result: " << result 
+              << " Expected result: "    << expectedResult 
+              << '\n';
+};
+constexpr auto printSuccess = [](const auto n, const auto msg, const auto result)
+{
+    std::cout << "-- test " << n << ": "
+              << msg 
+              << " -- SUCCESS. Result: " << result 
+              << '\n';
+};
+
 auto validIsAsciiChar()
 {
-	// Should succeed
-	if (!Valid::isAsciiChar("s")) {
-		assert(false && "isAsciiChar() failed!");
-	}
-	if (!Valid::isAsciiChar("A")) {
-		assert(false && "isAsciiChar() failed!");
-	}
-	if (!Valid::isAsciiChar("Z")) {
-		assert(false && "isAsciiChar() failed!");
-	}
-	if (!Valid::isAsciiChar("a")) {
-		assert(false && "isAsciiChar() failed!");
-	}
-	if (!Valid::isAsciiChar("z")) {
-		assert(false && "isAsciiChar() failed!");
-	}
+    struct TestData
+    {
+        std::string input;
+        bool        expectedResult;
+        std::string msg;
+    };
 
+    std::cout << "\nTesting Valid::isAsciiChar()\n";
 
-	// Should fail
-	if (Valid::isAsciiChar("�")) {
-		assert(false && "isAsciiChar() failed!");
-	}
-	if (Valid::isAsciiChar("-")) {
-		assert(false && "isAsciiChar() failed!");
-	}
-	if (Valid::isAsciiChar("ss")) {
-		assert(false && "isAsciiChar() failed!");
-	}
-	if (Valid::isAsciiChar("")) {
-		assert(false && "isAsciiChar() failed!");
-	}
-	if (Valid::isAsciiChar("1")) {
-		assert(false && "isAsciiChar() failed!");
-	}
-	if (Valid::isAsciiChar("0")) {
-		assert(false && "isAsciiChar() failed!");
-	}
+    [](auto testFunc, std::vector<TestData> testData) 
+    {
+        auto count = 0;
+        for(const auto [input, expectedResult, msg] : testData) 
+        {           
+            if (const auto result = testFunc(input); result != expectedResult) {
+                printFailed(count, msg, result? "true":"false", expectedResult? "true":"false");
+            } 
+            else {
+                printSuccess(count, msg, result? "true":"false");
+            }
+            count++;
+        }
+    } (Valid::isAsciiChar, 
+        {
+            {"s", true, R"(isAsciiChar("s"))"},
+            {"A", true, R"(isAsciiChar("A"))"},
+            {"Z", true, R"(isAsciiChar("Z"))"},
+            {"a", true, R"(isAsciiChar("a"))"},
+            {"z", true, R"(isAsciiChar("z"))"},
 
-	return TEST_SUCCESS;
+            {"ø", false, R"(isAsciiChar("ø"))"}, 
+            {" ", false, R"(isAsciiChar(" "))"}, 
+            {"-", false, R"(isAsciiChar("-"))"},
+            {"ss",false, R"(isAsciiChar("ss"))"},
+            {"",  false, R"(isAsciiChar(""))"},
+            {"1", false, R"(isAsciiChar("1"))"},
+            {"0", false, R"(isAsciiChar("0"))"}
+        });
+
+    std::cout << '\n';
+    return TEST_SUCCESS;
 }
 }
 
 int main() 
 {
-	using namespace gruppe32;
+    using namespace gruppe32;
 
-	auto result = Test::validIsAsciiChar();
+    auto result = Test::validIsAsciiChar();
     return result;
 }
