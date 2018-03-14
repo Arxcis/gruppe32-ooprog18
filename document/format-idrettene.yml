@@ -1,44 +1,75 @@
-idrettCount: 2                   # Antall idretter
-idrettene:                       # Samling av idretter
+idretteneCount: 2                
+idrettene:                    
 
-- name: 'fotball'                # idrettens navn
-  tabelltype: 0                # 0,1,2 enum
-  divisjonCount: 2             # Antall divisjoner
-  divisjonene:                 # samling av idrett>divisjon
-      
-  - name: 'eliteserien'        # divisjonens navn
-    lagCount: 2              # antall lag
-    lag:                     # samling av idrett>divisjon>lag
-          
-    - name: 'Brann'             # lagets navn
-      address: 'Bergen, Norway' # lagets adresse
-      spillereneID:           # samling av spillerID-er
-        - 0                   # Ronny Knarvik ID
-        - 1                   # Huseklepp sin ID
-      terminListe:
-        - '2012-03-01'
-        - '2012-07-02',"Rose"
+- navn: 'Fotball'             
+  tabelltype: 0              # 0,1,2 enum
+  
+  divisjoneneCount: 2             
+  divisjonene:               
+  
+  - navn: 'eliteserien'      
 
-    - navn: 'Rosenborg'              # lagets navn
-      address: 'Trondheim, Norway'   # lagets adresse
-      spillereneID:                # samling av spillerID-er
-        - 2                        # Arild Østbø  sin ID
-        - 3                        # Andre Hansen sin ID
+    lageneCount: 2              
+    lagene:                               
+  
+    - navn: 'Brann'          
+      adresse: 'Bergen, Norway'
       
-  - name: 'premierleague'
-    lagCount: 2
-    lag:
-    - name: 'Manchester United'
-      address: 'Machester, United Kingdom'
+      spillereneCount: 2
+      spillereneID:          
+      - 0                         # Ronny Knarvik ID
+      - 1                         # Erik Huseklepp sin ID      
+
+    - navn: 'Rosenborg'      
+      adresse: 'Trondheim, Norway' 
+  
+      spillereneCount: 2
+      spillereneID:                
+      - 2                        # Arild Østbø  sin ID
+      - 3                        # Andre Hansen sin ID
+
+    terminlisteCount: 2
+    terminliste:
+  
+    - dato: 2012-03-19
+      home: 'Brann'
+      bortelag: 'Rosenborg'
+  
+    - dato: 2013-03-19
+      hjemmelag: 'Rosenborg'
+      bortelag: 'Brann'
+
+  - navn: 'premierleague'
+
+    lageneCount: 2
+    lagene:
+  
+    - navn: 'Manchester United'
+      adresse: 'Machester, United Kingdom'
+  
+      spillereneCount: 2
       spillereneID:
         - 4                # Alexis Sanchez sin ID
         - 5                # Paul Pogba sin ID
 
-    - name: 'Tottenham Hotspur'
-      address: 'London, United Kingdom'
+    - navn: 'Tottenham Hotspur'
+      adresse: 'London, United Kingdom'
+  
+      spillereneCount: 2
       spillereneID:
         - 6                # Harry Kane sin ID
         - 7                # Son Heung-min sin ID
 
-- name: 'Håndball'
+    terminlisteCount: 2
+    terminliste:
+    
+    - dato: 2012-03-19
+      home: 'Manchester'
+      bortelag: 'Tottenham'
+  
+    - dato: 2013-03-19
+      hjemmelag: 'Tottenham'
+      bortelag: 'Manchester'
+
+- navn: 'Håndball'
     # osv. osv
