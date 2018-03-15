@@ -1,30 +1,12 @@
-#include <cassert>
+#include <gruppe32/Test.hpp>
 #include <gruppe32/Valid.hpp>
 
-#define TEST_SUCCESS 0
-#define TEST_ERROR 1
 
-/// <summary> Collection of all test functions </summary>
-namespace gruppe32::Test
+namespace gruppe32
 {
 
-constexpr auto printFailed = [](const auto n, const auto msg, const auto result, const auto expectedResult)
-{
-    std::cout << "-- test " << n << ": "
-              << msg
-              << " -- !_FAIL_! Result: " << result 
-              << " Expected result: "    << expectedResult 
-              << '\n';
-};
-constexpr auto printSuccess = [](const auto n, const auto msg, const auto result)
-{
-    std::cout << "-- test " << n << ": "
-              << msg 
-              << " -- SUCCESS. Result: " << result 
-              << '\n';
-};
 
-auto validIsAsciiChar()
+bool test_ValidIsAsciiChar()
 {
     struct TestData
     {
@@ -41,10 +23,10 @@ auto validIsAsciiChar()
         for(const auto [input, expectedResult, msg] : testData) 
         {           
             if (const auto result = testFunc(input); result != expectedResult) {
-                printFailed(count, msg, result? "true":"false", expectedResult? "true":"false");
+                Test::printFailed(count, msg, expectedResult ? "true" : "false", result? "true":"false");
             } 
             else {
-                printSuccess(count, msg, result? "true":"false");
+                Test::printSuccess(count, msg, expectedResult ? "true" : "false", result? "true":"false");
             }
             count++;
         }
@@ -66,14 +48,16 @@ auto validIsAsciiChar()
         });
 
     std::cout << '\n';
-    return TEST_SUCCESS;
-}
+    return true;
 }
 
-int main() 
+bool test_Valid() 
 {
     using namespace gruppe32;
-
-    auto result = Test::validIsAsciiChar();
-    return result;
+    int failcount = 0;
+    test_ValidIsAsciiChar()? failcount += 1: failcount += 0;
+    return failcount == 0;
 }
+
+}
+

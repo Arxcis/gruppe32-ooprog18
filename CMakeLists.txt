@@ -27,9 +27,9 @@ target_include_directories(gruppe32
 )
 
 # test_valid.cpp build
-add_executable(testvalid "${CMAKE_SOURCE_DIR}/test/test_valid.cpp")
+add_executable(testgruppe32 "${CMAKE_SOURCE_DIR}/test/test.cpp")
 
-set_target_properties(testvalid
+set_target_properties(testgruppe32
     PROPERTIES
     CXX_STANDARD 17
     CXX_STANDARD_REQUIRED ON
@@ -37,11 +37,13 @@ set_target_properties(testvalid
     LIBRARY_OUTPUT_DIRECTORY "${CMAKE_SOURCE_DIR}/bin"
 )
 
-target_sources(testvalid
+target_sources(testgruppe32
     PRIVATE "${CMAKE_SOURCE_DIR}/src/Valid.cpp"
+    PRIVATE "${CMAKE_SOURCE_DIR}/src/Parser.cpp"
 )
 
-target_include_directories(testvalid
+target_include_directories(testgruppe32
     PRIVATE "${CMAKE_SOURCE_DIR}/include"
+    PRIVATE "${CMAKE_SOURCE_DIR}/test"
 )
 
