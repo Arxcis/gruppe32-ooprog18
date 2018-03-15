@@ -72,7 +72,8 @@ SUM:                            11            227             87            973
 ### Sak2: Fordeling av App::funksjoner
 
 **Halvor**
-* printspillereAll
+
+* printspillereAll 
 * printspillerbyname
 * printspillerbynumber
 * printidretterall
@@ -81,6 +82,7 @@ SUM:                            11            227             87            973
 * Add support for choosing context with command-line args, or just default.
 
 **Jonas**
+
 * Last inn spilllere.dta
 * last inn idretter.dta automatisk inn i context
 * Skriv ut spiller.dta fra context til fil.
