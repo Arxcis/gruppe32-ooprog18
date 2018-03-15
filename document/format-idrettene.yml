@@ -1,7 +1,6 @@
 idrettene:
 - Fotball:
   tabelltype: 0              # 0,1,2 enum
-
   divisjonene:              
   - Eliteserien:
     lagene:                               

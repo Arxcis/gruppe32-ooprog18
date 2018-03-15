@@ -1,17 +1,17 @@
 resultatene:
 - Fotball:
   - Eliteserien 2018:
-    - Brann:            # hjemme
-      - Rosenborg:      # borte
+    - Brann:
+      - Rosenborg:
         dato: 2012-03-19
-        hjemmepoeng: [0,0,0,1] # 4
-        bortepoeng: [0,0]      # 2
+        hjemmepoeng: [0,0,0,1]
+        bortepoeng: [0,0]
         overtid: true
         
   - Premier League 2017/2018:
     - Manchester United:
       - Tottenham:
         dato: 2012-03-19
-        hjemmepoeng: [1]       # 1
-        bortepoeng: [1,1,0]    # 3
+        hjemmepoeng: [1]
+        bortepoeng: [1,1,0]
         overtid: false
