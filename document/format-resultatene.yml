@@ -7,6 +7,7 @@ resultatene:
   hjemmelag: Brann
   bortelag: Rosenborg
   dato: 2012-03-19
+  overtid: true
   hjemmepoengCount: 4
   hjemmepoeng:
   - lagSpillerid: 0
@@ -17,7 +18,6 @@ resultatene:
   bortepoeng:
   - lagSpillerid: 0
   - lagSpillerid: 0
-  overtid: true
 
 - resultat:
   idrett: Fotball
@@ -25,6 +25,7 @@ resultatene:
   hjemmelag: Manchester United
   bortelag: Tottenham
   dato: 2012-03-19
+  overtid: false
   hjemmepoengCount: 1
   hjemmepoeng:
   - lagSpillerid: 1
@@ -33,4 +34,3 @@ resultatene:
   - lagSpillerid: 1
   - lagSpillerid: 1
   - lagSpillerid: 0
-  overtid: false

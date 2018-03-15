@@ -1,0 +1,21 @@
+idrett: Fotball
+
+resultateneCount: 1
+resultatene:
+
+- resultat:
+  divisjon: Eliteserien 2018
+  hjemmelag: Brann
+  bortelag: Rosenborg
+  dato: 2012-03-19
+  overtid: true
+  hjemmepoengCount: 4
+  hjemmepoeng:
+  - lagSpillerid: 0
+  - lagSpillerid: 0
+  - lagSpillerid: 0
+  - lagSpillerid: 1
+  bortepoengCount: 2
+  bortepoeng:
+  - lagSpillerid: 0
+  - lagSpillerid: 0

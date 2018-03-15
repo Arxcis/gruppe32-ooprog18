@@ -1,26 +1,10 @@
-divisjon: Eliteserien
-
-lageneCount: 2
-lagene:
-
-- lag: Brann
-  adresse: Bergen, Norway
-  spillereneCount: 2
-  spillerene:
-  - guid: 0
-  - guid: 1
-
-- lag: Rosenborg
-  adresse: Trondheim, Norway 
-  spillereneCount: 2
-  spillerene: 
-  - guid: 2
-  - guid: 3
+idrett: Fotball
+divisjon: Eliteserien 2018
 
 terminliste:
   hjemmelageneCount: 2
   hjemmelagene:
-  
+
   - hjemmelag: Brann
     bortelageneCount: 1
     bortelagene:

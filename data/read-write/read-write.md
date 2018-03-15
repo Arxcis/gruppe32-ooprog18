@@ -9,10 +9,11 @@
     - spillerene.yml
 
 * An example of the file formats is documented in:
-    - document/format-idrettten.yml
-    - document/resultatene.yml
-    - document/spillerene.yml
+    - document/format-idretttene.yml
+    - document/format-resultatene.yml
+    - document/format-spillerene.yml
 
 * They are all read when the program loads.
 * They are all written to when the program shuts down.
 * These files represent the complete persistent state of the program.
+ 
