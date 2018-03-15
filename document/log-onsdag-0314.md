@@ -32,6 +32,42 @@
     - Bemerkninger er godt brukt
     - Gjenstår en del på doxygen metainformasjon oppå toppen av funksjoner og klasser, men er sikkert fort gjort.
 
+* Lines of documentation
+```
+$ cloc document/
+       9 text files.
+       9 unique files.
+       1 file ignored.
+
+github.com/AlDanial/cloc v 1.72  T=0.50 s (18.0 files/s, 700.0 lines/s)
+-------------------------------------------------------------------------------
+Language                     files          blank        comment           code
+-------------------------------------------------------------------------------
+Markdown                         5             47              0            155
+YAML                             4             34              1            113
+-------------------------------------------------------------------------------
+SUM:                             9             81              1            268
+-------------------------------------------------------------------------------
+
+```
+
+* Lines of code
+```
+$ cloc.exe include/gruppe32/ src/App.cpp src/IO.cpp src/main.cpp src/Valid.cpp src/DB.cpp src/Terminal.cpp
+      11 text files.
+      11 unique files.
+       1 file ignored.
+
+github.com/AlDanial/cloc v 1.72  T=0.50 s (22.0 files/s, 2574.0 lines/s)
+-------------------------------------------------------------------------------
+Language                     files          blank        comment           code
+-------------------------------------------------------------------------------
+C++                              6            122             10            721
+C/C++ Header                     5            105             77            252
+-------------------------------------------------------------------------------
+SUM:                            11            227             87            973
+-------------------------------------------------------------------------------
+```
 
 ### Sak2: Fordeling av App::funksjoner
 
@@ -51,6 +87,7 @@
     - skrit ut idretter.dta fra context til fil.
     - Lag 4 skriv/les fra fil funksjoner som bruker ikke har tilgang til, men sysystemet bruker til å automatisk lese inn i context.
     - 
+
 
 ### Til neste møte
 * Evaluer dokumentasjonsdekning.
