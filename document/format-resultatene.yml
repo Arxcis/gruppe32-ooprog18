@@ -1,24 +1,17 @@
-resultateneCount: 2
 resultatene:
-
-- idrett: 'Fotball'
-  divisjon: 'Eliteserien'
-  hjemmelag: 'Brann'
-  bortelag: 'Rosenborg'
-  dato: '2012-03-19'
-  hjemmepoengCount: 4
-  hjemmepoeng: [0,0,0,1] # 4
-  bortepoengCount: 2
-  bortepoeng: [0,0]      # 2
-  overtid: true
-
-- idrett: 'Fotball'
-  divisjon: 'Premier League'
-  hjemmelag: 'Manchester United'
-  bortelag: 'Tottenham'
-  dato: '2012-03-19'
-  hjemmepoengCount: 1
-  hjemmepoeng: [1]       # 1
-  bortepoengCount: 3
-  bortepoeng: [1,1,0]    # 3
-  overtid: false
+- Fotball:
+  - Eliteserien 2018:
+    - Brann:            # hjemme
+      - Rosenborg:      # borte
+        dato: 2012-03-19
+        hjemmepoeng: [0,0,0,1] # 4
+        bortepoeng: [0,0]      # 2
+        overtid: true
+        
+  - Premier League 2017/2018:
+    - Manchester United:
+      - Tottenham:
+        dato: 2012-03-19
+        hjemmepoeng: [1]       # 1
+        bortepoeng: [1,1,0]    # 3
+        overtid: false

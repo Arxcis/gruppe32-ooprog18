@@ -1,63 +1,45 @@
-idretteneCount: 2                
-idrettene:                    
-
-- navn: 'Fotball'             
+idrettene:
+- Fotball:
   tabelltype: 0              # 0,1,2 enum
-  
-  divisjoneneCount: 2             
-  divisjonene:               
-  
-  - navn: 'Eliteserien'      
 
-    lageneCount: 2              
+  divisjonene:              
+  - Eliteserien:
     lagene:                               
-  
-    - navn: 'Brann'          
-      adresse: 'Bergen, Norway'
-      spillereneCount: 2
+    - Brann:
+      adresse: Bergen, Norway
       spillereneID: [0,1]  # 0=Ronny Knarvik, 1=Erik Huseklepp
 
-    - navn: 'Rosenborg'      
-      adresse: 'Trondheim, Norway' 
-      spillereneCount: 2
+    - Rosenborg:
+      adresse: Trondheim, Norway 
       spillereneID: [2,3]  # 2=Arild Østbø,3=Andre Hansen
 
-    terminlisteCount: 2
     terminliste:
-  
-    - dato: 2012-03-19
-      hjemmelag: 'Brann'
-      bortelag: 'Rosenborg'
-  
-    - dato: 2013-03-19
-      hjemmelag: 'Rosenborg'
-      bortelag: 'Brann'
+    - Brann:
+      - Rosenborg:
+        dato: 2012-03-19
 
-  - navn: 'premierleague'
+    - Rosenborg:
+      - Brann: 
+        dato: 2013-03-19
 
-    lageneCount: 2
+  - Premier League 2017/2018:
     lagene:
-  
-    - navn: 'Manchester United'
-      adresse: 'Machester, United Kingdom'
-      spillereneCount: 2
+    - Manchester United:
+      adresse: Machester, United Kingdom
       spillereneID: [4,5] # 4=Alexis Sanchez, 5=Paul Pogba
 
-    - navn: 'Tottenham Hotspur'
-      adresse: 'London, United Kingdom'
-      spillereneCount: 2
+    - Tottenham Hotspurs:
+      adresse: London, United Kingdom
       spillereneID: [6,7] # 6=Harry Kane,7=Son Heung-min
 
-    terminlisteCount: 2
     terminliste:
-    
-    - dato: 2012-03-19
-      hjemmelag: 'Manchester United'
-      bortelag: 'Tottenham Hotspur'
-  
-    - dato: 2013-03-19
-      hjemmelag: 'Tottenham Hotspur'
-      bortelag: 'Manchester United'
+    - Manchester United: 
+      - Tottenham Hotspurs:
+        dato: 2012-03-19
 
-- navn: 'Håndball'
-    # osv. osv
+    - Tottenham Hotspurs: 
+      - Manchester United:
+        dato: 2013-03-19
+
+- Håndball:
+  # osv. osv
