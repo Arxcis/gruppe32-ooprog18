@@ -1,6 +1,7 @@
 ## Referanseliste
 
 ### 2018-03-14
+* std::filesystem currentPath - http://en.cppreference.com/w/cpp/filesystem/current_path
 * std::ignore and structured bindings discussion - https://stackoverflow.com/a/40714311/6292603
 * yaml cheat sheet - https://lzone.de/cheat-sheet/YAML
 * tottenham players - https://www.google.no/search?source=hp&ei=KnqpWqvEMcqTsgHDl7XwDw&q=tottenham+hotspur+players&oq=tottenham+&gs_l=psy-ab.3.0.35i39k1j0i67k1l3j0j0i203k1l5.1400.3077.0.4009.12.11.0.0.0.0.122.821.9j1.11.0....0...1c.1.64.psy-ab..1.11.1075.6...255.vuZi4WyrW-E
