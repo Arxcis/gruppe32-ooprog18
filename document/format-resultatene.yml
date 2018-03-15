@@ -10,14 +10,14 @@ resultatene:
   overtid: true
   hjemmepoengCount: 4
   hjemmepoeng:
-  - lagSpillerid: 0
-  - lagSpillerid: 0
-  - lagSpillerid: 0
-  - lagSpillerid: 1
+  - spiller: 0
+  - spiller: 0
+  - spiller: 0
+  - spiller: 1
   bortepoengCount: 2
   bortepoeng:
-  - lagSpillerid: 0
-  - lagSpillerid: 0
+  - spiller: 0
+  - spiller: 0
 
 - resultat:
   idrett: Fotball
@@ -28,9 +28,9 @@ resultatene:
   overtid: false
   hjemmepoengCount: 1
   hjemmepoeng:
-  - lagSpillerid: 1
+  - spiller: 1
   bortepoengCount: 3
   bortepoeng:
-  - lagSpillerid: 1
-  - lagSpillerid: 1
-  - lagSpillerid: 0
+  - spiller: 1
+  - spiller: 1
+  - spiller: 0

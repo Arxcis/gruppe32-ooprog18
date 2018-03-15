@@ -2,18 +2,16 @@ idrett: Fotball
 divisjon: Eliteserien 2018
 
 terminliste:
-  hjemmelageneCount: 2
+  lageneCount: 2
   hjemmelagene:
 
   - hjemmelag: Brann
-    bortelageneCount: 1
     bortelagene:
 
     - bortelag: Rosenborg
       dato: 2012-03-19
 
   - hjemmelag: Rosenborg
-    bortelageneCount: 1
     bortelagene:
 
     - bortelag: Brann
