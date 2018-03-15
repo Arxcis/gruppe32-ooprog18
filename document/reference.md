@@ -1,5 +1,10 @@
 ## Referanseliste
 
+### 2018-03-15
+* std::string_view - http://en.cppreference.com/w/cpp/string/basic_string_view
+* .NET XML reference - http://www.anotherchris.net/net/net-xml-comment-cheat-sheet/
+* YAML - parser - https://www.json2yaml.com/convert-yaml-to-json
+
 ### 2018-03-14
 * std::filesystem currentPath - http://en.cppreference.com/w/cpp/filesystem/current_path
 * std::ignore and structured bindings discussion - https://stackoverflow.com/a/40714311/6292603
@@ -18,3 +23,14 @@
 * compile with Visual Studio and CMake  - https://dmerej.info/blog/post/cmake-visual-studio-and-the-command-line/
 * visual studio c++17 progress - https://blogs.msdn.microsoft.com/vcblog/2017/12/19/c17-progress-in-vs-2017-15-5-and-15-6/
 * cpp compiler support - https://en.cppreference.com/w/cpp/compiler_support
+
+
+```cpp
+size_t spillerIDFørsteMåletIEnkamp = ctx.idrettene.remove()
+                                        ->divisjonene[0]
+                                        .terminliste
+                                        .hjemmelag[0]
+                                        .bortelag[0]
+                                        .resultat
+                                        .hjemmescoringer[0];
+```
