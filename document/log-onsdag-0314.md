@@ -72,21 +72,21 @@ SUM:                            11            227             87            973
 ### Sak2: Fordeling av App::funksjoner
 
 **Halvor**
-    - printspillereAll
-    - printspillerbyname
-    - printspillerbynumber
-    - printidretterall
-    - printidretterbyname
-    - Legg inn tetstdata i context
-    - Add support for choosing context with command-line args, or just default.
+* printspillereAll
+* printspillerbyname
+* printspillerbynumber
+* printidretterall
+* printidretterbyname
+* Legg inn tetstdata i context
+* Add support for choosing context with command-line args, or just default.
 
 **Jonas**
-    - Last inn spilllere.dta
-    - last inn idretter.dta automatisk inn i context
-    - Skriv ut spiller.dta fra context til fil.
-    - skrit ut idretter.dta fra context til fil.
-    - Lag 4 skriv/les fra fil funksjoner som bruker ikke har tilgang til, men sysystemet bruker til å automatisk lese inn i context.
-    - 
+* Last inn spilllere.dta
+* last inn idretter.dta automatisk inn i context
+* Skriv ut spiller.dta fra context til fil.
+* skrit ut idretter.dta fra context til fil.
+* Lag 4 skriv/les fra fil funksjoner som bruker ikke har tilgang til, men sysystemet bruker til å automatisk lese inn i context.
+* 
 
 
 ### Til neste møte
