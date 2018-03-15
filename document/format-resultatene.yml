@@ -1,7 +1,8 @@
 resultateneCount: 2
 resultatene:
 
-- idrett: Fotball
+- resultat:
+  idrett: Fotball
   divisjon: Eliteserien 2018
   hjemmelag: Brann
   bortelag: Rosenborg
@@ -18,7 +19,8 @@ resultatene:
   - lagSpillerid: 0
   overtid: true
 
-- idrett: Fotball
+- resultat:
+  idrett: Fotball
   divisjon: Premier League 2017/2018
   hjemmelag: Manchester United
   bortelag: Tottenham
