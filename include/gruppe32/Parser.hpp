@@ -16,7 +16,7 @@ using std::size_t;
 using std::string;
 using std::string_view;
 using DB::Idrettene;
-using DB::Spillerene
+using DB::Spillerene;
 using Status = std::size_t;
 
 constexpr Parser::Status SUCCESS = 0;
@@ -77,7 +77,7 @@ auto decodeResultatene(DB::Idrettene& idrettene, string_view strview) -> Parser:
 
 /// <summary> Decode-only. </summary>
 /// <param name="strview"> example found in format-divisjon.yml </param name="strview">
-auto decodeDivisjon(DB::Divisjon& divisjon, string_view strview) -> Parser::status; 
+auto decodeDivisjon(DB::Divisjon& divisjon, string_view strview) -> Parser::Status; 
 
 
 } // end namespace Parse

@@ -26,7 +26,7 @@ public:
 
 using std::size_t;
 
-class Spillerne
+class Spillerene
 {
 
 public:
@@ -121,7 +121,7 @@ public:
 struct Context 
 {
     Idrettene idrettene;
-    Spillerne spillerne;
+	Spillerene spillerene;
 };
 
 

@@ -11,7 +11,7 @@ int main(int argc, char* argv[])
 
     auto ctx = DB::Context{
         DB::Idrettene{},
-        DB::Spillerne{}
+        DB::Spillerene{}
     };
     
     Terminal::run(ctx);
