@@ -19,8 +19,8 @@ using DB::Idrettene;
 using DB::Spillerene
 using Status = std::size_t;
 
-constexpr Parse::Status SUCCESS = 0;
-constexpr Parse::Status ERROR = 1;
+constexpr Parser::Status SUCCESS = 0;
+constexpr Parser::Status ERROR = 1;
 
 
 /// <summary> Encode. Has a corresponding decode function. </summary>
@@ -33,11 +33,11 @@ auto encodeSpillerene(const DB::Spillerene& spillerene) -> string;
 
 /// <summary> Decode. Has a corresponding encode function. </summary>
 /// <param name="strview"> example found in format-idrettene.yml </param name="strview">
-auto decodeIdrettene(DB::Idrettene& idrettene, string_view strview) -> Parse::Status;
+auto decodeIdrettene(DB::Idrettene& idrettene, string_view strview) -> Parser::Status;
 
 /// <summary> Decode. Has a corresponding encode function. </summary>
 /// <param name="strview"> example found in format-spillerene.yml </param name="strview">
-auto decodeSpillerene(DB::Spillerene& spillerene, string_view strview) -> Parse::Status;
+auto decodeSpillerene(DB::Spillerene& spillerene, string_view strview) -> Parser::Status;
 
 
 
@@ -73,11 +73,11 @@ auto encodeToppscorereneLag(const DB::Divisjon& divisjon, const string lagnavn) 
 
 /// <summary> Decode-only. </summary>
 /// <param name="strview"> example found in format-resultatene.yml </param name="strview">
-auto decodeResultatene(DB::Idrettene& idrettene, string_view strview) -> Parse::Status;
+auto decodeResultatene(DB::Idrettene& idrettene, string_view strview) -> Parser::Status;
 
 /// <summary> Decode-only. </summary>
 /// <param name="strview"> example found in format-divisjon.yml </param name="strview">
-auto decodeDivisjon(DB::Divisjon& divisjon, string_view strview) -> Parse::status; 
+auto decodeDivisjon(DB::Divisjon& divisjon, string_view strview) -> Parser::status; 
 
 
 } // end namespace Parse
