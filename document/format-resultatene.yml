@@ -6,10 +6,10 @@ resultatene:
   hjemmelag: 'Brann'
   bortelag: 'Rosenborg'
   dato: '2012-03-19'
-  hjemmepoengCount: 4
-  hjemmepoeng: [0,0,0,1] # 4
-  bortepoengCount: 2
-  bortepoeng: [0,0]      # 2
+  hjemmeScoringerCount: 4
+  hjemmeScoringer: [0,0,0,1]
+  borteScoringerCount: 2
+  borteScoringer: [0,0]
   overtid: true
 
 - idrett: 'Fotball'
@@ -17,8 +17,8 @@ resultatene:
   hjemmelag: 'Manchester United'
   bortelag: 'Tottenham'
   dato: '2012-03-19'
-  hjemmepoengCount: 1
-  hjemmepoeng: [1]       # 1
-  bortepoengCount: 3
-  bortepoeng: [1,1,0]    # 3
+  hjemmeScoringerCount: 1
+  hjemmeScoringer: [1]
+  borteScoringerCount: 3
+  borteScoringer: [1,1,0]
   overtid: false
