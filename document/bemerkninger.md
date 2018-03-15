@@ -1,12 +1,23 @@
 ## Bemerkninger
 
-#### Egne vurderinger
+### Egne vurderinger
 
-1. Vi navngir klassen *DivAvd* -> *Divisjon* for å tydeliggjøre klassens bruksområde.
+#### 1. Navneendring DivAvd -> Divisjon
+Vi navngir klassen  for å tydeliggjøre klassens bruksområde.
 
-2. Vi velger å sette ListTool, samt egne moduler inn i egne *namespaces* for tydeligere sepparering av modulær kode.
+#### 2. Namespacing av Listtool og egne moduler 
+Vi velger å sette ListTool, samt egne moduler inn i egne *namespaces* for tydeligere sepparering av modulær kode.
 
-3. Vi gjør om de statiske arryene i `Lag` og `Resultat` til dynamiske arrayer, primert for å spare minnnebruk og lagringsbruk.
+#### 3. Om Dynamiske arrayer (vectorer)
+Vi gjør om de fleste statiske arryene til dynamiske arrayer(std::vector):
+ * divisjon.lagene,
+ * resultat.hjemmescoringer
+ * resultat.bortescoringer
+ * idrett.divisjonene
+ * lag.spillerene
+
+En god årsak til dette er at dette er en enkel måte å spare minnnebruk og spesielt filbruk. Vi trenger ikke å lagre tomme skuffer på fil eller i memory om de ikker er tatt i bruk.
+
 For å tydeligjøre grunnen til denne avgjørelsen så vil jeg nå presentere et eksempel:
 
 La oss si at det ligger 2 lag i systemet, lagene Brann og Ålesund. I tillegg ligger det et resultat etter at de spilte mot hverandre. Stillingen ble 4-2 til Brann.
@@ -45,22 +56,54 @@ Vi har altså reduser minnebruken med 656 byte eller 82%.
 Merk deg at dersom neste kamp ender med 0-0, så vil minnebruken med array versjonen øke med 400 byte for hver kamp, men vectorversjonen vil øke med 0 byte i en 0-0 kamp, (om en ser på disse 3 arrayen isolert sett).
 
 
-#### C++17 features tatt i bruk
+#### 4. Bruke GUID på spillere i Resultat objektene.
+Vi vurderer det hensiktsmessig å bruke den GUID-en til spillere for å markere hvem som har scoret hvilke mål i en kamp. Vi vurderte en stund å bruke lagindeksen til spilleren, men dette kan bli vanskelig å håndtere over tid. 
 
-1. Multiple return values/ struct unpacking
+Hva om spilleren bytter indeks i laget, foreksempel får et nytt draktnummer? Hva om spilleren bytter klubb? Skal alle resultater da også slettes? 
+
+
+#### 5. Nøstet datastruktur på fil
+Vi observerer at datastrukturen er ganske nøstet. Et eksempel er om vi ønsker å få tak i hvilken spiller som scoret det første målet i en kamp:
+```cpp
+uint spillerIDFørsteMåletIEnkamp = idrettene[0].divisjonene[0]
+                                               .terminliste
+                                               .hjemmelag[0]
+                                               .bortelag[0]
+                                               .resultat
+                                               .hjemmescoringer[0];
+
+```
+
+Vi ønsker å bevare denne nøstingen i filformatet. Vi ønsker også at det skal være enkelt å lese og forstå det som ligger på fil. Det en del standard filformater der ute for dette. 
+
+JSON vurderer vi som for vanskelig å parse. Det har mye rar syntax, og blir litt for generisk. Det at vi ikke kan lese linje for linje gjør det også vanskeligere å parse JSON.
+
+YAML kan representere det samme som JSON, men har en mye enklere syntax å parse dersom skriver så enkel YAML som mulig.
+I tillegg kan YAML leses linje for linje som key-value par.
+
+Om vi hadde snekret sammen en egen datastruktur, så hadde vi uansett endt opp med noe som ligner på en key-value store. Derfor så er steget ganske lite over til YAML. 
+
+Om vi bruker YAML så får vi også fordeler med at det er mange andre verktøy og systemer som støtter YAML formatet, og det er enkelt å konvertere YAML over til andre formater.
+
+Det er også en bonus å lære seg standarder som blir mye brukt i profesjonell sammenheng.
+
+
+### C++17 features tatt i bruk
+
+#### 1. Multiple return values/ struct unpacking
 
 ```cpp
 const auto [key, command] = IO::readCommand(mainCommands);
 ```
 
-2. Nested namespaces
+#### 2. Nested namespaces
 
 ```cpp
 namespace gruppe32::App
 ```
 
 
-3. If scoped variable initializer
+#### 3. If scoped variable initializer
 
 ```cpp
 
@@ -73,3 +116,9 @@ else if (cmdID == CMD_QUIT)
     return;
 }
 ```
+
+#### 4. std::string_view
+Bruker sdt::string_view til å lese inn fra fil. Her kan vi drive å jobbe på den strengen som ble lest fra fil, uten å gjøre dyrebare kopier inn i temp-strenger. Dette er spesielt nyttig i validering av filformat. std::string_view gjør at vi kan se igjennom hele stringen som kommer fra fil, og validere at strengen er korrekt, før vi faktisk begynner å kopiere data fra strengen og inn i den interne datastrukturen.
+
+#### 5. std::filesystem (Ble vurdert men forkastet)
+Denne standard-modulen har støtte i clang og gcc, men ikke i Visual Studio c++17 per 15.03.2018. Vi valgte derfor å skygge unna å bruke std::filesystem
