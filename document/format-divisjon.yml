@@ -1,18 +1,34 @@
-Eliteserien:
-  lagene:
-  - Brann:
-    adresse: Bergen, Norway
-    spillereneID: [0,1]  # 0=Ronny Knarvik, 1=Erik Huseklepp
+divisjon: Eliteserien
+lageneCount: 2
+lagene:
 
-  - Rosenborg:
-    adresse: Trondheim, Norway 
-    spillereneID: [2,3]  # 2=Arild Østbø,3=Andre Hansen
+- lag: Brann
+  adresse: Bergen, Norway
+  spillereneCount: 2
+  spillerene:
+  - guid: 0
+  - guid: 1
 
-  terminliste:
-  - Brann:
-    - Rosenborg:
+- lag: Rosenborg
+  adresse: Trondheim, Norway 
+  spillereneCount: 2
+  spillerene: 
+  - guid: 2
+  - guid: 3
+
+terminliste:
+  hjemmelageneCount: 2
+  hjemmelagene:
+  - hjemmelag: Brann
+    bortelageneCount: 1
+    bortelagene:
+
+    - bortelag: Rosenborg
       dato: 2012-03-19
 
-  - Rosenborg:
-    - Brann: 
-      dato: 2013-03-19
+  - hjemmelag: Rosenborg
+    bortelageneCount: 1
+    bortelagene:
+
+    - bortelag: Brann
+      dato: 2012-03-19

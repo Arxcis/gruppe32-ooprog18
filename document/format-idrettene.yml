@@ -1,44 +1,78 @@
+idretteneCount: 1
 idrettene:
-- Fotball:
-  tabelltype: 0              # 0,1,2 enum
-  divisjonene:              
-  - Eliteserien:
-    lagene:                               
-    - Brann:
-      adresse: Bergen, Norway
-      spillereneID: [0,1]  # 0=Ronny Knarvik, 1=Erik Huseklepp
 
-    - Rosenborg:
-      adresse: Trondheim, Norway 
-      spillereneID: [2,3]  # 2=Arild Østbø,3=Andre Hansen
+- idrett: Fotball
+  tabelltype: 0
+  divisjoneneCount: 2
+  divisjonene:
 
-    terminliste:
-    - Brann:
-      - Rosenborg:
-        dato: 2012-03-19
-
-    - Rosenborg:
-      - Brann: 
-        dato: 2013-03-19
-
-  - Premier League 2017/2018:
+  - divisjon: Eliteserien
+    lageneCount: 2
     lagene:
-    - Manchester United:
-      adresse: Machester, United Kingdom
-      spillereneID: [4,5] # 4=Alexis Sanchez, 5=Paul Pogba
 
-    - Tottenham Hotspurs:
-      adresse: London, United Kingdom
-      spillereneID: [6,7] # 6=Harry Kane,7=Son Heung-min
+    - lag: Brann
+      adresse: Bergen, Norway
+      spillereneCount: 2
+      spillerene:
+      - guid: 0
+      - guid: 1
+
+    - lag: Rosenborg
+      adresse: Trondheim, Norway 
+      spillereneCount: 2
+      spillerene:
+      - guid: 2
+      - guid: 3
 
     terminliste:
-    - Manchester United: 
-      - Tottenham Hotspurs:
-        dato: 2012-03-19
+      hjemmelageneCount: 2
+      hjemmelagene:
 
-    - Tottenham Hotspurs: 
-      - Manchester United:
-        dato: 2013-03-19
+      - hjemmelag: Brann
+        bortelageneCount: 1
+        bortelagene:
 
-- Håndball:
-  # osv. osv
+        - bortelag: Rosenborg
+          dato: 2012-03-19
+
+      - hjemmelag: Rosenborg
+        bortelageneCount: 1
+        bortelagene:
+
+        - bortelag: Brann
+          dato: 2013-03-19
+
+  - divisjon: Premier League 2017/2018
+    lageneCount: 2
+    lagene:
+
+    - lag: Manchester United
+      adresse: Machester, United Kingdom
+      spillereneCount: 2 
+      spillerene: 
+      - guid: 4
+      - guid: 5
+
+    - lag: Tottenham Hotspurs
+      adresse: London, United Kingdom
+      spillereneCount: 2 
+      spillerene:
+      - guid: 6
+      - guid: 7
+
+    terminliste:
+      hjemmelageneCount: 2
+      hjemmelagene:
+
+      - hjemmelag: Manchester United
+        bortelageneCount: 1
+        bortelagene:
+
+        - bortelag: Tottenham Hotspurs
+          dato: 2012-03-19
+
+      - hjemmelag: Tottenham Hotspurs
+        bortelageneCount: 1
+        bortelagene:
+        - bortelag: Manchester United
+          dato: 2013-03-19

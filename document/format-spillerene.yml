@@ -1,32 +1,34 @@
+spillereneCount: 8
 spillerene:
-- Ronny Knarvik:
-  id: 0
+  
+- spiller: Ronny Knarvik
+  guid: 0
   addresse: Bergen, Norway
 
-- Erik Huseklepp:
-  id: 1
+- spiller: Erik Huseklepp
+  guid: 1
   addresse: Bergen, Norway
 
-- Arild Østebø:
-  id: 2
+- spiller: Arild Østebø
+  guid: 2
   addresse: Trondheim, Norway
 
-- Andre Hansen:
-  id: 3
+- spiller: Andre Hansen
+  guid: 3
   addresse: Trondheim, Norway
 
-- Alexis Sanchez:
-  id: 4
+- spiller: Alexis Sanchez
+  guid: 4
   addresse: Manchester, United Kingdom
 
-- Paul Pogba:
-  id: 5
+- spiller: Paul Pogba
+  guid: 5
   addresse: Manchester, United Kingdom
 
-- Harry Kane:
-  id: 6
+- spiller: Harry Kane
+  guid: 6
   addresse: London, United Kingdom
 
-- Son Hueng-min:
-  id: 7
+- spiller: Son Hueng-min
+  guid: 7
   addresse: London, United Kingdom
