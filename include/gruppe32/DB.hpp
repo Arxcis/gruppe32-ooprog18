@@ -17,7 +17,7 @@ using std::size_t;
 class Spiller 
 {
 public:
-    size_t id;
+    size_t guid;
     string name;
     string address;
 
