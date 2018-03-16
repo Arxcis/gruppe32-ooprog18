@@ -1,5 +1,4 @@
 #pragma once
-#pragma once
 
 #include <iostream>
 #include <string>
@@ -37,10 +36,9 @@ using std::string;
 using std::string_view;
 using DB::Idrettene;
 using DB::Spillerene;
-using Status = std::size_t;
+using Error = std::size_t;
 
-constexpr Parser::Status SUCCESS = 0;
-constexpr Parser::Status ERROR = 1;
+constexpr Parser::Error ERROR = 1;
 
 
 /// <summary> Encode. Has a corresponding decode function. </summary>
@@ -53,11 +51,11 @@ auto encodeSpillerene(const DB::Spillerene& spillerene) -> string;
 
 /// <summary> Decode. Has a corresponding encode function. </summary>
 /// <param name="strview"> example found in format-idrettene.yml </param name="strview">
-auto decodeIdrettene(DB::Idrettene& idrettene, string_view strview) -> Parser::Status;
+auto decodeIdrettene(DB::Idrettene& idrettene, string_view strview) -> Parser::Error;
 
 /// <summary> Decode. Has a corresponding encode function. </summary>
 /// <param name="strview"> example found in format-spillerene.yml </param name="strview">
-auto decodeSpillerene(DB::Spillerene& spillerene, string_view strview) -> Parser::Status;
+auto decodeSpillerene(DB::Spillerene& spillerene, string_view strview) -> Parser::Error;
 
 
 
@@ -93,11 +91,11 @@ auto encodeToppscorereneLag(const DB::Divisjon& divisjon, const string lagnavn) 
 
 /// <summary> Decode-only. </summary>
 /// <param name="strview"> example found in format-resultatene.yml </param name="strview">
-auto decodeResultatene(DB::Idrettene& idrettene, string_view strview) -> Parser::Status;
+auto decodeResultatene(DB::Idrettene& idrettene, string_view strview) -> Parser::Error;
 
 /// <summary> Decode-only. </summary>
 /// <param name="strview"> example found in format-divisjon.yml </param name="strview">
-auto decodeDivisjon(DB::Divisjon& divisjon, string_view strview) -> Parser::Status; 
+auto decodeDivisjon(DB::Divisjon& divisjon, string_view strview) -> Parser::Error; 
 
 
 

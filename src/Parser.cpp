@@ -96,7 +96,7 @@ auto encodeIdrettene(const DB::Idrettene& idrettene) -> string
 }
 
 
-auto decodeIdrettene(DB::Idrettene& idrettene, string_view strview) -> Parser::Status 
+auto decodeIdrettene(DB::Idrettene& idrettene, string_view strview) -> Parser::Error 
 {
     std::cout << "\n\n------ DEBUG decodeIdrettene ------\n\n";
 
@@ -209,7 +209,7 @@ auto decodeIdrettene(DB::Idrettene& idrettene, string_view strview) -> Parser::S
 
     std::cout << "\n\n------ DEBUG decodeIdrettene ------\n\n";
 
-	return Parser::SUCCESS;
+	return 0;
 }
 
 }
