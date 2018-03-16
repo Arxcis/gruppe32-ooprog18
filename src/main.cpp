@@ -18,10 +18,10 @@ int main(int argc, char* argv[])
     // SET UP CONTEXTS
     //===================================================================================
     auto myContext = DB::Context();
-    myContext.spillerene.data.add(new DB::Spiller(4, "Ola Nordmann", "Bergen, Norway"));
-    myContext.spillerene.data.add(new DB::Spiller(5, "Kari Nordmann", "Trondheim, Norway"));
-    myContext.spillerene.data.add(new DB::Spiller(6, "Tølløf Krambakk", "Kristiansund, Norway"));
-    myContext.spillerene.data.add(new DB::Spiller(7, "Hanz Bak", "Berlin, Germany"));
+    myContext.spillerene.data->add(new DB::Spiller(4, "Ola Nordmann", "Bergen, Norway"));
+    myContext.spillerene.data->add(new DB::Spiller(5, "Kari Nordmann", "Trondheim, Norway"));
+    myContext.spillerene.data->add(new DB::Spiller(6, "Tølløf Krambakk", "Kristiansund, Norway"));
+    myContext.spillerene.data->add(new DB::Spiller(7, "Hanz Bak", "Berlin, Germany"));
 
     auto ctxMap = std::unordered_map<std::string, DB::Context&>{
         {DEFAULT_CONTEXT,   DB::Context()},
