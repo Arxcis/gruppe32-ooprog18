@@ -9,10 +9,7 @@ int main(int argc, char* argv[])
 {
     using namespace gruppe32;
 
-    auto ctx = DB::Context{
-        DB::Idrettene{},
-        DB::Spillerene{}
-    };
+    auto ctx = DB::Context{};
     
     Terminal::run(ctx);
     return 0;

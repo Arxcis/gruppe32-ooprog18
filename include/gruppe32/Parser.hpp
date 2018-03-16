@@ -26,7 +26,7 @@ struct LineGenerator
     
     auto nextLine() -> std::string;
     auto nextStringStringPair() -> pair<string,string>;
-    auto nextStringIntPair() -> pair<string,int>;
+    auto nextStringUintPair() -> pair<string, size_t>;
     auto nextStringBoolPair() -> pair<string,bool>;
 };
 
