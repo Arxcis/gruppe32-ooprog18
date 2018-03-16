@@ -53,22 +53,26 @@ class Lag
 public:
     string navn;
     string adresse;
-    vector<size_t> spillere;
+    vector<size_t> spillerene;
 };
 
 
 using std::size_t;
-using std::array;
 using std::vector;
+using std::string;
 
 class Resultat
 {    
 public:
-    constexpr static size_t LENGTH_DATE = 9;
-    array<char, LENGTH_DATE> dato;
-    bool overtid;
-    vector<size_t> hjemmeScorere;
-    vector<size_t> borteScorere;
+    // constexpr static size_t LENGTH_DATE = 9;
+    // array<char, LENGTH_DATE> dato;
+    string dato; // @TODO Discuss how critical it is to use a char array here.
+                 //   It is difficult to copy a string into the char array.
+                 //   Using a string as convencience for now - JSolsvik 16.03.18
+    bool spilt = false;
+    bool overtid = false;
+    vector<size_t> hjemmeScorerene{};
+    vector<size_t> borteScorerene{};
     /*
     size_t hjemmeMål, borteMål;
     */
@@ -82,11 +86,10 @@ using std::map;
 
 class Divisjon
 {
-private:
-    string navn;
-    vector<Lag> lag;
-    map<string, map<string,Resultat>> terminListe;
 public:
+    string navn;
+    vector<Lag> lagene;
+    map<string, map<string,Resultat>> terminListe;
     /*
     size_t lagCount() {
         return lag.size();
@@ -95,24 +98,29 @@ public:
 };
 
 
+using std::size_t;
 using std::string;
 using std::vector;
 
-class Idrett
+class Idrett : public listtool::TextElement
 {
 public:
-    enum Tabell
+    enum Tabell : size_t
     {
-        SEIER_2_UAVGJORT_1_TAP_0,
-        SEIER_3_UAVGJORT_1_TAP_0,
-        SEIER_3_OVERTID_2_UAVGJORT_1_TAP_0
+        SEIER_2_UAVGJORT_1_TAP_0 = 210,
+        SEIER_3_UAVGJORT_1_TAP_0 = 310, 
+        SEIER_3_OVERTID_2_UAVGJORT_1_TAP_0 = 320
     };
 
-private:
-    vector<Divisjon> divisjoner;
+    string name; // @todo discuss - name or navn? jsolsvik 16.03.18
     Tabell tabell;
-    string name;
+    vector<Divisjon> divisjonene;
 
+    Idrett(std::string _name, Tabell _tabell)
+        :listtool::TextElement(_name.c_str()),
+        name(_name),
+        tabell(_tabell)
+        {}
 };
 
 
