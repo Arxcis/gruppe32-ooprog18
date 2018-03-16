@@ -100,7 +100,7 @@ auto decodeIdrettene(DB::Idrettene& idrettene, string_view strview) -> Parser::E
 {
     std::cout << "\n\n------ DEBUG decodeIdrettene ------\n\n";
 
-    LineGenerator gen = {strview, 0};
+    auto gen = LineGenerator{strview, 0};
 
     auto[idretteneCountkey, idretteneCount] = gen.nextStringIntPair();
     IO::printline("idretteneCount:", idretteneCount);
@@ -218,7 +218,34 @@ auto encodeSpillerene(const DB::Spillerene& spillerene) -> string
 }
 auto decodeSpillerene(DB::Spillerene& spillerene, string_view strview) -> Parser::Error
 {
-    return 0;
+    std::cout << "\n\n------ DEBUG decodeSpillerene ------\n\n";
+ 
+    auto gen = LineGenerator{strview};
+
+
+    auto[sisteguidKey, sisteguid] = gen.nextStringIntPair();
+    IO::printline(sisteguidKey, ":", sisteguid);  
+
+    auto[spillereneCountKey, spillereneCount] = gen.nextStringIntPair();
+    IO::printline(spillereneCountKey, ":", spillereneCount);
+
+    gen.nextLine();
+
+    for (auto iSpiller = 0; iSpiller < spillereneCount; ++iSpiller) 
+    {
+        auto[spillereneCountKey, spillereneCount] = gen.nextStringStringPair();
+        IO::printline(spillereneCountKey, ":", spillereneCount);
+
+        auto[guidKey, guid] = gen.nextStringIntPair();
+        IO::printline(guidKey, ":", guid);
+
+        auto[addresseKey, addresse] = gen.nextStringStringPair();
+        IO::printline(addresseKey, ":", addresse);
+    }
+
+    std::cout << "\n\n------ DEBUG decodeIdrettene ------\n\n";
+    
+    return 0;    
 }
 
 
