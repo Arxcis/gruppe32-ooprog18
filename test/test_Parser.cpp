@@ -108,7 +108,7 @@ void test_ParserDecodeAndEncodeIdrettene()
 "          dato: 2013-03-19\n"
 "          resultat: false\n";
 
-	DB::Idrettene idrettene;
+    DB::Idrettene idrettene;
     
     // Test 1: 
     auto err = Parser::decodeIdrettene(idrettene, encodedIdrettene);
@@ -117,7 +117,7 @@ void test_ParserDecodeAndEncodeIdrettene()
 
 
     // Test 2:
-	auto encodedDecodedIdrettene = Parser::encodeIdrettene(idrettene); 
+    auto encodedDecodedIdrettene = Parser::encodeIdrettene(idrettene); 
     Test::assertEqual(encodedDecodedIdrettene, encodedIdrettene, 1, 
                          "(encodedDecodedIdrettene == encodedIdrettene)");
 }
@@ -178,6 +178,105 @@ void test_ParserDecodeAndEncodeSpillerene()
                          "(encodedDecodedSpillerene == encodedSpillerene)");
 }
 
+
+void test_ParserDecodeResultatene() 
+{
+    constexpr char encodedResultatene[] = ""
+"resultateneCount: 2\n"
+"resultatene:\n"
+"\n"
+"- resultat:\n"
+"  idrett: Fotball\n"
+"  divisjon: Eliteserien 2018\n"
+"  hjemmelag: Brann\n"
+"  bortelag: Rosenborg\n"
+"  dato: 2012-03-19\n"
+"  overtid: true\n"
+"  hjemmepoengCount: 4\n"
+"  hjemmepoeng:\n"
+"  - spiller: 0\n"
+"  - spiller: 0\n"
+"  - spiller: 0\n"
+"  - spiller: 1\n"
+"  bortepoengCount: 2\n"
+"  bortepoeng:\n"
+"  - spiller: 0\n"
+"  - spiller: 0\n"
+"\n"
+"- resultat:\n"
+"  idrett: Fotball\n"
+"  divisjon: Premier League 2017/2018\n"
+"  hjemmelag: Manchester United\n"
+"  bortelag: Tottenham\n"
+"  dato: 2012-03-19\n"
+"  overtid: false\n"
+"  hjemmepoengCount: 1\n"
+"  hjemmepoeng:\n"
+"  - spiller: 1\n"
+"  bortepoengCount: 3\n"
+"  bortepoeng:\n"
+"  - spiller: 1\n"
+"  - spiller: 1\n"
+"  - spiller: 0\n";
+
+
+    DB::Idrettene idrettene;
+    
+    // Test 1: 
+    auto err = Parser::decodeResultatene(idrettene, encodedResultatene);
+    Test::assertNot(err, 0, 
+        "auto err = Parser::decodeResultatene()");
+
+
+}
+void test_ParserDecodeDivisjon() 
+{
+
+    constexpr char encodedDivisjon[] = ""
+"divisjon: Eliteserien\n"
+"\n"
+"lageneCount: 2\n"
+"lagene:\n"
+"\n"
+"- lag: Brann\n"
+"  adresse: Bergen, Norway\n"
+"  spillereneCount: 2\n"
+"  spillerene:\n"
+"  - spiller: 0\n"
+"  - spiller: 1\n"
+"\n"
+"- lag: Rosenborg\n"
+"  adresse: Trondheim, Norway \n"
+"  spillereneCount: 2\n"
+"  spillerene: \n"
+"  - spiller: 2\n"
+"  - spiller: 3\n"
+"\n"
+"terminliste:\n"
+"  hjemmelagene:\n"
+"\n"
+"  - hjemmelag: Brann\n"
+"    bortelagene:\n"
+"\n"
+"    - bortelag: Rosenborg\n"
+"      dato: 2012-03-19\n"
+"\n"
+"  - hjemmelag: Rosenborg\n"
+"    bortelagene:\n"
+"\n"
+"    - bortelag: Brann\n"
+"      dato: 2012-03-19\n";
+
+
+    DB::Divisjon divisjon;
+    
+    // Test 1: 
+    auto err = Parser::decodeDivisjon(divisjon, encodedDivisjon);
+    Test::assertNot(err, 0, 
+        "auto err = Parser::decodeDivisjon()");
+
+}
+
 void test_Parser() 
 {
     std::cout << "\n\nRunning test_ParserDecodeAndEncodeIdrettene()\n\n";    
@@ -186,6 +285,15 @@ void test_Parser()
     
     std::cout << "\n\nRunning test_ParserDecodeAndEncodeSpillerene()\n\n";    
     test_ParserDecodeAndEncodeSpillerene();
+
+
+    std::cout << "\n\nRunning test_ParserDecodeResultatene()\n\n";    
+    test_ParserDecodeResultatene();
+
+
+    std::cout << "\n\nRunning test_ParserDecodeDivisjon()\n\n";    
+    test_ParserDecodeDivisjon();
+
 }
 
 }
