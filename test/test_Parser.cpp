@@ -7,7 +7,7 @@ namespace gruppe32
 {
 
 
-bool test_ParserDecodeAndEncodeIdrettene() 
+void test_ParserDecodeAndEncodeIdrettene() 
 {
     constexpr char encodedIdrettene[] = ""
 "idretteneCount: 1\n"
@@ -110,33 +110,25 @@ bool test_ParserDecodeAndEncodeIdrettene()
 
 	DB::Idrettene idrettene;
     
-	if (auto result = Parser::decodeIdrettene(idrettene, encodedIdrettene);
-	result != Parser::SUCCESS) {
-		Test::printFailed(0, "Parser::decodeIdrettene(idrettene, encodedIdrettene)", "Parser::SUCCESS", "Parser::ERROR");
-    }
-	else {
-		Test::printSuccess(0, "decodeIdrettene(idrettene, encodedIdrettene)", "Parser::SUCCESS");
-    }
-	// Check if some data is stored correctly in the datastructure
+    // Test 1: 
+    auto err = Parser::decodeIdrettene(idrettene, encodedIdrettene);
+    Test::assertNot(err, 0, 
+        "auto err = Parser::decodeIdrettene()");
 
-	std::string encodedDecodedIdrettene = Parser::encodeIdrettene(idrettene);
 
-    if (encodedDecodedIdrettene != encodedIdrettene) {
-        Test::printFailed(1, "encodeIdrettene(idrettene) -> string", "encodedDecodedIdrettene == encodeIdrettene", "There was a difference betweeen the two strings");
-		return false;
-	}
-
-    return true;
+    // Test 2:
+	auto encodedDecodedIdrettene = Parser::encodeIdrettene(idrettene); 
+    Test::assertEqual(encodedDecodedIdrettene, encodedIdrettene, 1, 
+                         "(encodedDecodedIdrettene == encodedIdrettene)");
 }
 
-bool test_Parser() 
+void test_Parser() 
 {
-
     std::cout << "\nRunning test_ParserDecodeAndEncodeIdrettene()\n";
-    bool result = test_ParserDecodeAndEncodeIdrettene();
+    
+    test_ParserDecodeAndEncodeIdrettene();
 
     std::cout << '\n';
-    return result;
 }
 
 }
