@@ -212,4 +212,15 @@ auto decodeIdrettene(DB::Idrettene& idrettene, string_view strview) -> Parser::E
 	return 0;
 }
 
+auto encodeSpillerene(const DB::Spillerene& spillerene) -> string 
+{
+    return "";
+}
+auto decodeSpillerene(DB::Spillerene& spillerene, string_view strview) -> Parser::Error
+{
+    return 0;
+}
+
+
+
 }

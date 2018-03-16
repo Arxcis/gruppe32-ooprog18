@@ -122,13 +122,70 @@ void test_ParserDecodeAndEncodeIdrettene()
                          "(encodedDecodedIdrettene == encodedIdrettene)");
 }
 
+
+void test_ParserDecodeAndEncodeSpillerene() 
+{
+
+    constexpr char encodedSpillerene[] = ""
+"sisteguid: 7\n"
+"\n"
+"spillereneCount: 8\n"
+"spillerene:\n"
+"\n"
+"- spiller: Ronny Knarvik\n"
+"  guid: 0\n"
+"  addresse: Bergen, Norway\n"
+"\n"
+"- spiller: Erik Huseklepp\n"
+"  guid: 1\n"
+"  addresse: Bergen, Norway\n"
+"\n"
+"- spiller: Arild Østebø\n"
+"  guid: 2\n"
+"  addresse: Trondheim, Norway\n"
+"\n"
+"- spiller: Andre Hansen\n"
+"  guid: 3\n"
+"  addresse: Trondheim, Norway\n"
+"\n"
+"- spiller: Alexis Sanchez\n"
+"  guid: 4\n"
+"  addresse: Manchester, United Kingdom\n"
+"\n"
+"- spiller: Paul Pogba\n"
+"  guid: 5\n"
+"  addresse: Manchester, United Kingdom\n"
+"\n"
+"- spiller: Harry Kane\n"
+"  guid: 6\n"
+"  addresse: London, United Kingdom\n"
+"\n"
+"- spiller: Son Hueng-min\n"
+"  guid: 7\n"
+"  addresse: London, United Kingdom\n";
+    
+    DB::Spillerene spillerene;
+
+    // Test 1: 
+    auto err = Parser::decodeSpillerene(spillerene, encodedSpillerene);
+    Test::assertNot(err, 0, 
+        "auto err = Parser::decodeSpillerene()");
+
+
+    // Test 2:
+    auto encodedDecodedSpillerene = Parser::encodeSpillerene(spillerene); 
+    Test::assertEqual(encodedDecodedSpillerene, encodedSpillerene, 1, 
+                         "(encodedDecodedSpillerene == encodedSpillerene)");
+}
+
 void test_Parser() 
 {
-    std::cout << "\nRunning test_ParserDecodeAndEncodeIdrettene()\n";
-    
+    std::cout << "\n\nRunning test_ParserDecodeAndEncodeIdrettene()\n\n";    
     test_ParserDecodeAndEncodeIdrettene();
 
-    std::cout << '\n';
+    
+    std::cout << "\n\nRunning test_ParserDecodeAndEncodeSpillerene()\n\n";    
+    test_ParserDecodeAndEncodeSpillerene();
 }
 
 }
