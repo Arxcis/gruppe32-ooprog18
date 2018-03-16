@@ -6,7 +6,7 @@ namespace gruppe32
 {
 
 
-bool test_ValidIsAsciiChar()
+void test_ValidIsAsciiChar()
 {
     std::vector<Test::Testdata> testTable = 
     {
@@ -27,31 +27,25 @@ bool test_ValidIsAsciiChar()
 
 	std::size_t count = 0;
 
+    using std::string;
+
     for(auto [input, expectedResult, msg] : testTable) 
     {   
-        if (const auto result = Valid::isAsciiChar(input); result != expectedResult) {
-            Test::printFailed(count, msg, expectedResult ? "true" : "false", result? "true":"false");
-        } 
-        else {
-            Test::printSuccess(count, msg, expectedResult ? "true" : "false");
-        }
+
+        auto maybeTrue = Valid::isAsciiChar(input) == expectedResult;
+        Test::assertTrue(maybeTrue, count, "Valid::isAsciiChar("+input+")");
         count++;
     }
-
-    return true;
 }
 
 
-bool test_Valid() 
+void test_Valid() 
 {
     using namespace gruppe32;
-    int failcount = 0;
   
 	std::cout << "\nRunning test_ValidIsAsciiChar()\n";
-    test_ValidIsAsciiChar()? failcount = 0: failcount += 1;
-
+    test_ValidIsAsciiChar();
     std::cout << '\n';
-    return failcount == 0;
 }
 
 }
