@@ -9,25 +9,43 @@
 #include <gruppe32/IO.hpp>
 
 /// <summary> Parsing strings to internal datastructure and vice versa </summary>
-namespace gruppe32::Parser
+    namespace gruppe32::Parser
 {
 
 
 using std::size_t;
 using std::string;
-using std::make_pair;
 using std::pair;
 using std::string_view;
 
-struct LineGenerator 
+struct KeyValueGenerator 
 {
-    std::string_view strview;
-    std::size_t startofline =  0;
+    string_view strview;
+    size_t startofline =  0;
     
-    auto nextLine() -> std::string;
+    auto nextLine() -> string;
     auto nextStringStringPair() -> pair<string,string>;
     auto nextStringUintPair() -> pair<string, size_t>;
-    auto nextStringBoolPair() -> pair<string,bool>;
+    auto nextStringBoolPair() -> pair<string, bool>;
+};
+
+
+using std::string;
+using std::stringstream;
+using std::size_t;
+
+struct LinePrinter {
+
+    string outString = "";
+
+    void lineEmpty();
+    void lineString(const string key, const size_t indentCount);
+    void lineStringString(const string key, const string value, const size_t indentCount);
+    void lineStringUint(const string key, const size_t value, const size_t indentCount);
+    void lineStringBool(const string key, const bool value, const size_t indentCount);
+    void lineDashStringString(const string key, const string value, const size_t indentCount);
+    void lineDashStringUint(const string key, const size_t value, const size_t indentCount); 
+    auto getString() -> string;
 };
 
 

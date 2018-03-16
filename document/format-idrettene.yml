@@ -59,7 +59,7 @@ idrettene:
     - lag: Manchester United
       adresse: Machester, United Kingdom
       spillereneCount: 2
-      spillerene: 
+      spillerene:
       - spiller: 4
       - spiller: 5
 

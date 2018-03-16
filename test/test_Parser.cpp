@@ -3,13 +3,15 @@
 #include <gruppe32/DB.hpp>
 #include <gruppe32/IO.hpp>
 
+#include <cassert>
+#include <cstring>
+
 namespace gruppe32
 {
 
-
 void test_ParserDecodeAndEncodeIdrettene() 
 {
-    constexpr char encodedIdrettene[] = ""
+	constexpr char encodedIdrettene[] = ""
 "idretteneCount: 1\n"
 "idrettene:\n"
 "\n"
@@ -30,7 +32,7 @@ void test_ParserDecodeAndEncodeIdrettene()
 "      - spiller: 1\n"
 "\n"
 "    - lag: Rosenborg\n"
-"      adresse: Trondheim, Norway \n"
+"      adresse: Trondheim, Norway\n"
 "      spillereneCount: 2\n"
 "      spillerene:\n"
 "      - spiller: 2\n"
@@ -46,14 +48,14 @@ void test_ParserDecodeAndEncodeIdrettene()
 "          dato: 2012-03-19\n"
 "          resultat:\n"
 "            overtid: true\n"
-"            hjemmepoengCount: 4\n"
-"            hjemmepoeng:\n"
+"            hjemmeScorereneCount: 4\n"
+"            hjemmeScorerene:\n"
 "            - spiller: 0\n"
 "            - spiller: 0\n"
 "            - spiller: 0\n"
 "            - spiller: 1\n"
-"            bortepoengCount: 2\n"
-"            bortepoeng:\n"
+"            borteScorereneCount: 2\n"
+"            borteScorerene:\n"
 "            - spiller: 0\n"
 "            - spiller: 0\n"
 "\n"
@@ -70,14 +72,14 @@ void test_ParserDecodeAndEncodeIdrettene()
 "\n"
 "    - lag: Manchester United\n"
 "      adresse: Machester, United Kingdom\n"
-"      spillereneCount: 2 \n"
-"      spillerene: \n"
+"      spillereneCount: 2\n"
+"      spillerene:\n"
 "      - spiller: 4\n"
 "      - spiller: 5\n"
 "\n"
 "    - lag: Tottenham Hotspurs\n"
 "      adresse: London, United Kingdom\n"
-"      spillereneCount: 2 \n"
+"      spillereneCount: 2\n"
 "      spillerene:\n"
 "      - spiller: 6\n"
 "      - spiller: 7\n"
@@ -92,11 +94,11 @@ void test_ParserDecodeAndEncodeIdrettene()
 "          dato: 2012-03-19\n"
 "          resultat:\n"
 "            overtid: false\n"
-"            hjemmepoengCount: 1\n"
-"            hjemmepoeng:\n"
+"            hjemmeScorereneCount: 1\n"
+"            hjemmeScorerene:\n"
 "            - spiller: 1\n"
-"            bortepoengCount: 3\n"
-"            bortepoeng:\n"
+"            borteScorereneCount: 3\n"
+"            borteScorerene:\n"
 "            - spiller: 1\n"
 "            - spiller: 1\n"
 "            - spiller: 0\n"
@@ -108,17 +110,37 @@ void test_ParserDecodeAndEncodeIdrettene()
 "          dato: 2013-03-19\n"
 "          resultat: false\n";
 
+
     DB::Idrettene idrettene;
     
-    // Test 1: 
+    // Test 0: 
     auto err = Parser::decodeIdrettene(idrettene, encodedIdrettene);
     Test::assertNot(err, 0, 
         "auto err = Parser::decodeIdrettene()");
 
 
-    // Test 2:
-    auto encodedDecodedIdrettene = Parser::encodeIdrettene(idrettene); 
-    Test::assertEqual(encodedDecodedIdrettene, encodedIdrettene, 1, 
+    auto encodedDecodedIdrettene = Parser::encodeIdrettene(idrettene);
+
+	std::cout << "string compare --- > " << strcmp(encodedIdrettene, encodedDecodedIdrettene.c_str()) << '\n';
+    std::cout << "STRING COMPARE --- > " << encodedDecodedIdrettene.compare(encodedIdrettene) << "\n";
+    
+
+    //
+    // Testing character by character
+    // 
+	for (std::size_t i = 0; i < encodedDecodedIdrettene.size(); ++i) 
+	{
+		auto c1 = encodedDecodedIdrettene[i];
+		auto c2 = encodedIdrettene[i];
+		if (c1 != c2) {
+			std::cout << "\nc1 = " << ((c1 == '\n')? "\\n":"SOMETHING ELSE") << "  c2 = " << ((c2 == '\n') ? "\\n" : "SOMETHING ELSE") << '\n';
+			assert(false);
+		}
+		std::cout << c1;
+	}
+
+    // Test 1:
+	Test::assertEqual(encodedDecodedIdrettene, encodedIdrettene, 1, 
                          "(encodedDecodedIdrettene == encodedIdrettene)");
 }
 

@@ -9,7 +9,7 @@
 namespace gruppe32::Parser 
 {
 
-auto LineGenerator::nextLine() -> std::string
+auto KeyValueGenerator::nextLine() -> std::string
 {
     auto endofline = strview.find('\n', startofline);
     auto diff = endofline-startofline;
@@ -39,7 +39,7 @@ auto LineGenerator::nextLine() -> std::string
     return line;
 };
 
-auto LineGenerator::nextStringStringPair() -> pair<string,string>
+auto KeyValueGenerator::nextStringStringPair() -> pair<string,string>
 {
     auto line = nextLine();
 
@@ -65,15 +65,14 @@ auto LineGenerator::nextStringStringPair() -> pair<string,string>
     return pair<string,string>{ key, valueString };
 };
 
-using std::size_t;
 
-auto LineGenerator::nextStringUintPair() -> pair<string, size_t>
+auto KeyValueGenerator::nextStringUintPair() -> pair<string, size_t>
 {
     auto[key, valueString] = nextStringStringPair();
     return pair<string, size_t>{key, std::stoi(valueString)};
 };
 
-auto LineGenerator::nextStringBoolPair() -> pair<string,bool>
+auto KeyValueGenerator::nextStringBoolPair() -> pair<string,bool>
 {
     auto[key, valueString] = nextStringStringPair();
     bool trueFalse;
@@ -94,96 +93,155 @@ auto LineGenerator::nextStringBoolPair() -> pair<string,bool>
 };
 
 
-using std::string;
-using std::stringstream;
-using std::size_t;
+void LinePrinter::lineEmpty()
+{
+    outString += "\n";
+}
 
-struct StringPrinter {
+void LinePrinter::lineString(const string key, const size_t indentCount)
+{
+    for (size_t iIndent = 0; iIndent < indentCount; ++iIndent) {
+        outString += "  ";
+    }
+    outString += key;
+    outString += ":\n";
+}
 
-    string outString = "";
+void LinePrinter::lineStringString(const string key, const string value, const size_t indentCount)
+{
+    for (size_t iIndent = 0; iIndent < indentCount; ++iIndent) {
+        outString += "  ";
+    }
+    outString += key;
+    outString += ": ";
+    outString += value;
+    outString += "\n";
+}
 
-    void newLineEmpty()
-    {
-        outString += "\n";
+void LinePrinter::lineStringUint(const string key, const size_t value, const size_t indentCount)
+{
+    stringstream ss;
+    ss << value;
+    lineStringString(key, ss.str(), indentCount);
+}
+
+void LinePrinter::lineStringBool(const string key, const bool value, const size_t indentCount)
+{
+    string valueBool = (value? "true":"false");
+    lineStringString(key, valueBool, indentCount);
+}
+
+void LinePrinter::lineDashStringString(const string key, const string value, const size_t indentCount)
+{
+    for (size_t iIndent = 0; iIndent < indentCount; ++iIndent) {
+        outString += "  ";
     }
 
-    void newLineKey(const string key, const size_t indentCount)
-    {
-        for (auto iIndent = 0; iIndent < indentCount; ++iIndent) {
-            outString += "  ";
-        }
-        outString += key;
-        outString += ":\n";
-    }
+    outString += "- ";
+    outString += key;
+    outString += ": ";
+    outString += value;
+    outString += "\n";
+}
 
-    void newLineKeyValue(const string key, const string value, const size_t indentCount)
-    {
-        for (auto iIndent = 0; iIndent < indentCount; ++iIndent) {
-            outString += "  ";
-        }
-        outString += key;
-        outString += ": ";
-        outString += value;
-        outString += "\n";
-    }
+void LinePrinter::lineDashStringUint(const string key, const size_t value, const size_t indentCount) 
+{
+    stringstream ss;
+    ss << value;
+    lineDashStringString(key, ss.str(), indentCount);
+}
 
-    void newLineDashKeyValue(const string key, const string value, const size_t indentCount)
-    {
-        for (auto iIndent = 0; iIndent < indentCount; ++iIndent) {
-            outString += "  ";
-        }
-        outString += "- ";
-        outString += key;
-        outString += ": ";
-        outString += value;
-        outString += "\n";
-    }
-
-    auto getString() -> string {
-        return outString;
-    }
-};
+auto LinePrinter::getString() -> string {
+    return outString;
+}
 
 auto encodeIdrettene(DB::Idrettene& idrettene) -> string 
 {
-    using std::stringstream;
-    stringstream ss;
-
     IO::printline("\n\n------ DEBUG encodeIdrettene ------\n\n");
 
-    StringPrinter printer;
-
+    LinePrinter print;
     auto idretteneCount = idrettene.data.noOfElements();
 
-    ss << idretteneCount;
-    printer.newLineKeyValue("idretteneCount", ss.str(), 0);
-    printer.newLineKey("idrettene", 0);
+    print.lineStringUint("idretteneCount", idretteneCount, 0);
+    print.lineString(    "idrettene", 0);
 
-    for (auto iIdrett = 0; iIdrett < idretteneCount; ++iIdrett) 
+    for (auto iIdrett = 1; iIdrett <= idretteneCount; ++iIdrett) 
     {
         auto idrett = (DB::Idrett*)(idrettene.data.removeNo(iIdrett));
 
-        printer.newLineEmpty();
-        printer.newLineDashKeyValue("idrett", idrett->name, 0);
+        print.lineEmpty();
+        print.lineDashStringString("idrett", idrett->name, 0);
+        print.lineStringUint(      "tabelltype", idrett->tabell, 1);
+        print.lineStringUint(      "divisjoneneCount", idrett->divisjonene.size(), 1);
+        print.lineString(         "divisjonene", 1);
 
-        ss.str("");
-        ss << idrett->tabell;
-        printer.newLineKeyValue("tabelltype", ss.str(), 1);
+        for (const auto& divisjon: idrett->divisjonene) 
+        {
+            print.lineEmpty();
+            print.lineDashStringString("divisjon", divisjon.navn, 1);
+            print.lineStringUint(      "lageneCount", divisjon.lagene.size(), 2);
+            print.lineString(          "lagene", 2);
 
-        ss.str("");
-        ss << idrett->divisjonene.size();
-        printer.newLineKeyValue("divisjoneneCount", ss.str(), 1);
+            for (const auto& lag: divisjon.lagene) 
+            {
+                print.lineEmpty();
+                print.lineDashStringString("lag", lag.navn, 2);
+                print.lineStringString(    "adresse", lag.adresse, 3);
+                print.lineStringUint(      "spillereneCount", lag.spillerene.size(), 3);
+                print.lineString(          "spillerene", 3);
+                
+                for (const auto spiller: lag.spillerene) {
+                    print.lineDashStringUint("spiller", spiller, 3);
+                }
+            }
 
+            print.lineEmpty();
+            print.lineString("terminliste", 2);
+            print.lineString("hjemmelagene", 3);
+
+            for (const auto& [hjemmelag, bortelagene]: divisjon.terminListe) 
+            {
+                print.lineEmpty();
+                print.lineDashStringString("hjemmelag", hjemmelag, 3);
+                print.lineString(      "bortelagene", 4);
+
+                for (const auto& [bortelag, resultat]: bortelagene) 
+                {
+                    print.lineEmpty();
+                    print.lineDashStringString("bortelag", bortelag, 4);
+                    print.lineStringString("dato", resultat.dato, 5);
+                    
+                    if (!resultat.spilt) 
+                    {
+                        print.lineStringBool("resultat", false, 5);
+                    }
+                    else 
+                    {
+                        print.lineString("resultat", 5);
+                        print.lineStringBool("overtid", resultat.overtid, 6);
+
+                        print.lineStringUint("hjemmeScorereneCount", resultat.hjemmeScorerene.size(), 6);
+                        print.lineString("hjemmeScorerene", 6);
+                        for (const auto& spiller: resultat.hjemmeScorerene) 
+                        {
+                            print.lineDashStringUint("spiller", spiller, 6);
+                        }
+                        
+                        print.lineStringUint("borteScorereneCount", resultat.borteScorerene.size(), 6);
+                        print.lineString("borteScorerene", 6);
+                        for (const auto& spiller: resultat.borteScorerene) 
+                        {
+                            print.lineDashStringUint("spiller", spiller, 6);
+                        }
+                    }
+                }
+            }
+        }
         idrettene.data.add(idrett);
     }
-
-    auto outString = printer.getString();
-
-    std::cout << outString;
-
     IO::printline("\n\n------ DEBUG encodeIdrettene ------\n\n");
 
-    return outString;
+    return print.getString();
 }
 
 
@@ -191,14 +249,14 @@ auto decodeIdrettene(DB::Idrettene& idrettene, string_view strview) -> Parser::E
 {
     //IO::printline("\n\n------ DEBUG decodeIdrettene ------\n\n");
 
-    auto gen = LineGenerator{strview, 0};
+    auto gen = KeyValueGenerator{strview, 0};
 
     auto[idretteneCountkey, idretteneCount] = gen.nextStringUintPair();
     //IO::printline("idretteneCount:", idretteneCount);
 
     gen.nextLine(); // ignore idrettene:
 
-    for (auto iIdrett = 0; iIdrett < idretteneCount; ++iIdrett) 
+    for (size_t iIdrett = 0; iIdrett < idretteneCount; ++iIdrett)
     {
 
         auto[idrettKey, idrettNavn] = gen.nextStringStringPair();
@@ -218,7 +276,7 @@ auto decodeIdrettene(DB::Idrettene& idrettene, string_view strview) -> Parser::E
 
         gen.nextLine(); // ignore divisjonene:
 
-        for (auto iDivisjon = 0; iDivisjon < divisjoneneCount; ++iDivisjon) 
+        for (size_t iDivisjon = 0; iDivisjon < divisjoneneCount; ++iDivisjon)
         {
             auto[divisjonkey, divisjonNavn] = gen.nextStringStringPair();
             //IO::printline(divisjonkey, ":", divisjonNavn);
@@ -233,7 +291,7 @@ auto decodeIdrettene(DB::Idrettene& idrettene, string_view strview) -> Parser::E
 
             gen.nextLine(); // ignore lagene:
 
-            for (auto iLag = 0; iLag < lageneCount; ++iLag) 
+            for (size_t iLag = 0; iLag < lageneCount; ++iLag)
             {
                 auto[lagkey, lagName] = gen.nextStringStringPair();
                 //IO::printline(lagkey, ":", lagName); 
@@ -251,7 +309,7 @@ auto decodeIdrettene(DB::Idrettene& idrettene, string_view strview) -> Parser::E
 
                 gen.nextLine(); // ignore spillerene:
                 
-                for (auto iSpiller = 0; iSpiller < spillereneCount; ++iSpiller) 
+                for (size_t iSpiller = 0; iSpiller < spillereneCount; ++iSpiller)
                 {
 
                     auto[spillerkey, spiller] = gen.nextStringUintPair();
@@ -266,7 +324,7 @@ auto decodeIdrettene(DB::Idrettene& idrettene, string_view strview) -> Parser::E
             gen.nextLine(); // ignore terminliste:
             gen.nextLine(); // ignore hjemmelagene:
 
-            for (auto iHjemmelag = 0; iHjemmelag < lageneCount; ++iHjemmelag) 
+            for (size_t iHjemmelag = 0; iHjemmelag < lageneCount; ++iHjemmelag)
             {
 
                 auto[hjemmelagkey, hjemmelag] = gen.nextStringStringPair();
@@ -275,7 +333,7 @@ auto decodeIdrettene(DB::Idrettene& idrettene, string_view strview) -> Parser::E
 
                 gen.nextLine(); // ignore bortelagene:
 
-                for (auto iBortelag = 0; iBortelag < lageneCount-1; ++iBortelag) 
+                for (size_t iBortelag = 0; iBortelag < lageneCount-1; ++iBortelag)
                 {
                     auto[bortelagkey, bortelag] = gen.nextStringStringPair();
                     //IO::printline(bortelagkey, ":", bortelag);  
@@ -299,11 +357,12 @@ auto decodeIdrettene(DB::Idrettene& idrettene, string_view strview) -> Parser::E
                         auto[hjemmepoengCountkey, hjemmepoengCount] = gen.nextStringUintPair();
                         //IO::printline(hjemmepoengCountkey, ":", hjemmepoengCount);
 
+                        resultat.spilt = true;
                         resultat.overtid = overtid;
 
                         gen.nextLine(); // ignore hjemmepoeng:
 
-                        for (auto iHjemmepoeng = 0; iHjemmepoeng < hjemmepoengCount; ++iHjemmepoeng) 
+                        for (size_t iHjemmepoeng = 0; iHjemmepoeng < hjemmepoengCount; ++iHjemmepoeng)
                         {
                             auto[spillerkey, spiller] = gen.nextStringUintPair();
                             //IO::printline(spillerkey, ":", spiller);
@@ -316,7 +375,7 @@ auto decodeIdrettene(DB::Idrettene& idrettene, string_view strview) -> Parser::E
 
                         gen.nextLine(); // ignore 'bortepoeng:'
 
-                        for (auto iBortepoeng = 0; iBortepoeng < bortepoengCount; ++iBortepoeng) 
+                        for (size_t iBortepoeng = 0; iBortepoeng < bortepoengCount; ++iBortepoeng)
                         {
                             auto[spillerkey, spiller] = gen.nextStringUintPair();
                             //IO::printline(spillerkey, ":", spiller);  
@@ -343,7 +402,7 @@ auto decodeSpillerene(DB::Spillerene& spillerene, string_view strview) -> Parser
 {
     //IO::printline("\n\n------ DEBUG decodeSpillerene ------\n\n");
  
-    auto gen = LineGenerator{strview};
+    auto gen = KeyValueGenerator{strview};
 
 
     auto[sisteguidKey, sisteguid] = gen.nextStringUintPair();
@@ -354,7 +413,7 @@ auto decodeSpillerene(DB::Spillerene& spillerene, string_view strview) -> Parser
 
     gen.nextLine(); // ignore 'spillerene:'
 
-    for (auto iSpiller = 0; iSpiller < spillereneCount; ++iSpiller) 
+    for (size_t iSpiller = 0; iSpiller < spillereneCount; ++iSpiller)
     {
         auto[spillereneCountKey, spillereneCount] = gen.nextStringStringPair();
         //IO::printline(spillereneCountKey, ":", spillereneCount);
@@ -375,14 +434,14 @@ auto decodeResultatene(DB::Idrettene& idrettene, string_view strview) -> Parser:
 
     //IO::printline("\n\n------ DEBUG decodeResultatene ------\n\n");
  
-    auto gen = LineGenerator{strview};
+    auto gen = KeyValueGenerator{strview};
 
     auto[resultateneCountKey, resultateneCount] = gen.nextStringUintPair();
     //IO::printline(resultateneCountKey, ":", resultateneCount);
 
     gen.nextLine(); // ignore 'resultatene:''
 
-    for (auto iResultat = 0; iResultat < resultateneCount; ++iResultat) 
+    for (size_t iResultat = 0; iResultat < resultateneCount; ++iResultat)
     {
 
         gen.nextLine(); // ignore '- resultat:'
@@ -411,7 +470,7 @@ auto decodeResultatene(DB::Idrettene& idrettene, string_view strview) -> Parser:
 
         gen.nextLine(); // ignore 'hjemmepoeng:'
 
-        for (auto iHjemmepoeng = 0; iHjemmepoeng < hjemmepoengCount; ++iHjemmepoeng) 
+        for (size_t iHjemmepoeng = 0; iHjemmepoeng < hjemmepoengCount; ++iHjemmepoeng)
         {
             auto[spillerkey, spiller] = gen.nextStringUintPair();
             //IO::printline(spillerkey, ":", spiller);  
@@ -422,11 +481,11 @@ auto decodeResultatene(DB::Idrettene& idrettene, string_view strview) -> Parser:
 
         gen.nextLine(); // ignore 'bortepoeng:'
 
-        for (auto iBortepoeng = 0; iBortepoeng < bortepoengCount; ++iBortepoeng) 
-        {
-            auto[spillerkey, spiller] = gen.nextStringUintPair();
-            //IO::printline(spillerkey, ":", spiller);  
-        }
+for (size_t iBortepoeng = 0; iBortepoeng < bortepoengCount; ++iBortepoeng)
+{
+    auto[spillerkey, spiller] = gen.nextStringUintPair();
+    //IO::printline(spillerkey, ":", spiller);  
+}
 
     }
     //IO::printline("\n\n------ DEBUG decodeResultatene ------\n\n");
@@ -439,7 +498,7 @@ auto decodeDivisjon(DB::Divisjon& divisjon, string_view strview) -> Parser::Erro
     //IO::printline("\n\n------ DEBUG decodeDivisjon ------\n\n");
 
 
-    auto gen = LineGenerator{strview};
+    auto gen = KeyValueGenerator{strview};
 
     auto[divisjonkey, divisjonValue] = gen.nextStringStringPair();
     //IO::printline(divisjonkey, ":", divisjonValue);
@@ -449,7 +508,7 @@ auto decodeDivisjon(DB::Divisjon& divisjon, string_view strview) -> Parser::Erro
 
     gen.nextLine(); // ignore lagene:
 
-    for (auto iLag = 0; iLag < lageneCount; ++iLag) 
+    for (size_t iLag = 0; iLag < lageneCount; ++iLag) 
     {
         auto[lagkey, lag] = gen.nextStringStringPair();
         //IO::printline(lagkey, ":", lag); 
@@ -463,7 +522,7 @@ auto decodeDivisjon(DB::Divisjon& divisjon, string_view strview) -> Parser::Erro
             
         gen.nextLine(); // ignore spillerene:
             
-        for (auto iSpiller = 0; iSpiller < spillereneCount; ++iSpiller) 
+        for (size_t iSpiller = 0; iSpiller < spillereneCount; ++iSpiller)
         {
             auto[spillerkey, spiller] = gen.nextStringUintPair();
             //IO::printline(spillerkey, ":", spiller);         
@@ -473,7 +532,7 @@ auto decodeDivisjon(DB::Divisjon& divisjon, string_view strview) -> Parser::Erro
     gen.nextLine(); // ignore terminliste:
     gen.nextLine(); // ignore hjemmelagene:
 
-    for (auto iHjemmelag = 0; iHjemmelag < lageneCount; ++iHjemmelag) 
+    for (size_t iHjemmelag = 0; iHjemmelag < lageneCount; ++iHjemmelag)
     {
 
         auto[hjemmelagkey, hjemmelag] = gen.nextStringStringPair();
@@ -481,7 +540,7 @@ auto decodeDivisjon(DB::Divisjon& divisjon, string_view strview) -> Parser::Erro
 
         gen.nextLine(); // ignore bortelagene:
 
-        for (auto iBortelag = 0; iBortelag < lageneCount-1; ++iBortelag) 
+        for (size_t iBortelag = 0; iBortelag < lageneCount-1; ++iBortelag)
         {
             auto[bortelagkey, bortelag] = gen.nextStringStringPair();
             //IO::printline(bortelagkey, ":", bortelag);  
