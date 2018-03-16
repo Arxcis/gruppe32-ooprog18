@@ -3,13 +3,33 @@
 
 #include <iostream>
 #include <string>
+#include <cassert>
 #include <string_view>
 
 #include <gruppe32/DB.hpp>
+#include <gruppe32/IO.hpp>
 
 /// <summary> Parsing strings to internal datastructure and vice versa </summary>
 namespace gruppe32::Parser
 {
+
+
+using std::size_t;
+using std::string;
+using std::make_pair;
+using std::pair;
+using std::string_view;
+
+struct LineGenerator 
+{
+    std::string_view strview;
+    std::size_t startofline =  0;
+    
+    auto nextLine() -> std::string;
+    auto nextStringStringPair() -> pair<string,string>;
+    auto nextStringIntPair() -> pair<string,int>;
+    auto nextStringBoolPair() -> pair<string,bool>;
+};
 
 
 using std::size_t;
@@ -78,6 +98,7 @@ auto decodeResultatene(DB::Idrettene& idrettene, string_view strview) -> Parser:
 /// <summary> Decode-only. </summary>
 /// <param name="strview"> example found in format-divisjon.yml </param name="strview">
 auto decodeDivisjon(DB::Divisjon& divisjon, string_view strview) -> Parser::Status; 
+
 
 
 } // end namespace Parse
