@@ -1,6 +1,7 @@
 project(gruppe32)
 cmake_minimum_required(VERSION 3.8 FATAL_ERROR)
 
+set(CMAKE_BUILD_TYPE Debug)
 
 # Application
 add_executable(gruppe32 "${CMAKE_SOURCE_DIR}/src/main.cpp")
