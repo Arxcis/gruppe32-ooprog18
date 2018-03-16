@@ -114,14 +114,14 @@ bool test_ParserDecodeAndEncodeIdrettene()
 		Test::printFailed(0, "Parser::decodeIdrettene(idrettene, encodedIdrettene)", "Parser::SUCCESS", "Parser::ERROR");
     }
 	else {
-		Test::printSuccess(0, "Parser::decodeIdrettene(idrettene, encodedIdrettene)", "Parser::SUCCESS");
+		Test::printSuccess(0, "decodeIdrettene(idrettene, encodedIdrettene)", "Parser::SUCCESS");
     }
 	// Check if some data is stored correctly in the datastructure
 
 	std::string encodedDecodedIdrettene = Parser::encodeIdrettene(idrettene);
 
     if (encodedDecodedIdrettene != encodedIdrettene) {
-        Test::printFailed(1, "Parser::decodeIdrettene(idrettene, encodedIdrettene)", "encodedDecodedIdrettene == encodeIdrettene", "There was a difference betweeen the two strings");
+        Test::printFailed(1, "encodeIdrettene(idrettene) -> string", "encodedDecodedIdrettene == encodeIdrettene", "There was a difference betweeen the two strings");
 		return false;
 	}
 
