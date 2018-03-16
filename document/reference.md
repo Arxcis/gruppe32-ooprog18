@@ -1,5 +1,8 @@
 ## Referanseliste
 
+### 2018-03-16
+* concatenate stack overflow - https://stackoverflow.com/a/18892355/6292603
+
 ### 2018-03-15
 * std::string_view - http://en.cppreference.com/w/cpp/string/basic_string_view
 * .NET XML reference - http://www.anotherchris.net/net/net-xml-comment-cheat-sheet/
