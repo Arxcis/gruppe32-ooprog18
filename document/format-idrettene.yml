@@ -18,7 +18,7 @@ idrettene:
       - spiller: 1
 
     - lag: Rosenborg
-      adresse: Trondheim, Norway 
+      adresse: Trondheim, Norway
       spillereneCount: 2
       spillerene:
       - spiller: 2
@@ -58,14 +58,14 @@ idrettene:
 
     - lag: Manchester United
       adresse: Machester, United Kingdom
-      spillereneCount: 2 
+      spillereneCount: 2
       spillerene: 
       - spiller: 4
       - spiller: 5
 
     - lag: Tottenham Hotspurs
       adresse: London, United Kingdom
-      spillereneCount: 2 
+      spillereneCount: 2
       spillerene:
       - spiller: 6
       - spiller: 7

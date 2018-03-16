@@ -7,7 +7,7 @@ using std::string_view;
 
 auto encodeIdrettene(const DB::Idrettene& idrettene) -> string 
 {
-	return Parser::SUCCESS;
+	return "";
 }
 
 auto decodeIdrettene(DB::Idrettene& idrettene, string_view strview) -> Parser::Status 

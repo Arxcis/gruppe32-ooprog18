@@ -38,8 +38,10 @@ set_target_properties(testgruppe32
 )
 
 target_sources(testgruppe32
+    PRIVATE "${CMAKE_SOURCE_DIR}/src/ListTool2b.cpp"
     PRIVATE "${CMAKE_SOURCE_DIR}/src/Valid.cpp"
     PRIVATE "${CMAKE_SOURCE_DIR}/src/Parser.cpp"
+    PRIVATE "${CMAKE_SOURCE_DIR}/src/DB.cpp"
 )
 
 target_include_directories(testgruppe32
