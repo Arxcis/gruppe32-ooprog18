@@ -4,6 +4,7 @@
 #include <iomanip>
 #include <utility>
 #include <map>
+#include <sstream>
 
 namespace gruppe32::Parser 
 {
@@ -93,9 +94,96 @@ auto LineGenerator::nextStringBoolPair() -> pair<string,bool>
 };
 
 
-auto encodeIdrettene(const DB::Idrettene& idrettene) -> string 
+using std::string;
+using std::stringstream;
+using std::size_t;
+
+struct StringPrinter {
+
+    string outString = "";
+
+    void newLineEmpty()
+    {
+        outString += "\n";
+    }
+
+    void newLineKey(const string key, const size_t indentCount)
+    {
+        for (auto iIndent = 0; iIndent < indentCount; ++iIndent) {
+            outString += "  ";
+        }
+        outString += key;
+        outString += ":\n";
+    }
+
+    void newLineKeyValue(const string key, const string value, const size_t indentCount)
+    {
+        for (auto iIndent = 0; iIndent < indentCount; ++iIndent) {
+            outString += "  ";
+        }
+        outString += key;
+        outString += ": ";
+        outString += value;
+        outString += "\n";
+    }
+
+    void newLineDashKeyValue(const string key, const string value, const size_t indentCount)
+    {
+        for (auto iIndent = 0; iIndent < indentCount; ++iIndent) {
+            outString += "  ";
+        }
+        outString += "- ";
+        outString += key;
+        outString += ": ";
+        outString += value;
+        outString += "\n";
+    }
+
+    auto getString() -> string {
+        return outString;
+    }
+};
+
+auto encodeIdrettene(DB::Idrettene& idrettene) -> string 
 {
-    return "";
+    using std::stringstream;
+    stringstream ss;
+
+    IO::printline("\n\n------ DEBUG encodeIdrettene ------\n\n");
+
+    StringPrinter printer;
+
+    auto idretteneCount = idrettene.data.noOfElements();
+
+    ss << idretteneCount;
+    printer.newLineKeyValue("idretteneCount", ss.str(), 0);
+    printer.newLineKey("idrettene", 0);
+
+    for (auto iIdrett = 0; iIdrett < idretteneCount; ++iIdrett) 
+    {
+        auto idrett = (DB::Idrett*)(idrettene.data.removeNo(iIdrett));
+
+        printer.newLineEmpty();
+        printer.newLineDashKeyValue("idrett", idrett->name, 0);
+
+        ss.str("");
+        ss << idrett->tabell;
+        printer.newLineKeyValue("tabelltype", ss.str(), 1);
+
+        ss.str("");
+        ss << idrett->divisjonene.size();
+        printer.newLineKeyValue("divisjoneneCount", ss.str(), 1);
+
+        idrettene.data.add(idrett);
+    }
+
+    auto outString = printer.getString();
+
+    std::cout << outString;
+
+    IO::printline("\n\n------ DEBUG encodeIdrettene ------\n\n");
+
+    return outString;
 }
 
 
@@ -240,12 +328,14 @@ auto decodeIdrettene(DB::Idrettene& idrettene, string_view strview) -> Parser::E
             }
             idrett->divisjonene.push_back(divisjon);
         }
+        // Pushing idrett into ListTool
+        idrettene.data.add(idrett);
     }
     //IO::printline("\n\n------ DEBUG decodeIdrettene ------\n\n");
 	return 0;
 }
 
-auto encodeSpillerene(const DB::Spillerene& spillerene) -> string 
+auto encodeSpillerene(DB::Spillerene& spillerene) -> string 
 {
     return "";
 }
@@ -375,7 +465,6 @@ auto decodeDivisjon(DB::Divisjon& divisjon, string_view strview) -> Parser::Erro
             
         for (auto iSpiller = 0; iSpiller < spillereneCount; ++iSpiller) 
         {
-
             auto[spillerkey, spiller] = gen.nextStringUintPair();
             //IO::printline(spillerkey, ":", spiller);         
         }
@@ -390,7 +479,6 @@ auto decodeDivisjon(DB::Divisjon& divisjon, string_view strview) -> Parser::Erro
         auto[hjemmelagkey, hjemmelag] = gen.nextStringStringPair();
         //IO::printline(hjemmelagkey, ":", hjemmelag);  
 
-
         gen.nextLine(); // ignore bortelagene:
 
         for (auto iBortelag = 0; iBortelag < lageneCount-1; ++iBortelag) 
@@ -402,7 +490,6 @@ auto decodeDivisjon(DB::Divisjon& divisjon, string_view strview) -> Parser::Erro
             //IO::printline(datokey, ":", dato);  
 
         }
-
     }
     //IO::printline("\n\n------ DEBUG decodeDivisjon ------\n\n");
     return 0;

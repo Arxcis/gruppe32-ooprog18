@@ -109,7 +109,7 @@ public:
         SEIER_3_OVERTID_2_UAVGJORT_1_TAP_0 = 320
     };
 
-    string name;
+    string name; // @todo discuss - name or navn? jsolsvik 16.03.18
     Tabell tabell;
     vector<Divisjon> divisjonene;
 

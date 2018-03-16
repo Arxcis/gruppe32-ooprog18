@@ -43,11 +43,11 @@ constexpr Parser::Error ERROR = 1;
 
 /// <summary> Encode. Has a corresponding decode function. </summary>
 /// <returns> string - example found in format-idrettene.yml </returns>
-auto encodeIdrettene(const DB::Idrettene& idrettene) -> string;
+auto encodeIdrettene(DB::Idrettene& idrettene) -> string;
 
 /// <summary> Encode. Has a corresponding decode function. </summary>
 /// <returns> string - example found in format-spillerene.yml </returns>
-auto encodeSpillerene(const DB::Spillerene& spillerene) -> string;
+auto encodeSpillerene(DB::Spillerene& spillerene) -> string;
 
 /// <summary> Decode. Has a corresponding encode function. </summary>
 /// <param name="strview"> example found in format-idrettene.yml </param name="strview">
