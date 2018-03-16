@@ -7,7 +7,6 @@
 
 #include <frode/ListTool2b.h>
 
-
 /// <summary> Database definitions </summary>
 namespace gruppe32::DB  
 {
@@ -36,8 +35,12 @@ class Spillerene
 {
 public:
     std::size_t count; //
-    listtool::List data;
-    Spillerene(std::size_t _count = 0) : count(_count), data(listtool::List(listtool::Sorted)){}
+    listtool::List* data;
+    Spillerene(std::size_t _count = 0)
+    {
+        count = _count;
+        data = new listtool::List(listtool::Sorted); 
+    }
 };
 
 
@@ -119,8 +122,12 @@ class Idrettene
 {
 public:
     std::size_t count; //
-    listtool::List data;
-    Idrettene(std::size_t _count = 0) : count(_count), data(listtool::List(listtool::Sorted)) {}
+    listtool::List* data;
+    Idrettene(std::size_t _count = 0) 
+    {
+        count = _count;
+        data = new listtool::List(listtool::Sorted); 
+    }
 };
 
 struct Context 
@@ -129,8 +136,8 @@ struct Context
     Idrettene idrettene;
 	Spillerene spillerene;
     Context() {
-        spillerene = Spillerene();
-        idrettene = Idrettene();
+        spillerene = Spillerene(0);
+        idrettene = Idrettene(0);
     }
 };
 
