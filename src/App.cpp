@@ -9,29 +9,67 @@ namespace gruppe32::App
  * @param int - blah
  * @return int - blah
  */
-void printSpillereAll(const DB::Context& ctx) 
+void printSpillereAll(DB::Context& ctx) 
 {
+    //defined as lambda for later when we make a place for helperfuncs
     IO::printline("printSpillereAll()");
+    std::size_t count = ctx.spillerene.data->noOfElements();
+    for(std::size_t i = 1; i <= count; i++)
+    {
+        auto current = (DB::Spiller*)ctx.spillerene.data->removeNo(i);
+        printSpiller(*current);
+        ctx.spillerene.data->add(current);
+    }
+
 }
-void printSpillereByName(const DB::Context& ctx, const std::string name) 
+void printSpillereByName(DB::Context& ctx, const std::string name) 
 {
     IO::printline("printSpillereByName()");
     IO::printline();
-    IO::printline("Spiller med navn \"", name, "\" etterspurt");
+    IO::printline("Spiller", "\"" + name + "\"", "etterspurt");
+    
+    std::size_t count = ctx.spillerene.data->noOfElements();
+    for (std::size_t i = 1; i <= count; i++)
+    {
+        auto current = (DB::Spiller*)ctx.spillerene.data->removeNo(i);
+        if (current->name.find(name) != std::string::npos)
+        {
+            IO::printline("Spiller funnet!");
+            IO::printline();
+            printSpiller(*current);
+            IO::printline();
+        }
+        ctx.spillerene.data->add(current);
+    }
 }
-void printSpillereByNumber(const DB::Context& ctx, const std::size_t number) 
+void printSpillereByNumber(DB::Context& ctx, const std::size_t number) 
 {
     IO::printline("printSpillereByNumber()");
     IO::printline();
-    IO::printline("Spiller med nr \"", number, "\" etterspurt");
+    IO::printline("Spiller nr", number, "etterspurt");
+
+    auto element = (DB::Spiller*)ctx.spillerene.data->remove((int)number);
+    if (element) 
+    {
+        IO::printline("Spiller funnet!");
+        IO::printline();
+        printSpiller(*element);
+        IO::printline();
+        ctx.spillerene.data->add(element);
+    }
+    else 
+    {
+        IO::printline("Spiller ikke funnet!");
+    }
+    
 }
 
-void printIdretterAll(const DB::Context& ctx) 
+void printIdretterAll(DB::Context& ctx) 
 {
     IO::printline("printIdretterAll()");
 }
 
-void printIdretterByName(const DB::Context& ctx, const std::string name) 
+void printIdretterByName( DB::Context& ctx, const std::string name) 
 {
     IO::printline("printIdretterByName()");
     IO::printline();
@@ -149,5 +187,16 @@ void writeTopp10Lag(const DB::Context& ctx)
 }
 
 
+
+//======================================
+// HELPER FUNCTIONS
+//======================================
+
+void printSpiller(const DB::Spiller& spiller)
+{
+    IO::printline("Nr:", spiller.guid);
+    IO::printline("Navn:", spiller.name);
+    IO::printline("Adresse:", spiller.address);
+};
 
 } // end namespace gruppe32::App

@@ -5,20 +5,20 @@
 #include <iostream>
 #include <map>
 
-#include <gruppe32/DB.hpp>
 #include <gruppe32/IO.hpp>
+#include <gruppe32/DB.hpp>
 
 
 /// <summary> Functions which satifised the functional requirements </summary>
 namespace gruppe32::App 
 {
 
-void printSpillereAll(const DB::Context& ctx);
-void printSpillereByName(const DB::Context& ctx, const std::string name);
-void printSpillereByNumber(const DB::Context& ctx, const std::size_t number);
+void printSpillereAll(DB::Context& ctx);
+void printSpillereByName(DB::Context& ctx, const std::string name);
+void printSpillereByNumber(DB::Context& ctx, const std::size_t number);
 
-void printIdretterAll(const DB::Context& ctx);
-void printIdretterByName(const DB::Context& ctx, const std::string name);
+void printIdretterAll(DB::Context& ctx);
+void printIdretterByName(DB::Context& ctx, const std::string name);
 
 void createSpiller(DB::Context& ctx);
 void createIdrett(DB::Context& ctx);
@@ -57,5 +57,9 @@ void writeTopp10Divisjon(const DB::Context& ctx);
 void writeTopp10Lag(const DB::Context& ctx);
 
 
+// HELPER FUNCTIONS
+
+void printSpiller(const DB::Spiller& spiller);
+void printIdrett(const DB::Idrett& idrett);
 
 } // end namespace gruppe32::App
