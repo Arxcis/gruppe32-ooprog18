@@ -1,6 +1,7 @@
 ## Referanseliste
 
 ### 2018-03-16
+* diff checker life saver - https://www.diffchecker.com/diff
 * concatenate stack overflow - https://stackoverflow.com/a/18892355/6292603
 
 ### 2018-03-15
