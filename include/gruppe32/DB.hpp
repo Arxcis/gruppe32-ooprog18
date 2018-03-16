@@ -66,10 +66,10 @@ public:
     string dato; // @TODO Discuss how critical it is to use a char array here.
                  //   It is difficult to copy a string into the char array.
                  //   Using a string as convencience for now - JSolsvik 16.03.18
-
-    bool overtid;
-    vector<size_t> hjemmeScorerene;
-    vector<size_t> borteScorerene;
+    bool spilt = false;
+    bool overtid = false;
+    vector<size_t> hjemmeScorerene{};
+    vector<size_t> borteScorerene{};
     /*
     size_t hjemmeMål, borteMål;
     */
