@@ -99,7 +99,7 @@ using std::size_t;
 using std::string;
 using std::vector;
 
-class Idrett
+class Idrett : public listtool::TextElement
 {
 public:
     enum Tabell : size_t
@@ -112,6 +112,12 @@ public:
     string name;
     Tabell tabell;
     vector<Divisjon> divisjonene;
+
+    Idrett(std::string _name, Tabell _tabell)
+        :listtool::TextElement(_name.c_str()),
+        name(_name),
+        tabell(_tabell)
+        {}
 };
 
 
