@@ -157,7 +157,7 @@ auto LinePrinter::getString() -> string {
 
 auto encodeIdrettene(DB::Idrettene& idrettene) -> string 
 {
-    IO::printline("\n\n------ DEBUG encodeIdrettene ------\n\n");
+ //   IO::printline("\n\n------ DEBUG encodeIdrettene ------\n\n");
 
     LinePrinter print;
     auto idretteneCount = idrettene.data.noOfElements();
@@ -239,7 +239,7 @@ auto encodeIdrettene(DB::Idrettene& idrettene) -> string
         }
         idrettene.data.add(idrett);
     }
-    IO::printline("\n\n------ DEBUG encodeIdrettene ------\n\n");
+ //   IO::printline("\n\n------ DEBUG encodeIdrettene ------\n\n");
 
     return print.getString();
 }
@@ -396,8 +396,31 @@ auto decodeIdrettene(DB::Idrettene& idrettene, string_view strview) -> Parser::E
 
 auto encodeSpillerene(DB::Spillerene& spillerene) -> string 
 {
-    return "";
+
+    LinePrinter print;
+    size_t spillereneCount = spillerene.data.noOfElements();
+
+    print.lineStringUint("autoIncrementer", spillerene.autoIncrementer, 0);
+    print.lineEmpty();
+    print.lineStringUint("spillereneCount", spillereneCount, 0);
+    print.lineString("spillerene", 0);
+
+    for (size_t iSpiller = 1; iSpiller <= spillereneCount; ++iSpiller)
+    {
+        auto spiller = (DB::Spiller* )(spillerene.data.removeNo(iSpiller));
+
+        print.lineEmpty();
+        print.lineDashStringString("spiller", spiller->name, 0);
+        print.lineStringUint(      "guid", spiller->guid, 1);
+        print.lineStringString(    "adresse", spiller->address, 1);
+
+        spillerene.data.add(spiller);
+    }
+
+    return print.getString();
 }
+
+
 auto decodeSpillerene(DB::Spillerene& spillerene, string_view strview) -> Parser::Error
 {
     //IO::printline("\n\n------ DEBUG decodeSpillerene ------\n\n");
@@ -405,24 +428,33 @@ auto decodeSpillerene(DB::Spillerene& spillerene, string_view strview) -> Parser
     auto gen = KeyValueGenerator{strview};
 
 
-    auto[sisteguidKey, sisteguid] = gen.nextStringUintPair();
+    auto[autoIncrementerKey, autoIncrementer] = gen.nextStringUintPair();
     //IO::printline(sisteguidKey, ":", sisteguid);  
 
     auto[spillereneCountKey, spillereneCount] = gen.nextStringUintPair();
     //IO::printline(spillereneCountKey, ":", spillereneCount);
 
+    spillerene.autoIncrementer = autoIncrementer;
+
     gen.nextLine(); // ignore 'spillerene:'
 
     for (size_t iSpiller = 0; iSpiller < spillereneCount; ++iSpiller)
     {
-        auto[spillereneCountKey, spillereneCount] = gen.nextStringStringPair();
-        //IO::printline(spillereneCountKey, ":", spillereneCount);
+        auto[spillerNameKey, spillerName] = gen.nextStringStringPair();
+        //IO::printline(spillerNameKey, ":", spillerName);
 
         auto[guidKey, guid] = gen.nextStringUintPair();
         //IO::printline(guidKey, ":", guid);
 
-        auto[addresseKey, addresse] = gen.nextStringStringPair();
-        //IO::printline(addresseKey, ":", addresse);
+        auto[adresseKey, adresse] = gen.nextStringStringPair();
+        //IO::printline(adresseKey, ":", adresse);
+    
+        auto spiller = new DB::Spiller {
+            guid,
+            spillerName,
+            adresse
+        };
+        spillerene.data.add(spiller);
     }
     //IO::printline("\n\n------ DEBUG decodeSpillerene ------\n\n");
     return 0;    

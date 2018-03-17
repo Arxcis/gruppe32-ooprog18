@@ -33,7 +33,7 @@ void test_ValidIsAsciiChar()
     {   
 
         auto maybeTrue = Valid::isAsciiChar(input) == expectedResult;
-        Test::assertTrue(maybeTrue, count, "Valid::isAsciiChar("+input+")");
+        Test::assertTrue(maybeTrue, count, "Valid::isAsciiChar("+input+") == "+(expectedResult?"true":"false"));
         count++;
     }
 }

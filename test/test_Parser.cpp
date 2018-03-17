@@ -118,12 +118,7 @@ void test_ParserDecodeAndEncodeIdrettene()
     Test::assertNot(err, 0, 
         "auto err = Parser::decodeIdrettene()");
 
-
     auto encodedDecodedIdrettene = Parser::encodeIdrettene(idrettene);
-
-	std::cout << "string compare --- > " << strcmp(encodedIdrettene, encodedDecodedIdrettene.c_str()) << '\n';
-    std::cout << "STRING COMPARE --- > " << encodedDecodedIdrettene.compare(encodedIdrettene) << "\n";
-    
 
     //
     // Testing character by character
@@ -136,7 +131,7 @@ void test_ParserDecodeAndEncodeIdrettene()
 			std::cout << "\nc1 = " << ((c1 == '\n')? "\\n":"SOMETHING ELSE") << "  c2 = " << ((c2 == '\n') ? "\\n" : "SOMETHING ELSE") << '\n';
 			assert(false);
 		}
-		std::cout << c1;
+		//std::cout << c1;
 	}
 
     // Test 1:
@@ -149,42 +144,42 @@ void test_ParserDecodeAndEncodeSpillerene()
 {
 
     constexpr char encodedSpillerene[] = ""
-"sisteguid: 7\n"
+"autoIncrementer: 7\n"
 "\n"
 "spillereneCount: 8\n"
 "spillerene:\n"
 "\n"
 "- spiller: Ronny Knarvik\n"
 "  guid: 0\n"
-"  addresse: Bergen, Norway\n"
+"  adresse: Bergen, Norway\n"
 "\n"
 "- spiller: Erik Huseklepp\n"
 "  guid: 1\n"
-"  addresse: Bergen, Norway\n"
+"  adresse: Bergen, Norway\n"
 "\n"
 "- spiller: Arild Østebø\n"
 "  guid: 2\n"
-"  addresse: Trondheim, Norway\n"
+"  adresse: Trondheim, Norway\n"
 "\n"
 "- spiller: Andre Hansen\n"
 "  guid: 3\n"
-"  addresse: Trondheim, Norway\n"
+"  adresse: Trondheim, Norway\n"
 "\n"
 "- spiller: Alexis Sanchez\n"
 "  guid: 4\n"
-"  addresse: Manchester, United Kingdom\n"
+"  adresse: Manchester, United Kingdom\n"
 "\n"
 "- spiller: Paul Pogba\n"
 "  guid: 5\n"
-"  addresse: Manchester, United Kingdom\n"
+"  adresse: Manchester, United Kingdom\n"
 "\n"
 "- spiller: Harry Kane\n"
 "  guid: 6\n"
-"  addresse: London, United Kingdom\n"
+"  adresse: London, United Kingdom\n"
 "\n"
 "- spiller: Son Hueng-min\n"
 "  guid: 7\n"
-"  addresse: London, United Kingdom\n";
+"  adresse: London, United Kingdom\n";
     
     DB::Spillerene spillerene;
 
@@ -194,8 +189,23 @@ void test_ParserDecodeAndEncodeSpillerene()
         "auto err = Parser::decodeSpillerene()");
 
 
-    // Test 2:
     auto encodedDecodedSpillerene = Parser::encodeSpillerene(spillerene); 
+
+    //
+    // Testing character by character
+    // 
+    for (std::size_t i = 0; i < encodedDecodedSpillerene.size(); ++i) 
+    {
+        auto c1 = encodedDecodedSpillerene[i];
+        auto c2 = encodedSpillerene[i];
+        if (c1 != c2) {
+            std::cout << "\nc1 = " << c1 << "  c2 = " << c2 << '\n';
+            assert(false);
+        }
+      //  std::cout << c1;
+    }
+
+    // Test 2:
     Test::assertEqual(encodedDecodedSpillerene, encodedSpillerene, 1, 
                          "(encodedDecodedSpillerene == encodedSpillerene)");
 }
@@ -244,10 +254,25 @@ void test_ParserDecodeResultatene()
 
     DB::Idrettene idrettene;
     
-    // Test 1: 
+    // Test 0: 
     auto err = Parser::decodeResultatene(idrettene, encodedResultatene);
     Test::assertNot(err, 0, 
         "auto err = Parser::decodeResultatene()");
+
+    Test::assertTrue(idrettene.data.noOfElements() > 0, 1, "idrettene.data.noOfElements() > 0");
+
+    if (!(idrettene.data.noOfElements() > 0))
+        return;
+   // Test 1:
+    auto idrett = (DB::Idrett* )idrettene.data.removeNo(0);
+    Test::assertEqual(idrett->name, "Fotball", 2, "idrett->name == Fotball");
+
+    auto divisjon = idrett->divisjonene[0];
+    Test::assertEqual(divisjon.navn, "Eliteserien 2018", 3, "divisjon.navn == Eliteserien 2018");
+
+
+    idrettene.data.add(idrett);
+
 
 
 }
@@ -297,6 +322,10 @@ void test_ParserDecodeDivisjon()
     Test::assertNot(err, 0, 
         "auto err = Parser::decodeDivisjon()");
 
+    Test::assertTrue(divisjon.lagene.size() > 0, 1, "divisjon.lagene.size() > 0");
+
+    if (divisjon.lagene.size() == 0)
+        return;
 }
 
 void test_Parser() 
