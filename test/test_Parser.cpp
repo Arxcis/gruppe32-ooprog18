@@ -128,7 +128,7 @@ void test_ParserDecodeAndEncodeIdrettene()
 		auto c1 = encodedDecodedIdrettene[i];
 		auto c2 = encodedIdrettene[i];
 		if (c1 != c2) {
-			std::cout << "\nc1 = " << c1 << "  c2 = " << c2 << '\n';
+		//	std::cout << "\nc1 = " << c1 << "  c2 = " << c2 << '\n';
 			assert(false);
 		}
 		//std::cout << c1;
@@ -200,7 +200,7 @@ void test_ParserDecodeAndEncodeSpillerene()
         auto c1 = encodedDecodedSpillerene[i];
         auto c2 = encodedSpillerene[i];
         if (c1 != c2) {
-            std::cout << "\nc1 = " << c1 << "  c2 = " << c2 << '\n';
+       //     std::cout << "\nc1 = " << c1 << "  c2 = " << c2 << '\n';
             assert(false);
         }
       //  std::cout << c1;
@@ -332,16 +332,39 @@ void test_ParserDecodeDivisjon()
         testCount++);
 }
 
+using std::string;
+using std::vector;
+using std::size_t;
 
 void test_ParserEncodeResultateneDivisjon() 
 {   
-    using std::string;
-    using std::vector;
-    using std::size_t;
+
     
     size_t testCount = 0;
-    constexpr char encodedResultateneDivisjon[] = "";
     vector<DB::ResultatWithKeys> resultateneDivisjon;
+    constexpr char encodedResultateneDivisjon[] = ""
+"idrett: Fotball\n"
+"divisjon: Eliteserien 2018\n"
+"\n"
+"resultateneCount: 1\n"
+"resultatene:\n"
+"\n"
+"- resultat:\n"
+"  hjemmelag: Brann\n"
+"  bortelag: Rosenborg\n"
+"  dato: 2012-03-19\n"
+"  overtid: true\n"
+"  hjemmepoengCount: 4\n"
+"  hjemmepoeng:\n"
+"  - lagSpillerid: 0\n"
+"  - lagSpillerid: 0\n"
+"  - lagSpillerid: 0\n"
+"  - lagSpillerid: 1\n"
+"  bortepoengCount: 2\n"
+"  bortepoeng:\n"
+"  - lagSpillerid: 0\n"
+"  - lagSpillerid: 0\n";
+
     string encodedResultatene = Parser::encodeResultateneDivisjon(resultateneDivisjon);
 
     Test::assertEqual(
@@ -352,32 +375,208 @@ void test_ParserEncodeResultateneDivisjon()
 
 void test_ParserEncodeResultateneIdrett() 
 {
+    size_t testCount = 0;
+    vector<DB::ResultatWithKeys> resultateneIdrett;
+    constexpr char encodedResultateneIdrett[] = ""
+"idrett: Fotball\n"
+"\n"
+"resultateneCount: 1\n"
+"resultatene:\n"
+"\n"
+"- resultat:\n"
+"  divisjon: Eliteserien 2018\n"
+"  hjemmelag: Brann\n"
+"  bortelag: Rosenborg\n"
+"  dato: 2012-03-19\n"
+"  overtid: true\n"
+"  hjemmepoengCount: 4\n"
+"  hjemmepoeng:\n"
+"  - lagSpillerid: 0\n"
+"  - lagSpillerid: 0\n"
+"  - lagSpillerid: 0\n"
+"  - lagSpillerid: 1\n"
+"  bortepoengCount: 2\n"
+"  bortepoeng:\n"
+"  - lagSpillerid: 0\n"
+"  - lagSpillerid: 0;\n";
 
+    string encodedResultatene = Parser::encodeResultateneIdrett(resultateneIdrett);
+
+    Test::assertEqual(
+        encodedResultatene, 
+        encodedResultateneIdrett, 
+        testCount++);
 }
 
 void test_ParserTabellDivisjon() 
 {
+    size_t testCount = 0;
+    DB::Tabell tabellDivisjon;
+    constexpr char encodedTabellDivisjon[] = ""
+"idrett: Fotball\n"
+"tabell: Eliteserien 2018\n"
+"\n"
+"tabellLageneCount: 2\n"
+"tabellLagene:\n"
+"\n"
+"- tabellLag: Brann\n"
+"  tabellpoeng: 16\n"
+"  hjemmescoringer: 18\n"
+"  hjemmescoringerMot: 2\n"
+"  bortescoringer: 12\n"
+"  bortescoringerMot: 7\n"
+"  seier: 5\n"
+"  uavgjort: 1\n"
+"  tap: 2\n"
+"\n"
+"- tabellLag: Rosenborg\n"
+"  tabellpoeng: 7\n"
+"  hjemmescoringer: 7\n"
+"  hjemmescoringerMot: 12\n"
+"  bortescoringer: 2\n"
+"  bortescoringerMot: 18\n"
+"  seier: 2\n"
+"  uavgjort: 1\n"
+"  tap: 5\n";
 
+    string _encodedTabellDivisjon = Parser::encodeTabellDivisjon(tabellDivisjon);
+
+    Test::assertEqual(
+        _encodedTabellDivisjon, 
+        encodedTabellDivisjon, 
+        testCount++);
 }
 
-void test_ParserTabellIdrett() 
+void test_ParserTabelleneIdrett() 
 {   
+    size_t testCount = 0;
+    vector<DB::Tabell> tabelleneIdrett;
+    constexpr char encodedTabelleneIdrett[] = ""
+"idrett: Fotball\n"
+"\n"
+"tabelleneCount: 1\n"
+"tabellene:\n"
+"\n"
+"- tabell: Eliteserien 2018\n"
+"  tabellLageneCount: 2\n"
+"  tabellLagene:\n"
+"\n"
+"  - tabellLag: Brann\n"
+"    tabellpoeng: 16\n"
+"    hjemmescoringer: 18\n"
+"    hjemmescoringerMot: 2\n"
+"    bortescoringer: 12\n"
+"    bortescoringerMot: 7 \n"
+"    seier: 5\n"
+"    uavgjort: 1\n"
+"    tap: 2\n"
+"\n"
+"  - tabellLag: Rosenborg\n"
+"    tabellpoeng: 7\n"
+"    hjemmescoringer: 7\n"
+"    hjemmescoringerMot: 12\n"
+"    bortescoringer: 2\n"
+"    bortescoringerMot: 18\n"
+"    seier: 2\n"
+"    uavgjort: 1\n"
+"    tap: 5\n";
 
+    string _encodedTabelleneIdrett = Parser::encodeTabelleneIdrett(tabelleneIdrett);
+
+    Test::assertEqual(
+        _encodedTabelleneIdrett, 
+        encodedTabelleneIdrett, 
+        testCount++);
 }
 
-void test_ParserTerminlisteDivisjon() 
+void test_ParserTerminliste() 
 {
+    size_t testCount = 0;
+    DB::Terminliste terminliste;
+    constexpr char encodedTerminliste[] = ""
+"idrett: Fotball\n"
+"divisjon: Eliteserien 2018\n"
+"\n"
+"terminliste:\n"
+"  lageneCount: 2\n"
+"  hjemmelagene:\n"
+"\n"
+"  - hjemmelag: Brann\n"
+"    bortelagene:\n"
+"\n"
+"    - bortelag: Rosenborg\n"
+"      dato: 2012-03-19\n"
+"\n"
+"  - hjemmelag: Rosenborg\n"
+"    bortelagene:\n"
+"\n"
+"    - bortelag: Brann\n"
+"      dato: 2012-03-19\n";
 
+    string _encodedTerminliste = Parser::encodeTerminliste(terminliste);
+
+    Test::assertEqual(
+        _encodedTerminliste, 
+        encodedTerminliste, 
+        testCount++);
 }
 
 void test_ParserToppscorereneDivisjon() 
 {
+    size_t testCount = 0;
+    DB::Toppscorerene toppscorerene;
+    constexpr char encodedToppscorerene[] = ""
+"idrett: Fotball\n"
+"divisjon: Eliteserien 2018\n"
+"\n"
+"toppscorerneCount: 4\n"
+"toppscorerne:\n"
+"\n"
+"- toppscorer: Ronny Knarvik\n"
+"  score: 20\n"
+"\n"
+"- toppscorer: Erik Huseklepp\n"
+"  score: 18\n"
+"\n"
+"- spiller: Arild Østebø\n"
+"  score: 9\n"
+"\n"
+"- spiller: Andre Hansen\n"
+"  score: 8\n";
 
+    string _encodedToppscorerene = Parser::encodeToppscorereneDivisjon(toppscorerene);
+
+    Test::assertEqual(
+        _encodedToppscorerene, 
+        encodedToppscorerene, 
+        testCount++);
 }
 
 void test_ParserToppscorereneLag() 
 {
+    size_t testCount = 0;
+    DB::Toppscorerene toppscorerene;
+    constexpr char encodedToppscorerene[] = ""
+"idrett: Fotball\n"
+"divisjon: Eliteserien 2018\n"
+"lag: Brann\n"
+"\n"
+"toppscorerneCount: 2\n"
+"toppscorerne:\n"
+"\n"
+"- toppscorer: Ronny Knarvik\n"
+"  score: 20\n"
+"\n"
+"- toppscorer: Erik Huseklepp\n"
+"  score: 18\n";
 
+
+    string _encodedToppscorerene = Parser::encodeToppscorereneLag(toppscorerene);
+
+    Test::assertEqual(
+        _encodedToppscorerene, 
+        encodedToppscorerene, 
+        testCount++);
 }
 
 
@@ -408,11 +607,11 @@ void test_Parser()
     std::cout << "\n\nRunning test_ParserTabellDivisjon()\n\n";    
     test_ParserTabellDivisjon();
 
-    std::cout << "\n\nRunning test_ParserTabellIdrett()\n\n";    
-    test_ParserTabellIdrett();
+    std::cout << "\n\nRunning test_ParserTabelleneIdrett()\n\n";    
+    test_ParserTabelleneIdrett();
 
-    std::cout << "\n\nRunning test_ParserTerminlisteDivisjon()\n\n";    
-    test_ParserTerminlisteDivisjon();
+    std::cout << "\n\nRunning test_ParserTerminliste()\n\n";    
+    test_ParserTerminliste();
 
     std::cout << "\n\nRunning test_ParserToppscorereneDivisjon()\n\n";    
     test_ParserToppscorereneDivisjon();

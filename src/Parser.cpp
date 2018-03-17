@@ -651,7 +651,6 @@ auto encodeResultateneDivisjon(const vector<DB::ResultatWithKeys>& resultatene,
                                const string idrett,
                                const string divisjon) -> string 
 {
-
     LinePrinter p;
     size_t indent = 0;
 
@@ -714,8 +713,6 @@ auto encodeTabellDivisjon(const DB::Tabell& tabell) -> string
     return p.getString();
 }
 
-/// <summary> Encode-only. Output example:  </summary>
-/// <returns> string - example found in format-tabellene-idrett.yml </returns>
 auto encodeTabelleneIdrett(const vector<DB::Tabell>& tabellene,
                            const string idrett,
                            const Idrett::TabellType tabellType) -> string 
@@ -740,27 +737,18 @@ auto encodeTabelleneIdrett(const vector<DB::Tabell>& tabellene,
     }
 
     return p.getString();
-
-
-    return "test_ParserTabellIdrett";
 }
 
-/// <summary> Encode-only. Output example:  </summary>
-/// <returns> string - example found in format-termi    nliste-divisjon.yml </returns>
 auto encodeTerminliste(const DB::Terminliste& terminliste) -> string 
 {
     return "test_ParserTerminliste";
 }
 
-/// <summary> Encode-only. Output example:  </summary>
-/// <returns> string - example found in format-toppscorerene-divisjon.yml </returns>
 auto encodeToppscorereneDivisjon(const DB::Toppscorerene& toppscorerene) -> string 
 {
     return "test_ParserToppscorereneDivisjon";
 }
 
-/// <summary> Encode-only. Output example:  </summary>
-/// <returns> string - example found in format-toppscorerene-lag.yml </returns>
 auto encodeToppscorereneLag(const DB::Toppscorerene& toppscorerene) -> string 
 {
     return "test_ParserToppscorereneLag";

@@ -91,15 +91,15 @@ auto encodeResultateneIdrett(const vector<DB::ResultatWithKeys>& resultatene) ->
 
 /// <summary> Encode-only. </summary>
 /// <returns> string - example found in format-tabell-divisjon.yml </returns>
-auto encodeTabellDivisjon(const DB::TabellDivisjon& tabellDivisjon) -> string;
+auto encodeTabellDivisjon(const DB::Tabell& tabellDivisjon) -> string;
 
 /// <summary> Encode-only. Output example:  </summary>
 /// <returns> string - example found in format-tabellene-idrett.yml </returns>
-auto encodeTabelleneIdrett(const vector<DB::TabellDivisjon>& tabellIdrett) -> string;
+auto encodeTabelleneIdrett(const vector<DB::Tabell>& tabellIdrett) -> string;
 
 /// <summary> Encode-only. Output example:  </summary>
 /// <returns> string - example found in format-terminliste-divisjon.yml </returns>
-auto encodeTerminlisteDivisjon(const DB::Terminliste& terminliste) -> string;
+auto encodeTerminliste(const DB::Terminliste& terminliste) -> string;
 
 /// <summary> Encode-only. Output example:  </summary>
 /// <returns> string - example found in format-toppscorerene-divisjon.yml </returns>
@@ -107,7 +107,7 @@ auto encodeToppscorereneDivisjon(const DB::Toppscorerene& toppscorerene) -> stri
 
 /// <summary> Encode-only. Output example:  </summary>
 /// <returns> string - example found in format-toppscorerene-lag.yml </returns>
-auto encodeToppscorereneLag(const DB::Toppscorerene& toppscorerene, const string lagnavn) -> string;
+auto encodeToppscorereneLag(const DB::Toppscorerene& toppscorerene) -> string;
 
 
 
