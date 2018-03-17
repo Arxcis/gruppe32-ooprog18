@@ -1,5 +1,4 @@
 idrett: Fotball
-divisjon: Eliteserien 2018
 
 resultateneCount: 1
 resultatene:
@@ -11,11 +10,11 @@ resultatene:
   overtid: true
   hjemmeScorereneCount: 4
   hjemmeScorerene:
-  - spiller: 0
+  - spiller: 1
   - spiller: 0
   - spiller: 0
   - spiller: 1
   borteScorereneCount: 2
   borteScorerene:
   - spiller: 0
-  - spiller: 0
+  - spiller: 2

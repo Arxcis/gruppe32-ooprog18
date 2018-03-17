@@ -1,30 +1,32 @@
 idrett: Fotball
-tabellType: 310 
+tabelltype: 310
 
 tabelleneCount: 1
 tabellene:
 
-- divisjon: Eliteserien 2018
+- tabell: Eliteserien 2018
 
   tabellLageneCount: 2
   tabellLagene:
 
-  - tabellLag: Brann
-    tabellpoeng: 16
-    hjemmescoringer: 18
-    hjemmescoringerMot: 2
-    bortescoringer: 12
-    bortescoringerMot: 7 
+  - lag: Brann
+    plassering: 1
+    poeng: 16
+    hjemmeScoringer: 18
+    hjemmeBaklengs: 2
+    borteScoringer: 12
+    borteBaklengs: 7
     seier: 5
     uavgjort: 1
     tap: 2
 
-  - tabellLag: Rosenborg
-    tabellpoeng: 7
-    hjemmescoringer: 7
-    hjemmescoringerMot: 12
-    bortescoringer: 2
-    bortescoringerMot: 18
+  - lag: Rosenborg
+    plassering: 2
+    poeng: 7
+    hjemmeScoringer: 7
+    hjemmeBaklengs: 12
+    borteScoringer: 2
+    borteBaklengs: 18
     seier: 2
     uavgjort: 1
     tap: 5

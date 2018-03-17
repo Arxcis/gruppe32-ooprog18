@@ -1,16 +1,15 @@
-idrett: Fotball
 divisjon: Eliteserien 2018
 
-toppscorerneCount: 4
-toppscorerne:
+toppscorereneCount: 4
+toppscorerene:
 
-- toppscorer: Ronny Knarvik
+- spiller: Ronny Knarvik
   score: 20
 
-- toppscorer: Erik Huseklepp
+- spiller: Erik Huseklepp
   score: 18
 
-- spiller: Arild Østebø
+- spiller: Arild ├ÿsteb├©
   score: 9
 
 - spiller: Andre Hansen

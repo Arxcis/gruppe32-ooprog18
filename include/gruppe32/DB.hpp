@@ -73,9 +73,6 @@ public:
     bool overtid = false;
     vector<size_t> hjemmeScorerene{};
     vector<size_t> borteScorerene{};
-    /*
-    size_t hjemmeMål, borteMål;
-    */
 };
 
 
@@ -169,6 +166,7 @@ public:
     string hjemmelag;
     string bortelag;
 
+    ResultatWithKeys() = delete;
     ResultatWithKeys(
         string _idrett,
         string _divisjon,
@@ -184,7 +182,7 @@ public:
     {
         dato = _dato;
         spilt = _spilt;
-        overtid = overtid;
+        overtid = _overtid;
     }
 };
 
@@ -230,7 +228,6 @@ using std::map;
 class Terminliste 
 { 
 public:
-    string idrett;
     string divisjon;
     map<string, map<string,string>> data;
 };
@@ -238,24 +235,15 @@ public:
 
 using std::string;
 using std::size_t;
-using std::vector;
 ///
 /// <summary> Used for exporting tables with topp 10 players. Exports to console of file.
 ///           File formate specified in format-toppscorerene.yml </summary>
 ///
-class Toppscorerene
+class Toppscorer 
 {
 public:
-    struct ToppScorer 
-    {
-        size_t score;
-        string navn;
-        string lag;
-    };
-    string idrett;
-    string divisjon;
-    vector<ToppScorer> data;
+    string name;
+    size_t score;
 };
-
 
 } // end namespace 

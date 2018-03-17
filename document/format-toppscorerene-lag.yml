@@ -1,12 +1,10 @@
-idrett: Fotball
-divisjon: Eliteserien 2018
 lag: Brann
 
-toppscorerneCount: 2
-toppscorerne:
+toppscorereneCount: 2
+toppscorerene:
 
-- toppscorer: Ronny Knarvik
+- spiller: Ronny Knarvik
   score: 20
 
-- toppscorer: Erik Huseklepp
+- spiller: Erik Huseklepp
   score: 18

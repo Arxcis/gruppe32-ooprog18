@@ -40,14 +40,19 @@ class LinePrinter
 {
 public:
     string outString = "";
+    size_t indent = 0;
 
     void lineEmpty();
-    void lineString(const string key, const size_t indentCount);
-    void lineStringString(const string key, const string value, const size_t indentCount);
-    void lineStringUint(const string key, const size_t value, const size_t indentCount);
-    void lineStringBool(const string key, const bool value, const size_t indentCount);
-    void lineDashStringString(const string key, const string value, const size_t indentCount);
-    void lineDashStringUint(const string key, const size_t value, const size_t indentCount); 
+    void lineIndent();
+    void lineString(const string key);
+    void lineStringString(const string key, const string value);
+    void lineStringUint(const string key, const size_t value);
+    void lineStringBool(const string key, const bool value);
+    void lineDashString(const string key);
+    void lineDashStringString(const string key, const string value);
+    void lineDashStringUint(const string key, const size_t value); 
+    void tabRight();
+    void tabLeft();
     auto getString() -> string;
 };
 
@@ -71,6 +76,8 @@ auto encodeIdrettene(DB::Idrettene& idrettene) -> string;
 /// <returns> string - example found in format-spillerene.yml </returns>
 auto encodeSpillerene(DB::Spillerene& spillerene) -> string;
 
+
+
 /// <summary> Decode. Has a corresponding encode function. </summary>
 /// <param name="strview"> example found in format-idrettene.yml </param>
 auto decodeIdrettene(DB::Idrettene& idrettene, string_view strview) -> Parser::Error;
@@ -81,13 +88,25 @@ auto decodeSpillerene(DB::Spillerene& spillerene, string_view strview) -> Parser
 
 
 
+/// <summary> Encode-only. 
+///          Helper function for encodeResultateneDivisjon and encodeResultateneIdrett </summary>
+void encodeResultatene(LinePrinter& p, const vector<DB::ResultatWithKeys>& resultatene);
+
 /// <summary> Encode-only. </summary>
 /// <returns> string - example found in format-resultatene-divisjon.yml </returns>
-auto encodeResultateneDivisjon(const vector<DB::ResultatWithKeys>& resultatene) -> string;
+auto encodeResultateneDivisjon(const vector<DB::ResultatWithKeys>& resultatene,
+                               const string divisjon) -> string;
 
 /// <summary> Encode-only.</summary>
 /// <returns> string - example found in format-resultatene-idrett.yml </returns>
-auto encodeResultateneIdrett(const vector<DB::ResultatWithKeys>& resultatene) -> string;
+auto encodeResultateneIdrett(const vector<DB::ResultatWithKeys>& resultatene,
+                             const string idrett) -> string;
+
+
+
+/// <summary> Encode-only. 
+///          Helper function for encodeTabellDivisjon and encodeTabelleneIdrett </summary>
+void encodeTabellLagene(LinePrinter& p, const vector<DB::Tabell::Lag>& lagene);
 
 /// <summary> Encode-only. </summary>
 /// <returns> string - example found in format-tabell-divisjon.yml </returns>
@@ -95,19 +114,32 @@ auto encodeTabellDivisjon(const DB::Tabell& tabellDivisjon) -> string;
 
 /// <summary> Encode-only. Output example:  </summary>
 /// <returns> string - example found in format-tabellene-idrett.yml </returns>
-auto encodeTabelleneIdrett(const vector<DB::Tabell>& tabellIdrett) -> string;
+auto encodeTabelleneIdrett(const vector<DB::Tabell>& tabellene,
+                           const string idrett,
+                           const DB::Idrett::TabellType tabellType) -> string;
+
+
+
+/// <summary> Encode-only. 
+///          Helper function for encodeToppscorereneDivisjon and encodeToppscorereneLag </summary>
+auto encodeToppscorerene(LinePrinter& p, const vector<DB::Toppscorer>& toppscorerene);
+
+/// <summary> encode-only. Output example:  </summary>
+/// <returns> string - example found in format-toppscorerene-divisjon.yml </returns>
+auto encodeToppscorereneDivisjon(const vector<DB::Toppscorer>& toppscorerene,
+                                 const string divisjon) -> string;
+
+/// <summary> Encode-only. Output example:  </summary>
+/// <returns> string - example found in format-toppscorerene-lag.yml </returns>
+auto encodeToppscorereneLag(const vector<DB::Toppscorer>& toppscorerene,
+                            const string lag) -> string;
+
+
 
 /// <summary> Encode-only. Output example:  </summary>
 /// <returns> string - example found in format-terminliste-divisjon.yml </returns>
 auto encodeTerminliste(const DB::Terminliste& terminliste) -> string;
 
-/// <summary> Encode-only. Output example:  </summary>
-/// <returns> string - example found in format-toppscorerene-divisjon.yml </returns>
-auto encodeToppscorereneDivisjon(const DB::Toppscorerene& toppscorerene) -> string;
-
-/// <summary> Encode-only. Output example:  </summary>
-/// <returns> string - example found in format-toppscorerene-lag.yml </returns>
-auto encodeToppscorereneLag(const DB::Toppscorerene& toppscorerene) -> string;
 
 
 
