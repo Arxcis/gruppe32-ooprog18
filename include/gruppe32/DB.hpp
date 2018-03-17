@@ -20,14 +20,14 @@ class Spiller : public listtool::NumElement
 {
 public:
     size_t guid;
-    string name;
+    string name; // @TODO name or navn ? - jsolsvik 17.03.2018
     string address;
 
-    Spiller(int _guid, std::string _name, std::string _address)
+    Spiller(size_t _guid, std::string _name, std::string _address)
         :listtool::NumElement(_guid),
         guid(_guid),
         name(_name),
-        address(_address){}
+        address(_address){} // @TODO address or adresse ? - jsolsvik 17.03.2018
 };
 
 using std::size_t;
@@ -35,9 +35,9 @@ using std::size_t;
 class Spillerene
 {
 public:
-    std::size_t count; //
+    std::size_t autoIncrementer;
     listtool::List data;
-    Spillerene(std::size_t _count = 0) : count(_count), data(listtool::List(listtool::Sorted)){}
+    Spillerene(std::size_t _autoIncrementer = 0) : autoIncrementer(_autoIncrementer), data(listtool::List(listtool::Sorted)){}
 };
 
 

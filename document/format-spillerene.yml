@@ -1,36 +1,36 @@
-sisteguid: 7
+autoIncrementer: 7
 
 spillereneCount: 8
 spillerene:
 
 - spiller: Ronny Knarvik
   guid: 0
-  addresse: Bergen, Norway
+  adresse: Bergen, Norway
 
 - spiller: Erik Huseklepp
   guid: 1
-  addresse: Bergen, Norway
+  adresse: Bergen, Norway
 
 - spiller: Arild Østebø
   guid: 2
-  addresse: Trondheim, Norway
+  adresse: Trondheim, Norway
 
 - spiller: Andre Hansen
   guid: 3
-  addresse: Trondheim, Norway
+  adresse: Trondheim, Norway
 
 - spiller: Alexis Sanchez
   guid: 4
-  addresse: Manchester, United Kingdom
+  adresse: Manchester, United Kingdom
 
 - spiller: Paul Pogba
   guid: 5
-  addresse: Manchester, United Kingdom
+  adresse: Manchester, United Kingdom
 
 - spiller: Harry Kane
   guid: 6
-  addresse: London, United Kingdom
+  adresse: London, United Kingdom
 
 - spiller: Son Hueng-min
   guid: 7
-  addresse: London, United Kingdom
+  adresse: London, United Kingdom
