@@ -95,11 +95,11 @@ auto encodeTabellDivisjon(const DB::TabellDivisjon& tabellDivisjon) -> string;
 
 /// <summary> Encode-only. Output example:  </summary>
 /// <returns> string - example found in format-tabellene-idrett.yml </returns>
-auto encodeTabelleneIdrett(const vector<DB::TabellDivisjon&> tabellIdrett) -> string;
+auto encodeTabelleneIdrett(const vector<DB::TabellDivisjon>& tabellIdrett) -> string;
 
 /// <summary> Encode-only. Output example:  </summary>
 /// <returns> string - example found in format-terminliste-divisjon.yml </returns>
-auto encodeTerminlisteDivisjon(const DB::Terminliste terminliste) -> string;
+auto encodeTerminlisteDivisjon(const DB::Terminliste& terminliste) -> string;
 
 /// <summary> Encode-only. Output example:  </summary>
 /// <returns> string - example found in format-toppscorerene-divisjon.yml </returns>

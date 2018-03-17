@@ -611,4 +611,52 @@ auto decodeDivisjon(DB::Divisjon& divisjon, string_view strview) -> Parser::Erro
 }
 
 
+auto encodeResultateneDivisjon(const vector<DB::ResultatWithKeys>& resultatene) -> string 
+{
+    return "";
+}
+
+/// <summary> Encode-only.</summary>
+/// <returns> string - example found in format-resultatene-idrett.yml </returns>
+auto encodeResultateneIdrett(const vector<DB::ResultatWithKeys>& resultatene) -> string 
+{
+    return "";
+}
+
+/// <summary> Encode-only. </summary>
+/// <returns> string - example found in format-tabell-divisjon.yml </returns>
+auto encodeTabellDivisjon(const DB::TabellDivisjon& tabellDivisjon) -> string 
+{
+    return "";
+}
+
+/// <summary> Encode-only. Output example:  </summary>
+/// <returns> string - example found in format-tabellene-idrett.yml </returns>
+auto encodeTabelleneIdrett(const vector<DB::TabellDivisjon>& tabellIdrett) -> string 
+{
+    return "";
+}
+
+/// <summary> Encode-only. Output example:  </summary>
+/// <returns> string - example found in format-terminliste-divisjon.yml </returns>
+auto encodeTerminlisteDivisjon(const DB::Terminliste& terminliste) -> string 
+{
+    return "";
+}
+
+/// <summary> Encode-only. Output example:  </summary>
+/// <returns> string - example found in format-toppscorerene-divisjon.yml </returns>
+auto encodeToppscorereneDivisjon(const DB::Toppscorerene& toppscorerene) -> string 
+{
+    return "";
+}
+
+/// <summary> Encode-only. Output example:  </summary>
+/// <returns> string - example found in format-toppscorerene-lag.yml </returns>
+auto encodeToppscorereneLag(const DB::Toppscorerene& toppscorerene, const string lagnavn) -> string 
+{
+    return "";
+}
+
+
 }
