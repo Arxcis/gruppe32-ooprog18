@@ -105,7 +105,7 @@ using std::vector;
 class Idrett : public listtool::TextElement
 {
 public:
-    enum Tabell : size_t
+    enum TabellType : size_t
     {
         SEIER_2_UAVGJORT_1_TAP_0 = 210,
         SEIER_3_UAVGJORT_1_TAP_0 = 310, 
@@ -113,10 +113,10 @@ public:
     };
 
     string name; // @todo discuss - name or navn? jsolsvik 16.03.18
-    Tabell tabell;
+    TabellType tabell;
     vector<Divisjon> divisjonene;
 
-    Idrett(std::string _name, Tabell _tabell)
+    Idrett(std::string _name, TabellType _tabell)
         :listtool::TextElement(_name.c_str()),
         name(_name),
         tabell(_tabell)
@@ -196,7 +196,7 @@ using std::vector;
 ///           Can be exported to console or file. 
 ///           File format specified in format-tabell.yml files </summary>
 ///
-class TabellDivisjon 
+class Tabell
 {
 public:
     struct TabellLag 
@@ -214,7 +214,7 @@ public:
 
     string idrett;
     string divisjon;    
-    Idrett::Tabell tabellPoengType;
+    Idrett::TabellType tabellPoengType;
     vector<TabellLag> lagene;
 };
 
