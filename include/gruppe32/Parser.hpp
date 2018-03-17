@@ -9,18 +9,13 @@
 #include <gruppe32/DB.hpp>
 #include <gruppe32/IO.hpp>
 
-/// <summary> Decoding strings to the internal datastructure </summary>
-namespace gruppe32::Decode
+namespace gruppe32
 {
-
 
 using std::size_t;
 using std::string;
 using std::pair;
 using std::string_view;
-using std::vector;
-using Error = std::size_t;
-constexpr Decode::Error ERROR = 1;
 
 class KeyValueGenerator 
 {
@@ -33,6 +28,17 @@ public:
     auto nextStringUintPair() -> pair<string, size_t>;
     auto nextStringBoolPair() -> pair<string, bool>;
 };
+
+/// <summary> Decoding strings to the internal datastructure </summary>
+namespace Decode
+{
+
+using std::string;
+using std::size_t;
+using std::vector;
+using std::string_view;
+using Error = std::size_t;
+constexpr Decode::Error ERROR = 1;
 
 
 /// <summary> Decode. Has a corresponding encode function. </summary>
@@ -56,8 +62,6 @@ auto divisjon(DB::Divisjon& divisjon, string_view strview) -> Decode::Error;
 } // end namespace decode
 
 
-namespace gruppe32::Encode 
-{
 
 using std::string;
 using std::stringstream;
@@ -84,6 +88,11 @@ public:
 };
 
 
+
+/// <summary> Encoding internal datastructure into strings, 
+///           which can be shipped to console or file. </summary>
+namespace Encode 
+{
 using std::size_t;
 using std::string;
 using std::string_view;
@@ -134,7 +143,7 @@ auto tabelleneIdrett(const vector<DB::Tabell>& tabellene,
 
 /// <summary> Encode-only. 
 ///          Helper function for encodeToppscorereneDivisjon and encodeToppscorereneLag </summary>
-auto toppscorerene(LinePrinter& p, const vector<DB::Toppscorer>& toppscorerene);
+void toppscorerene(LinePrinter& p, const vector<DB::Toppscorer>& toppscorerene);
 
 /// <summary> encode-only. Output example:  </summary>
 /// <returns> string - example found in format-toppscorerene-divisjon.yml </returns>
@@ -154,3 +163,4 @@ auto terminliste(const DB::Terminliste& terminliste) -> string;
 
 
 } // end namespace Encode
+} // end namespace gruppe32

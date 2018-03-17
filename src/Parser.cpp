@@ -6,7 +6,7 @@
 #include <map>
 #include <sstream>
 
-namespace gruppe32::Decode 
+namespace gruppe32 
 {
 
 auto KeyValueGenerator::nextLine() -> std::string
@@ -93,7 +93,7 @@ auto KeyValueGenerator::nextStringBoolPair() -> pair<string,bool>
 };
 
 
-auto idrettene(DB::Idrettene& idrettene, string_view strview) -> Decode::Error 
+auto Decode::idrettene(DB::Idrettene& idrettene, string_view strview) -> Decode::Error 
 {
     //IO::printline("\n\n------ DEBUG decodeIdrettene ------\n\n");
 
@@ -243,7 +243,7 @@ auto idrettene(DB::Idrettene& idrettene, string_view strview) -> Decode::Error
 }
 
 
-auto spillerene(DB::Spillerene& spillerene, string_view strview) -> Decode::Error
+auto Decode::spillerene(DB::Spillerene& spillerene, string_view strview) -> Decode::Error
 {
     //IO::printline("\n\n------ DEBUG decodeSpillerene ------\n\n");
  
@@ -283,7 +283,7 @@ auto spillerene(DB::Spillerene& spillerene, string_view strview) -> Decode::Erro
 }
 
 
-auto resultatene(vector<DB::ResultatWithKeys>& resultatene, string_view strview) -> Decode::Error
+auto Decode::resultatene(vector<DB::ResultatWithKeys>& resultatene, string_view strview) -> Decode::Error
 {
 
    // IO::printline("\n\n------ DEBUG decodeResultatene ------\n\n");
@@ -359,7 +359,7 @@ auto resultatene(vector<DB::ResultatWithKeys>& resultatene, string_view strview)
 }
 
 
-auto divisjon(DB::Divisjon& divisjon, string_view strview) -> Decode::Error
+auto Decode::divisjon(DB::Divisjon& divisjon, string_view strview) -> Decode::Error
 {
 
     //IO::printline("\n\n------ DEBUG decodeDivisjon ------\n\n");
@@ -432,16 +432,8 @@ auto divisjon(DB::Divisjon& divisjon, string_view strview) -> Decode::Error
     return 0;
 }
 
-} // end namespace Decode
 
 
-
-
-
-
-
-namespace gruppe32::Encode
-{
 
 void LinePrinter::lineEmpty()
 {
@@ -525,7 +517,8 @@ auto LinePrinter::getString() -> string {
     return outString;
 }
 
-auto idrettene(DB::Idrettene& idrettene) -> string 
+
+auto Encode::idrettene(DB::Idrettene& idrettene) -> string 
 {
  //  // IO::printline("\n\n------ DEBUG encodeIdrettene ------\n\n");
 
@@ -645,7 +638,7 @@ auto idrettene(DB::Idrettene& idrettene) -> string
 }
 
 
-auto spillerene(DB::Spillerene& spillerene) -> string 
+auto Encode::spillerene(DB::Spillerene& spillerene) -> string 
 {
 
     LinePrinter print;
@@ -677,7 +670,7 @@ auto spillerene(DB::Spillerene& spillerene) -> string
 }
 
 
-void resultatene(LinePrinter& p, const vector<DB::ResultatWithKeys>& resultatene) 
+void Encode::resultatene(LinePrinter& p, const vector<DB::ResultatWithKeys>& resultatene) 
 {
     p.lineEmpty();
     p.lineStringUint("resultateneCount", resultatene.size());
@@ -717,7 +710,7 @@ void resultatene(LinePrinter& p, const vector<DB::ResultatWithKeys>& resultatene
 }
 
 
-auto resultateneDivisjon(const vector<DB::ResultatWithKeys>& resultatene,
+auto Encode::resultateneDivisjon(const vector<DB::ResultatWithKeys>& resultatene,
                                const string divisjon) -> string 
 {
     LinePrinter p;
@@ -730,7 +723,7 @@ auto resultateneDivisjon(const vector<DB::ResultatWithKeys>& resultatene,
 }
 
 
-auto resultateneIdrett(const vector<DB::ResultatWithKeys>& resultatene,
+auto Encode::resultateneIdrett(const vector<DB::ResultatWithKeys>& resultatene,
                              const string idrett) -> string 
 {
     LinePrinter p;
@@ -742,7 +735,7 @@ auto resultateneIdrett(const vector<DB::ResultatWithKeys>& resultatene,
 
 
 
-void tabellLagene(LinePrinter& p, const vector<DB::Tabell::Lag>& lagene) 
+void Encode::tabellLagene(LinePrinter& p, const vector<DB::Tabell::Lag>& lagene) 
 {
     p.lineEmpty();
     p.lineStringUint("tabellLageneCount", lagene.size());
@@ -770,7 +763,7 @@ void tabellLagene(LinePrinter& p, const vector<DB::Tabell::Lag>& lagene)
 }
 
 
-auto tabellDivisjon(const DB::Tabell& tabell) -> string 
+auto Encode::tabellDivisjon(const DB::Tabell& tabell) -> string 
 {
     LinePrinter p;
 
@@ -783,7 +776,7 @@ auto tabellDivisjon(const DB::Tabell& tabell) -> string
 }
 
 
-auto tabelleneIdrett(const vector<DB::Tabell>& tabellene,
+auto Encode::tabelleneIdrett(const vector<DB::Tabell>& tabellene,
                      const string idrett,
                      const DB::Idrett::TabellType tabelltype) -> string 
 {
@@ -812,7 +805,7 @@ auto tabelleneIdrett(const vector<DB::Tabell>& tabellene,
 }
 
 
-auto terminliste(const DB::Terminliste& terminliste) -> string 
+auto Encode::terminliste(const DB::Terminliste& terminliste) -> string 
 {
 
     LinePrinter p;
@@ -852,7 +845,7 @@ auto terminliste(const DB::Terminliste& terminliste) -> string
 }
 
 
-auto toppscorerene(LinePrinter& p, const vector<DB::Toppscorer>& toppscorerene) 
+void Encode::toppscorerene(LinePrinter& p, const vector<DB::Toppscorer>& toppscorerene) 
 {
     p.lineEmpty();
 
@@ -873,8 +866,8 @@ auto toppscorerene(LinePrinter& p, const vector<DB::Toppscorer>& toppscorerene)
 }
 
 
-auto toppscorereneDivisjon(const vector<DB::Toppscorer>& toppscorerene,
-                                 const string divisjon) -> string 
+auto Encode::toppscorereneDivisjon(const vector<DB::Toppscorer>& toppscorerene,
+                                   const string divisjon) -> string 
 {
     LinePrinter p;
     p.lineStringString("divisjon", divisjon);
@@ -883,7 +876,7 @@ auto toppscorereneDivisjon(const vector<DB::Toppscorer>& toppscorerene,
 }
 
 
-auto toppscorereneLag(const vector<DB::Toppscorer>& toppscorerene,
+auto Encode::toppscorereneLag(const vector<DB::Toppscorer>& toppscorerene,
                             const string lag) -> string 
 {
     LinePrinter p;
@@ -892,4 +885,4 @@ auto toppscorereneLag(const vector<DB::Toppscorer>& toppscorerene,
     return p.getString();
 }
 
-} // end namespace Encode
+} // end namespace gruppe32::
