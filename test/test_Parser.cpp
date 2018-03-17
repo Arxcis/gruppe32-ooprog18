@@ -259,19 +259,19 @@ void test_ParserDecodeResultatene()
     Test::assertNot(err, 0, 
         "auto err = Parser::decodeResultatene()");
 
-    Test::assertTrue(idrettene.data.noOfElements() > 0, 1, "idrettene.data.noOfElements() > 0");
+    Test::assertTrue(idrettene.data->noOfElements() > 0, 1, "idrettene.data->noOfElements() > 0");
 
-    if (!(idrettene.data.noOfElements() > 0))
+    if (!(idrettene.data->noOfElements() > 0))
         return;
    // Test 1:
-    auto idrett = (DB::Idrett* )idrettene.data.removeNo(0);
+    auto idrett = (DB::Idrett* )idrettene.data->removeNo(0);
     Test::assertEqual(idrett->name, "Fotball", 2, "idrett->name == Fotball");
 
     auto divisjon = idrett->divisjonene[0];
     Test::assertEqual(divisjon.navn, "Eliteserien 2018", 3, "divisjon.navn == Eliteserien 2018");
 
 
-    idrettene.data.add(idrett);
+    idrettene.data->add(idrett);
 
 
 

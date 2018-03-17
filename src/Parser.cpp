@@ -160,14 +160,14 @@ auto encodeIdrettene(DB::Idrettene& idrettene) -> string
  //   IO::printline("\n\n------ DEBUG encodeIdrettene ------\n\n");
 
     LinePrinter print;
-    auto idretteneCount = idrettene.data.noOfElements();
+    auto idretteneCount = idrettene.data->noOfElements();
 
     print.lineStringUint("idretteneCount", idretteneCount, 0);
     print.lineString(    "idrettene", 0);
 
     for (auto iIdrett = 1; iIdrett <= idretteneCount; ++iIdrett) 
     {
-        auto idrett = (DB::Idrett*)(idrettene.data.removeNo(iIdrett));
+        auto idrett = (DB::Idrett*)(idrettene.data->removeNo(iIdrett));
 
         print.lineEmpty();
         print.lineDashStringString("idrett", idrett->name, 0);
@@ -237,7 +237,7 @@ auto encodeIdrettene(DB::Idrettene& idrettene) -> string
                 }
             }
         }
-        idrettene.data.add(idrett);
+        idrettene.data->add(idrett);
     }
  //   IO::printline("\n\n------ DEBUG encodeIdrettene ------\n\n");
 
@@ -388,7 +388,7 @@ auto decodeIdrettene(DB::Idrettene& idrettene, string_view strview) -> Parser::E
             idrett->divisjonene.push_back(divisjon);
         }
         // Pushing idrett into ListTool
-        idrettene.data.add(idrett);
+        idrettene.data->add(idrett);
     }
     //IO::printline("\n\n------ DEBUG decodeIdrettene ------\n\n");
 	return 0;
@@ -398,7 +398,7 @@ auto encodeSpillerene(DB::Spillerene& spillerene) -> string
 {
 
     LinePrinter print;
-    size_t spillereneCount = spillerene.data.noOfElements();
+    size_t spillereneCount = spillerene.data->noOfElements();
 
     print.lineStringUint("autoIncrementer", spillerene.autoIncrementer, 0);
     print.lineEmpty();
@@ -407,14 +407,14 @@ auto encodeSpillerene(DB::Spillerene& spillerene) -> string
 
     for (size_t iSpiller = 1; iSpiller <= spillereneCount; ++iSpiller)
     {
-        auto spiller = (DB::Spiller* )(spillerene.data.removeNo(iSpiller));
+        auto spiller = (DB::Spiller* )(spillerene.data->removeNo(iSpiller));
 
         print.lineEmpty();
         print.lineDashStringString("spiller", spiller->name, 0);
         print.lineStringUint(      "guid", spiller->guid, 1);
         print.lineStringString(    "adresse", spiller->address, 1);
 
-        spillerene.data.add(spiller);
+        spillerene.data->add(spiller);
     }
 
     return print.getString();
@@ -454,7 +454,7 @@ auto decodeSpillerene(DB::Spillerene& spillerene, string_view strview) -> Parser
             spillerName,
             adresse
         };
-        spillerene.data.add(spiller);
+        spillerene.data->add(spiller);
     }
     //IO::printline("\n\n------ DEBUG decodeSpillerene ------\n\n");
     return 0;    

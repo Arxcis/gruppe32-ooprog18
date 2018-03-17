@@ -132,9 +132,6 @@ const Command::Map commandMap
     commandQuitPair
 };
 
-
-    std::cout << "App running \n";
-
 // Main menu
 for(;;) 
 {   
