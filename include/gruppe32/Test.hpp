@@ -1,7 +1,9 @@
 #pragma once
 
 #include <iostream>
+#include <utility>
 #include <iomanip>
+#include <sstream>
 
 /// <summary> Collection of all test helper-functions </summary>
 namespace gruppe32::Test 
@@ -23,8 +25,10 @@ struct Testdata
 };
 
 
-template<class N, class Msg, class Expected, class Result>
-void printFailed(const N n, const  Msg msg, const Expected expected, const Result result)
+using std::size_t;
+using std::string;
+
+void printResult(const string result, const size_t n)
 {
     std::cout << "-- test " 
               << std::right
@@ -33,60 +37,81 @@ void printFailed(const N n, const  Msg msg, const Expected expected, const Resul
               << ": "
               << std::setw(50)
               << std::left
-              << msg
-              << "!! FAILING"
-              << " | Result: " << result 
-              << " , Expected: " << expected 
-              << " !!"
-              << '\n';
+              << " | Result: " << result;
 }
 
 
-template<class N, class Msg, class Expected>
-void printSuccess(const N n, const  Msg msg, const Expected expected)
+using std::forward;
+
+void printResultSuccess(const string&& result, const size_t n)
 {
-    std::cout << "-- test " 
-              << std::right
-              << std::setw(2)
-              << n 
-              << ": "
-              << std::setw(50)
-              << std::left
-              << msg 
-              << "   SUCCESS"
-              << " | Result: " << expected 
-              << '\n';
+    printResult(result, n);
+    std::cout << "   SUCCESS\n";
+}
+
+void printResultFailed(const string&& result, const size_t n)
+{
+    printResult(result, n);
+    std::cout << "   !!! -------> FAILED\n";
 }
 
 
-template<class Maybe, class TestN, class Msg>
-void assertNot(const Maybe maybe, const TestN testN, const Msg msg) 
+template<class MaybeNot>
+void assertNot(const MaybeNot maybeNot, const size_t testCount) 
 { 
-    if (!maybe) {
-        printSuccess(testN, msg, "Does not exist.");
+    using std::stringstream;
+    stringstream ss;
+    string result = "assertNot -> ";
+
+    ss << maybeNot;
+    result += ss.str();
+
+    if (!maybeNot) {
+        result += " equals not.";
+        printResultSuccess(result, testCount);
     } else {
-        printFailed(testN, msg, "Does not exist.", "Exists");
+        result += " equals something";
+        printResultFailed(result, testCount);
     }
 }
 
 
-template<class Lhs, class Rhs, class TestN, class Msg>
-void assertEqual(const Lhs lhs, const Rhs rhs, const TestN testN, const Msg msg) 
+template<class Lhs, class Rhs>
+void assertEqual(const Lhs lhs, const Rhs rhs, const size_t testCount) 
 { 
+    using std::stringstream;
+    stringstream ss;
+    string result = "assertEqual -> ";
+
+    ss << lhs << " == " << rhs;
+    result += ss.str();
+
     if (lhs == rhs) {
-        printSuccess(testN, msg, "Is Equal");
+        result +=  " -> is equal";
+        printResultSuccess(result, testCount); 
     } else {
-        printFailed(testN, msg, "Is Equal", "Is Not Equal");
+        result += " -> is not equal";
+        printResultFailed(result, testCount)
     }
 }
 
-template<class Maybe, class TestN, class Msg>
-void assertTrue(const Maybe maybe, const TestN testN, const Msg msg) 
+template<class MaybeTrue>
+void assertTrue(const MaybeTrue maybeTrue, const size_t testCount) 
 { 
-    if (maybe == true) {
-        printSuccess(testN, msg, "Is True");
+
+    using std::stringstream;
+    stringstream ss;
+    string result = "assertTrue -> ";
+
+    ss << maybeTrue;
+    result += ss.str();
+
+    if (maybeTrue == true) {
+        result += " is True";
+        printResultSuccess(result, testCount);
     } else {
-        printFailed(testN, msg, "Is True", "Is Not True");
+        result += " is not True";
+        printResultFailed(result, testCount);
     }
 }
 

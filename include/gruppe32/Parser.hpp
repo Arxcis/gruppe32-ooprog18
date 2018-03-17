@@ -19,8 +19,9 @@ using std::string;
 using std::pair;
 using std::string_view;
 
-struct KeyValueGenerator 
+class KeyValueGenerator 
 {
+public:
     string_view strview;
     size_t startofline =  0;
     
@@ -35,8 +36,9 @@ using std::string;
 using std::stringstream;
 using std::size_t;
 
-struct LinePrinter {
-
+class LinePrinter 
+{
+public:
     string outString = "";
 
     void lineEmpty();
@@ -81,31 +83,31 @@ auto decodeSpillerene(DB::Spillerene& spillerene, string_view strview) -> Parser
 
 /// <summary> Encode-only. </summary>
 /// <returns> string - example found in format-resultatene-divisjon.yml </returns>
-auto encodeResultateneDivisjon(const DB::Divisjon& divisjon) -> string;
+auto encodeResultateneDivisjon(const vector<DB::ResultatWithKeys>& resultatene) -> string;
 
 /// <summary> Encode-only.</summary>
 /// <returns> string - example found in format-resultatene-idrett.yml </returns>
-auto encodeResultateneIdrett(const DB::Idrett& idrett) -> string;
+auto encodeResultateneIdrett(const vector<DB::ResultatWithKeys>& resultatene) -> string;
 
 /// <summary> Encode-only. </summary>
 /// <returns> string - example found in format-tabell-divisjon.yml </returns>
-auto encodeTabellDivisjon(const DB::Divisjon& divisjon) -> string;
+auto encodeTabellDivisjon(const DB::TabellDivisjon& tabellDivisjon) -> string;
 
 /// <summary> Encode-only. Output example:  </summary>
 /// <returns> string - example found in format-tabellene-idrett.yml </returns>
-auto encodeTabelleneIdrett(const DB::Idrett& idrett) -> string;
+auto encodeTabelleneIdrett(const vector<DB::TabellDivisjon& tabellDivisjon) -> string;
 
 /// <summary> Encode-only. Output example:  </summary>
 /// <returns> string - example found in format-terminliste-divisjon.yml </returns>
-auto encodeTerminlisteDivisjon(const DB::Divisjon& divisjon) -> string;
+auto encodeTerminlisteDivisjon(const DB::Terminliste terminliste) -> string;
 
 /// <summary> Encode-only. Output example:  </summary>
 /// <returns> string - example found in format-toppscorerene-divisjon.yml </returns>
-auto encodeToppscorereneDivisjon(const DB::Divisjon& divisjon) -> string;
+auto encodeToppscorereneDivisjon(const DB::Toppscorerene& toppscorerene) -> string;
 
 /// <summary> Encode-only. Output example:  </summary>
 /// <returns> string - example found in format-toppscorerene-lag.yml </returns>
-auto encodeToppscorereneLag(const DB::Divisjon& divisjon, const string lagnavn) -> string;
+auto encodeToppscorereneLag(const DB::Toppscorerene& toppscorerene, const string lagnavn) -> string;
 
 
 

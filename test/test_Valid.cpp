@@ -31,9 +31,8 @@ void test_ValidIsAsciiChar()
 
     for(auto [input, expectedResult, msg] : testTable) 
     {   
-
         auto maybeTrue = Valid::isAsciiChar(input) == expectedResult;
-        Test::assertTrue(maybeTrue, count, "Valid::isAsciiChar("+input+") == "+(expectedResult?"true":"false"));
+        Test::assertTrue(maybeTrue, count); 
         count++;
     }
 }

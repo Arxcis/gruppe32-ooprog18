@@ -109,14 +109,14 @@ void test_ParserDecodeAndEncodeIdrettene()
 "        - bortelag: Manchester United\n"
 "          dato: 2013-03-19\n"
 "          resultat: false\n";
-
-
-    DB::Idrettene idrettene;
     
+    using std::size_t;
+    
+    DB::Idrettene idrettene;
+    size_t testCount = 0;
     // Test 0: 
     auto err = Parser::decodeIdrettene(idrettene, encodedIdrettene);
-    Test::assertNot(err, 0, 
-        "auto err = Parser::decodeIdrettene()");
+    Test::assertNot(err, testCount++);
 
     auto encodedDecodedIdrettene = Parser::encodeIdrettene(idrettene);
 
@@ -128,21 +128,22 @@ void test_ParserDecodeAndEncodeIdrettene()
 		auto c1 = encodedDecodedIdrettene[i];
 		auto c2 = encodedIdrettene[i];
 		if (c1 != c2) {
-			std::cout << "\nc1 = " << ((c1 == '\n')? "\\n":"SOMETHING ELSE") << "  c2 = " << ((c2 == '\n') ? "\\n" : "SOMETHING ELSE") << '\n';
+			std::cout << "\nc1 = " << c1 << "  c2 = " << c2 << '\n';
 			assert(false);
 		}
 		//std::cout << c1;
 	}
 
     // Test 1:
-	Test::assertEqual(encodedDecodedIdrettene, encodedIdrettene, 1, 
-                         "(encodedDecodedIdrettene == encodedIdrettene)");
+	Test::assertEqual(
+        encodedDecodedIdrettene, 
+        encodedIdrettene, 
+        testCount++); 
 }
 
 
 void test_ParserDecodeAndEncodeSpillerene() 
 {
-
     constexpr char encodedSpillerene[] = ""
 "autoIncrementer: 7\n"
 "\n"
@@ -182,11 +183,11 @@ void test_ParserDecodeAndEncodeSpillerene()
 "  adresse: London, United Kingdom\n";
     
     DB::Spillerene spillerene;
+    std::size_t testCount = 0;
 
     // Test 1: 
     auto err = Parser::decodeSpillerene(spillerene, encodedSpillerene);
-    Test::assertNot(err, 0, 
-        "auto err = Parser::decodeSpillerene()");
+    Test::assertNot(err, testCount++);
 
 
     auto encodedDecodedSpillerene = Parser::encodeSpillerene(spillerene); 
@@ -206,8 +207,10 @@ void test_ParserDecodeAndEncodeSpillerene()
     }
 
     // Test 2:
-    Test::assertEqual(encodedDecodedSpillerene, encodedSpillerene, 1, 
-                         "(encodedDecodedSpillerene == encodedSpillerene)");
+    Test::assertEqual(
+        encodedDecodedSpillerene, 
+        encodedSpillerene, 
+        testCount++);
 }
 
 
@@ -253,14 +256,17 @@ void test_ParserDecodeResultatene()
 
 
     std::vector<DB::ResultatWithKeys> resultatene;
+    std::size_t testCount = 0;
     
     // Test 0: 
     auto err = Parser::decodeResultatene(resultatene, encodedResultatene);
    
-    Test::assertNot(err, 0, 
-        "auto err = Parser::decodeResultatene()");
+    Test::assertNot(err, testCount++); 
 
-    Test::assertTrue(resultatene.size() > 0, 1, "idrettene.data->noOfElements() > 0");
+    // @TODO - create assert greated than function - JSolsvik 17.03.18
+    Test::assertTrue(
+        resultatene.size() > 0, 
+        testCount++);
 
     if (!(resultatene.size() > 0 > 0))
         return;
@@ -304,22 +310,76 @@ void test_ParserDecodeDivisjon()
 "    - bortelag: Brann\n"
 "      dato: 2012-03-19\n";
 
-
+    using std::size_t;
+    size_t testCount = 0;
     DB::Divisjon divisjon;
     
     // Test 1: 
     auto err = Parser::decodeDivisjon(divisjon, encodedDivisjon);
-    Test::assertNot(err, 0, 
-        "auto err = Parser::decodeDivisjon()");
+    Test::assertNot(
+        err,
+        testCount++);
 
-    Test::assertTrue(divisjon.lagene.size() > 0, 1, "divisjon.lagene.size() > 0");
+    Test::assertTrue(
+        divisjon.lagene.size() > 0, 
+        testCount++);
 
     if (divisjon.lagene.size() == 0)
         return;
 
-    Test::assertTrue(divisjon.terminListe["Brann"]["Rosenborg"].dato == "2012-03-19", 2, 
-        "divisjon.terminListe['Brann']['Rosenborg'].dato == '2012-03-19'");
+    Test::assertTrue(
+        divisjon.terminListe["Brann"]["Rosenborg"].dato == "2012-03-19",
+        testCount++);
 }
+
+
+void test_ParserEncodeResultateneDivisjon() 
+{   
+    using std::string;
+    using std::vector;
+    using std::size_t;
+    
+    size_t testCount = 0;
+    constexpr char encodedResultateneDivisjon[] = "";
+    vector<DB::ResultatWithKeys> resultateneDivisjon;
+    string encodedResultatene = Parser::encodeResultateneDivisjon(resultateneDivisjon);
+
+    Test::assertEqual(
+        encodedResultatene, 
+        encodedResultateneDivisjon, 
+        testCount++);
+}
+
+void test_ParserEncodeResultateneIdrett() 
+{
+
+}
+
+void test_ParserTabellDivisjon() 
+{
+
+}
+
+void test_ParserTabellIdrett() 
+{   
+
+}
+
+void test_ParserTerminlisteDivisjon() 
+{
+
+}
+
+void test_ParserToppscorereneDivisjon() 
+{
+
+}
+
+void test_ParserToppscorereneLag() 
+{
+
+}
+
 
 void test_Parser() 
 {
@@ -337,6 +397,28 @@ void test_Parser()
 
     std::cout << "\n\nRunning test_ParserDecodeDivisjon()\n\n";    
     test_ParserDecodeDivisjon();
+
+
+    std::cout << "\n\nRunning test_ParserEncodeResultateneDivisjon()\n\n";    
+    test_ParserEncodeResultateneDivisjon();
+
+    std::cout << "\n\nRunning test_ParserEncodeResultateneIdrett()\n\n";    
+    test_ParserEncodeResultateneIdrett();
+
+    std::cout << "\n\nRunning test_ParserTabellDivisjon()\n\n";    
+    test_ParserTabellDivisjon();
+
+    std::cout << "\n\nRunning test_ParserTabellIdrett()\n\n";    
+    test_ParserTabellIdrett();
+
+    std::cout << "\n\nRunning test_ParserTerminlisteDivisjon()\n\n";    
+    test_ParserTerminlisteDivisjon();
+
+    std::cout << "\n\nRunning test_ParserToppscorereneDivisjon()\n\n";    
+    test_ParserToppscorereneDivisjon();
+
+    std::cout << "\n\nRunning test_ParserToppscorereneLag()\n\n";    
+    test_ParserToppscorereneLag();
 
 }
 

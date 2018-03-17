@@ -247,8 +247,9 @@ class Toppscorerene
 public:
     struct ToppScorer 
     {
-        string navn;
         size_t score;
+        string navn;
+        string lag;
     };
     string idrett;
     string divisjon;
