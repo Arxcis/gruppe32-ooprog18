@@ -157,7 +157,7 @@ auto LinePrinter::getString() -> string {
 
 auto encodeIdrettene(DB::Idrettene& idrettene) -> string 
 {
- //   IO::printline("\n\n------ DEBUG encodeIdrettene ------\n\n");
+ //  // IO::printline("\n\n------ DEBUG encodeIdrettene ------\n\n");
 
     LinePrinter print;
     auto idretteneCount = idrettene.data->noOfElements();
@@ -239,7 +239,7 @@ auto encodeIdrettene(DB::Idrettene& idrettene) -> string
         }
         idrettene.data->add(idrett);
     }
- //   IO::printline("\n\n------ DEBUG encodeIdrettene ------\n\n");
+ //  // IO::printline("\n\n------ DEBUG encodeIdrettene ------\n\n");
 
     return print.getString();
 }
@@ -271,7 +271,7 @@ auto decodeIdrettene(DB::Idrettene& idrettene, string_view strview) -> Parser::E
         // Create Idrett
         auto idrett = new DB::Idrett {
             idrettNavn,
-            DB::Idrett::Tabell(tabelltype)
+            DB::Idrett::TabellType(tabelltype)
         };
 
         gen.nextLine(); // ignore divisjonene:
@@ -465,12 +465,12 @@ auto decodeSpillerene(DB::Spillerene& spillerene, string_view strview) -> Parser
 auto decodeResultatene(vector<DB::ResultatWithKeys>& resultatene, string_view strview) -> Parser::Error
 {
 
-    IO::printline("\n\n------ DEBUG decodeResultatene ------\n\n");
+   // IO::printline("\n\n------ DEBUG decodeResultatene ------\n\n");
  
     auto gen = KeyValueGenerator{strview};
 
     auto[resultateneCountKey, resultateneCount] = gen.nextStringUintPair();
-    IO::printline(resultateneCountKey, ":", resultateneCount);
+   // IO::printline(resultateneCountKey, ":", resultateneCount);
 
     gen.nextLine(); // ignore 'resultatene:''
 
@@ -480,25 +480,25 @@ auto decodeResultatene(vector<DB::ResultatWithKeys>& resultatene, string_view st
         gen.nextLine(); // ignore '- resultat:'
 
         auto[idrettKey, idrett] = gen.nextStringStringPair();
-        IO::printline(idrettKey, ":", idrett);   
+       // IO::printline(idrettKey, ":", idrett);   
 
         auto[divisjonKey, divisjon] = gen.nextStringStringPair();
-        IO::printline(divisjonKey, ":", divisjon);   
+       // IO::printline(divisjonKey, ":", divisjon);   
 
         auto[hjemmelagKey, hjemmelag] = gen.nextStringStringPair();
-        IO::printline(hjemmelagKey, ":", hjemmelag);   
+       // IO::printline(hjemmelagKey, ":", hjemmelag);   
 
         auto[bortelagKey, bortelag] = gen.nextStringStringPair();
-        IO::printline(bortelagKey, ":", bortelag);   
+       // IO::printline(bortelagKey, ":", bortelag);   
 
         auto[datoKey, dato] = gen.nextStringStringPair();
-        IO::printline(datoKey, ":", dato);   
+       // IO::printline(datoKey, ":", dato);   
 
         auto[overtidKey, overtid] = gen.nextStringBoolPair();
-        IO::printline(overtidKey, ":", overtid);   
+       // IO::printline(overtidKey, ":", overtid);   
 
         auto[hjemmepoengCountKey, hjemmepoengCount] = gen.nextStringUintPair();
-        IO::printline(hjemmepoengCountKey, ":", hjemmepoengCount);   
+       // IO::printline(hjemmepoengCountKey, ":", hjemmepoengCount);   
 
         auto resultat = DB::ResultatWithKeys{
             idrett,
@@ -515,25 +515,25 @@ auto decodeResultatene(vector<DB::ResultatWithKeys>& resultatene, string_view st
         for (size_t iHjemmepoeng = 0; iHjemmepoeng < hjemmepoengCount; ++iHjemmepoeng)
         {
             auto[spillerkey, spiller] = gen.nextStringUintPair();
-            IO::printline(spillerkey, ":", spiller);
+           // IO::printline(spillerkey, ":", spiller);
             resultat.hjemmeScorerene.push_back(spiller);
         }
         
         auto[bortepoengCountKey, bortepoengCount] = gen.nextStringUintPair();
-        IO::printline(bortepoengCountKey, ":", bortepoengCount);
+       // IO::printline(bortepoengCountKey, ":", bortepoengCount);
 
         gen.nextLine(); // ignore 'bortepoeng:'
 
         for (size_t iBortepoeng = 0; iBortepoeng < bortepoengCount; ++iBortepoeng)
         {
             auto[spillerkey, spiller] = gen.nextStringUintPair();
-            IO::printline(spillerkey, ":", spiller);
+           // IO::printline(spillerkey, ":", spiller);
             resultat.borteScorerene.push_back(spiller);
         }
 
         resultatene.push_back(resultat);
     }
-    IO::printline("\n\n------ DEBUG decodeResultatene ------\n\n");
+   // IO::printline("\n\n------ DEBUG decodeResultatene ------\n\n");
     return 0;
 }
 
@@ -613,49 +613,49 @@ auto decodeDivisjon(DB::Divisjon& divisjon, string_view strview) -> Parser::Erro
 
 auto encodeResultateneDivisjon(const vector<DB::ResultatWithKeys>& resultatene) -> string 
 {
-    return "";
+    return "test_ParserEncodeResultateneDivisjon";
 }
 
 /// <summary> Encode-only.</summary>
 /// <returns> string - example found in format-resultatene-idrett.yml </returns>
 auto encodeResultateneIdrett(const vector<DB::ResultatWithKeys>& resultatene) -> string 
 {
-    return "";
+    return "test_ParserEncodeResultateneIdrett";
 }
 
 /// <summary> Encode-only. </summary>
 /// <returns> string - example found in format-tabell-divisjon.yml </returns>
-auto encodeTabellDivisjon(const DB::TabellDivisjon& tabellDivisjon) -> string 
+auto encodeTabellDivisjon(const DB::Tabell& tabellDivisjon) -> string 
 {
-    return "";
+    return "test_ParserTabellDivisjon";
 }
 
 /// <summary> Encode-only. Output example:  </summary>
 /// <returns> string - example found in format-tabellene-idrett.yml </returns>
-auto encodeTabelleneIdrett(const vector<DB::TabellDivisjon>& tabellIdrett) -> string 
+auto encodeTabelleneIdrett(const vector<DB::Tabell>& tabellIdrett) -> string 
 {
-    return "";
+    return "test_ParserTabellIdrett";
 }
 
 /// <summary> Encode-only. Output example:  </summary>
 /// <returns> string - example found in format-terminliste-divisjon.yml </returns>
-auto encodeTerminlisteDivisjon(const DB::Terminliste& terminliste) -> string 
+auto encodeTerminliste(const DB::Terminliste& terminliste) -> string 
 {
-    return "";
+    return "test_ParserTerminliste";
 }
 
 /// <summary> Encode-only. Output example:  </summary>
 /// <returns> string - example found in format-toppscorerene-divisjon.yml </returns>
 auto encodeToppscorereneDivisjon(const DB::Toppscorerene& toppscorerene) -> string 
 {
-    return "";
+    return "test_ParserToppscorereneDivisjon";
 }
 
 /// <summary> Encode-only. Output example:  </summary>
 /// <returns> string - example found in format-toppscorerene-lag.yml </returns>
-auto encodeToppscorereneLag(const DB::Toppscorerene& toppscorerene, const string lagnavn) -> string 
+auto encodeToppscorereneLag(const DB::Toppscorerene& toppscorerene) -> string 
 {
-    return "";
+    return "test_ParserToppscorereneLag";
 }
 
 

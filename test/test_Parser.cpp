@@ -128,7 +128,7 @@ void test_ParserDecodeAndEncodeIdrettene()
 		auto c1 = encodedDecodedIdrettene[i];
 		auto c2 = encodedIdrettene[i];
 		if (c1 != c2) {
-			std::cout << "\nc1 = " << c1 << "  c2 = " << c2 << '\n';
+		//	std::cout << "\nc1 = " << c1 << "  c2 = " << c2 << '\n';
 			assert(false);
 		}
 		//std::cout << c1;
@@ -200,7 +200,7 @@ void test_ParserDecodeAndEncodeSpillerene()
         auto c1 = encodedDecodedSpillerene[i];
         auto c2 = encodedSpillerene[i];
         if (c1 != c2) {
-            std::cout << "\nc1 = " << c1 << "  c2 = " << c2 << '\n';
+       //     std::cout << "\nc1 = " << c1 << "  c2 = " << c2 << '\n';
             assert(false);
         }
       //  std::cout << c1;
@@ -332,16 +332,17 @@ void test_ParserDecodeDivisjon()
         testCount++);
 }
 
+using std::string;
+using std::vector;
+using std::size_t;
 
 void test_ParserEncodeResultateneDivisjon() 
 {   
-    using std::string;
-    using std::vector;
-    using std::size_t;
+
     
     size_t testCount = 0;
-    constexpr char encodedResultateneDivisjon[] = "";
     vector<DB::ResultatWithKeys> resultateneDivisjon;
+    constexpr char encodedResultateneDivisjon[] = "test_ParserEncodeResultateneDivisjon";
     string encodedResultatene = Parser::encodeResultateneDivisjon(resultateneDivisjon);
 
     Test::assertEqual(
@@ -352,32 +353,80 @@ void test_ParserEncodeResultateneDivisjon()
 
 void test_ParserEncodeResultateneIdrett() 
 {
+    size_t testCount = 0;
+    vector<DB::ResultatWithKeys> resultateneIdrett;
+    constexpr char encodedResultateneIdrett[] = "test_ParserEncodeResultateneIdrett";
+    string encodedResultatene = Parser::encodeResultateneIdrett(resultateneIdrett);
 
+    Test::assertEqual(
+        encodedResultatene, 
+        encodedResultateneIdrett, 
+        testCount++);
 }
 
 void test_ParserTabellDivisjon() 
 {
+    size_t testCount = 0;
+    DB::Tabell tabellDivisjon;
+    constexpr char encodedTabellDivisjon[] = "test_ParserTabellDivisjon";
+    string _encodedTabellDivisjon = Parser::encodeTabellDivisjon(tabellDivisjon);
 
+    Test::assertEqual(
+        _encodedTabellDivisjon, 
+        encodedTabellDivisjon, 
+        testCount++);
 }
 
 void test_ParserTabellIdrett() 
 {   
+    size_t testCount = 0;
+    vector<DB::Tabell> tabellIdrett;
+    constexpr char encodedTabellIdrett[] = "test_ParserTabellIdrett";
+    string _encodedTabellIdrett = Parser::encodeTabelleneIdrett(tabellIdrett);
 
+    Test::assertEqual(
+        _encodedTabellIdrett, 
+        encodedTabellIdrett, 
+        testCount++);
 }
 
-void test_ParserTerminlisteDivisjon() 
+void test_ParserTerminliste() 
 {
+    size_t testCount = 0;
+    DB::Terminliste terminliste;
+    constexpr char encodedTerminliste[] = "test_ParserTerminliste";
+    string _encodedTerminliste = Parser::encodeTerminliste(terminliste);
 
+    Test::assertEqual(
+        _encodedTerminliste, 
+        encodedTerminliste, 
+        testCount++);
 }
 
 void test_ParserToppscorereneDivisjon() 
 {
+    size_t testCount = 0;
+    DB::Toppscorerene toppscorerene;
+    constexpr char encodedToppscorerene[] = "test_ParserToppscorereneDivisjon";
+    string _encodedToppscorerene = Parser::encodeToppscorereneDivisjon(toppscorerene);
 
+    Test::assertEqual(
+        _encodedToppscorerene, 
+        encodedToppscorerene, 
+        testCount++);
 }
 
 void test_ParserToppscorereneLag() 
 {
+    size_t testCount = 0;
+    DB::Toppscorerene toppscorerene;
+    constexpr char encodedToppscorerene[] = "test_ParserToppscorereneLag";
+    string _encodedToppscorerene = Parser::encodeToppscorereneLag(toppscorerene);
 
+    Test::assertEqual(
+        _encodedToppscorerene, 
+        encodedToppscorerene, 
+        testCount++);
 }
 
 
@@ -411,8 +460,8 @@ void test_Parser()
     std::cout << "\n\nRunning test_ParserTabellIdrett()\n\n";    
     test_ParserTabellIdrett();
 
-    std::cout << "\n\nRunning test_ParserTerminlisteDivisjon()\n\n";    
-    test_ParserTerminlisteDivisjon();
+    std::cout << "\n\nRunning test_ParserTerminliste()\n\n";    
+    test_ParserTerminliste();
 
     std::cout << "\n\nRunning test_ParserToppscorereneDivisjon()\n\n";    
     test_ParserToppscorereneDivisjon();
