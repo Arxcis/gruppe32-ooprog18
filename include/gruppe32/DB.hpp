@@ -78,6 +78,33 @@ public:
     */
 };
 
+class ResultatWithKeys : public Resultat 
+{
+public:
+    string idrett;
+    string divisjon;
+    string hjemmelag;
+    string bortelag;
+
+    ResultatWithKeys(
+        string _idrett,
+        string _divisjon,
+        string _hjemmelag,
+        string _bortelag,
+        string _dato, 
+        bool _spilt,
+        bool _overtid) 
+    :idrett(_idrett)
+    ,divisjon(_divisjon)
+    ,hjemmelag(_hjemmelag)
+    ,bortelag(_bortelag)
+    {
+        dato = _dato;
+        spilt = _spilt;
+        overtid = overtid;
+    }
+};
+
 
 using std::size_t;
 using std::string;
