@@ -394,6 +394,7 @@ auto decodeIdrettene(DB::Idrettene& idrettene, string_view strview) -> Parser::E
 	return 0;
 }
 
+
 auto encodeSpillerene(DB::Spillerene& spillerene) -> string 
 {
 
@@ -461,15 +462,15 @@ auto decodeSpillerene(DB::Spillerene& spillerene, string_view strview) -> Parser
 }
 
 
-auto decodeResultatene(DB::Idrettene& idrettene, string_view strview) -> Parser::Error
+auto decodeResultatene(vector<DB::ResultatWithKeys>& resultatene, string_view strview) -> Parser::Error
 {
 
-    //IO::printline("\n\n------ DEBUG decodeResultatene ------\n\n");
+    IO::printline("\n\n------ DEBUG decodeResultatene ------\n\n");
  
     auto gen = KeyValueGenerator{strview};
 
     auto[resultateneCountKey, resultateneCount] = gen.nextStringUintPair();
-    //IO::printline(resultateneCountKey, ":", resultateneCount);
+    IO::printline(resultateneCountKey, ":", resultateneCount);
 
     gen.nextLine(); // ignore 'resultatene:''
 
@@ -479,48 +480,60 @@ auto decodeResultatene(DB::Idrettene& idrettene, string_view strview) -> Parser:
         gen.nextLine(); // ignore '- resultat:'
 
         auto[idrettKey, idrett] = gen.nextStringStringPair();
-        //IO::printline(idrettKey, ":", idrett);   
+        IO::printline(idrettKey, ":", idrett);   
 
         auto[divisjonKey, divisjon] = gen.nextStringStringPair();
-        //IO::printline(divisjonKey, ":", divisjon);   
+        IO::printline(divisjonKey, ":", divisjon);   
 
         auto[hjemmelagKey, hjemmelag] = gen.nextStringStringPair();
-        //IO::printline(hjemmelagKey, ":", hjemmelag);   
+        IO::printline(hjemmelagKey, ":", hjemmelag);   
 
         auto[bortelagKey, bortelag] = gen.nextStringStringPair();
-        //IO::printline(bortelagKey, ":", bortelag);   
+        IO::printline(bortelagKey, ":", bortelag);   
 
         auto[datoKey, dato] = gen.nextStringStringPair();
-        //IO::printline(datoKey, ":", dato);   
+        IO::printline(datoKey, ":", dato);   
 
         auto[overtidKey, overtid] = gen.nextStringBoolPair();
-        //IO::printline(overtidKey, ":", overtid);   
+        IO::printline(overtidKey, ":", overtid);   
 
         auto[hjemmepoengCountKey, hjemmepoengCount] = gen.nextStringUintPair();
-        //IO::printline(hjemmepoengCountKey, ":", hjemmepoengCount);   
+        IO::printline(hjemmepoengCountKey, ":", hjemmepoengCount);   
 
+        auto resultat = DB::ResultatWithKeys{
+            idrett,
+            divisjon,
+            hjemmelag,
+            bortelag,
+            dato,
+            true,
+            overtid
+        };
 
         gen.nextLine(); // ignore 'hjemmepoeng:'
 
         for (size_t iHjemmepoeng = 0; iHjemmepoeng < hjemmepoengCount; ++iHjemmepoeng)
         {
             auto[spillerkey, spiller] = gen.nextStringUintPair();
-            //IO::printline(spillerkey, ":", spiller);  
+            IO::printline(spillerkey, ":", spiller);
+            resultat.hjemmeScorerene.push_back(spiller);
         }
         
         auto[bortepoengCountKey, bortepoengCount] = gen.nextStringUintPair();
-        //IO::printline(bortepoengCountKey, ":", bortepoengCount);
+        IO::printline(bortepoengCountKey, ":", bortepoengCount);
 
         gen.nextLine(); // ignore 'bortepoeng:'
 
-for (size_t iBortepoeng = 0; iBortepoeng < bortepoengCount; ++iBortepoeng)
-{
-    auto[spillerkey, spiller] = gen.nextStringUintPair();
-    //IO::printline(spillerkey, ":", spiller);  
-}
+        for (size_t iBortepoeng = 0; iBortepoeng < bortepoengCount; ++iBortepoeng)
+        {
+            auto[spillerkey, spiller] = gen.nextStringUintPair();
+            IO::printline(spillerkey, ":", spiller);
+            resultat.borteScorerene.push_back(spiller);
+        }
 
+        resultatene.push_back(resultat);
     }
-    //IO::printline("\n\n------ DEBUG decodeResultatene ------\n\n");
+    IO::printline("\n\n------ DEBUG decodeResultatene ------\n\n");
     return 0;
 }
 
@@ -532,18 +545,20 @@ auto decodeDivisjon(DB::Divisjon& divisjon, string_view strview) -> Parser::Erro
 
     auto gen = KeyValueGenerator{strview};
 
-    auto[divisjonkey, divisjonValue] = gen.nextStringStringPair();
-    //IO::printline(divisjonkey, ":", divisjonValue);
+    auto[divisjonkey, divisjonName] = gen.nextStringStringPair();
+    //IO::printline(divisjonkey, ":", divisjonName);
 
     auto[lageneCountkey, lageneCount] = gen.nextStringUintPair();
     //IO::printline(lageneCountkey, ":", lageneCount);
+
+    divisjon.navn = divisjonName;
 
     gen.nextLine(); // ignore lagene:
 
     for (size_t iLag = 0; iLag < lageneCount; ++iLag) 
     {
-        auto[lagkey, lag] = gen.nextStringStringPair();
-        //IO::printline(lagkey, ":", lag); 
+        auto[lagkey, lagNavn] = gen.nextStringStringPair();
+        //IO::printline(lagkey, ":", lagNavn); 
 
         auto[adressekey, adresse] = gen.nextStringStringPair();
         //IO::printline(adressekey, ":", adresse); 
@@ -551,14 +566,20 @@ auto decodeDivisjon(DB::Divisjon& divisjon, string_view strview) -> Parser::Erro
         auto[spillereneCountkey, spillereneCount] = gen.nextStringUintPair();
         //IO::printline(spillereneCountkey, ":", spillereneCount); 
         
-            
+        auto lag = DB::Lag {
+            lagNavn,
+            adresse
+        };
+
         gen.nextLine(); // ignore spillerene:
             
         for (size_t iSpiller = 0; iSpiller < spillereneCount; ++iSpiller)
         {
             auto[spillerkey, spiller] = gen.nextStringUintPair();
             //IO::printline(spillerkey, ":", spiller);         
+            lag.spillerene.push_back(spiller);
         }
+        divisjon.lagene.push_back(lag);
     }   
     
     gen.nextLine(); // ignore terminliste:
@@ -566,7 +587,6 @@ auto decodeDivisjon(DB::Divisjon& divisjon, string_view strview) -> Parser::Erro
 
     for (size_t iHjemmelag = 0; iHjemmelag < lageneCount; ++iHjemmelag)
     {
-
         auto[hjemmelagkey, hjemmelag] = gen.nextStringStringPair();
         //IO::printline(hjemmelagkey, ":", hjemmelag);  
 
@@ -580,6 +600,10 @@ auto decodeDivisjon(DB::Divisjon& divisjon, string_view strview) -> Parser::Erro
             auto[datokey, dato] = gen.nextStringStringPair();
             //IO::printline(datokey, ":", dato);  
 
+            auto resultat = DB::Resultat{
+                dato
+            };
+            divisjon.terminListe[hjemmelag][bortelag] = resultat;
         }
     }
     //IO::printline("\n\n------ DEBUG decodeDivisjon ------\n\n");

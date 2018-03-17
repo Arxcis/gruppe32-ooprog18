@@ -3,6 +3,7 @@
 #include <iostream>
 #include <string>
 #include <cassert>
+#include <vector>;
 #include <string_view>
 
 #include <gruppe32/DB.hpp>
@@ -52,6 +53,7 @@ struct LinePrinter {
 using std::size_t;
 using std::string;
 using std::string_view;
+using std::vector;
 using DB::Idrettene;
 using DB::Spillerene;
 using Error = std::size_t;
@@ -68,11 +70,11 @@ auto encodeIdrettene(DB::Idrettene& idrettene) -> string;
 auto encodeSpillerene(DB::Spillerene& spillerene) -> string;
 
 /// <summary> Decode. Has a corresponding encode function. </summary>
-/// <param name="strview"> example found in format-idrettene.yml </param name="strview">
+/// <param name="strview"> example found in format-idrettene.yml </param>
 auto decodeIdrettene(DB::Idrettene& idrettene, string_view strview) -> Parser::Error;
 
 /// <summary> Decode. Has a corresponding encode function. </summary>
-/// <param name="strview"> example found in format-spillerene.yml </param name="strview">
+/// <param name="strview"> example found in format-spillerene.yml </param>
 auto decodeSpillerene(DB::Spillerene& spillerene, string_view strview) -> Parser::Error;
 
 
@@ -108,11 +110,12 @@ auto encodeToppscorereneLag(const DB::Divisjon& divisjon, const string lagnavn) 
 
 
 /// <summary> Decode-only. </summary>
-/// <param name="strview"> example found in format-resultatene.yml </param name="strview">
-auto decodeResultatene(DB::Idrettene& idrettene, string_view strview) -> Parser::Error;
+/// <param name="resultatene"> Resultat with additional keys representing hierarchy </param>
+/// <param name="strview"> example found in format-resultatene.yml </param>
+auto decodeResultatene(vector<DB::ResultatWithKeys>& resultatene, string_view strview) -> Parser::Error;
 
 /// <summary> Decode-only. </summary>
-/// <param name="strview"> example found in format-divisjon.yml </param name="strview">
+/// <param name="strview"> example found in format-divisjon.yml </param>
 auto decodeDivisjon(DB::Divisjon& divisjon, string_view strview) -> Parser::Error; 
 
 

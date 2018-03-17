@@ -252,28 +252,18 @@ void test_ParserDecodeResultatene()
 "  - spiller: 0\n";
 
 
-    DB::Idrettene idrettene;
+    std::vector<DB::ResultatWithKeys> resultatene;
     
     // Test 0: 
-    auto err = Parser::decodeResultatene(idrettene, encodedResultatene);
+    auto err = Parser::decodeResultatene(resultatene, encodedResultatene);
+   
     Test::assertNot(err, 0, 
         "auto err = Parser::decodeResultatene()");
 
-    Test::assertTrue(idrettene.data->noOfElements() > 0, 1, "idrettene.data->noOfElements() > 0");
+    Test::assertTrue(resultatene.size() > 0, 1, "idrettene.data->noOfElements() > 0");
 
-    if (!(idrettene.data->noOfElements() > 0))
+    if (!(resultatene.size() > 0 > 0))
         return;
-   // Test 1:
-    auto idrett = (DB::Idrett* )idrettene.data->removeNo(0);
-    Test::assertEqual(idrett->name, "Fotball", 2, "idrett->name == Fotball");
-
-    auto divisjon = idrett->divisjonene[0];
-    Test::assertEqual(divisjon.navn, "Eliteserien 2018", 3, "divisjon.navn == Eliteserien 2018");
-
-
-    idrettene.data->add(idrett);
-
-
 
 }
 void test_ParserDecodeDivisjon() 
@@ -326,6 +316,9 @@ void test_ParserDecodeDivisjon()
 
     if (divisjon.lagene.size() == 0)
         return;
+
+    Test::assertTrue(divisjon.terminListe["Brann"]["Rosenborg"].dato == "2012-03-19", 2, 
+        "divisjon.terminListe['Brann']['Rosenborg'].dato == '2012-03-19'");
 }
 
 void test_Parser() 
