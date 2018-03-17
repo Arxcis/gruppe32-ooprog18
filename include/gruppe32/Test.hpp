@@ -116,4 +116,4 @@ void assertTrue(const MaybeTrue maybeTrue, const size_t testCount)
 }
 
 
-}
+} // ::Test ::gruppe32

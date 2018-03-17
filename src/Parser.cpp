@@ -801,4 +801,4 @@ auto Encode::toppscorereneLag(const vector<DB::Toppscorer>& toppscorerene,
     return p.getString();
 }
 
-} // end namespace gruppe32::
+} // ::gruppe32

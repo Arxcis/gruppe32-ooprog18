@@ -59,7 +59,7 @@ auto resultatene(vector<DB::ResultatWithKeys>& resultatene, string_view strview)
 auto divisjon(DB::Divisjon& divisjon, string_view strview) -> Decode::Error; 
 
 
-} // end namespace decode
+} // ::Decode
 
 
 
@@ -162,5 +162,5 @@ auto toppscorereneLag(const vector<DB::Toppscorer>& toppscorerene,
 auto terminliste(const DB::Terminliste& terminliste) -> string;
 
 
-} // end namespace Encode
-} // end namespace gruppe32
+} // ::Encode
+} // ::gruppe32

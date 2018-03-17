@@ -44,4 +44,5 @@ bool isDay(const string& value);
 
 /// <summary> string - validating a norwegian address. robustness is very-relaxed </summary>
 bool isAddress(const string& value);
-}
+
+} // ::Valid ::gruppe32
