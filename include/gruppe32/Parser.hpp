@@ -3,7 +3,7 @@
 #include <iostream>
 #include <string>
 #include <cassert>
-#include <vector>;
+#include <vector>
 #include <string_view>
 
 #include <gruppe32/DB.hpp>
@@ -95,7 +95,7 @@ auto encodeTabellDivisjon(const DB::TabellDivisjon& tabellDivisjon) -> string;
 
 /// <summary> Encode-only. Output example:  </summary>
 /// <returns> string - example found in format-tabellene-idrett.yml </returns>
-auto encodeTabelleneIdrett(const vector<DB::TabellDivisjon& tabellDivisjon) -> string;
+auto encodeTabelleneIdrett(const vector<DB::TabellDivisjon&> tabellIdrett) -> string;
 
 /// <summary> Encode-only. Output example:  </summary>
 /// <returns> string - example found in format-terminliste-divisjon.yml </returns>

@@ -68,10 +68,10 @@ void assertNot(const MaybeNot maybeNot, const size_t testCount)
 
     if (!maybeNot) {
         result += " equals not.";
-        printResultSuccess(result, testCount);
+        printResultSuccess(std::move(result), testCount);
     } else {
         result += " equals something";
-        printResultFailed(result, testCount);
+        printResultFailed(std::move(result), testCount);
     }
 }
 
@@ -88,10 +88,10 @@ void assertEqual(const Lhs lhs, const Rhs rhs, const size_t testCount)
 
     if (lhs == rhs) {
         result +=  " -> is equal";
-        printResultSuccess(result, testCount); 
+        printResultSuccess(std::move(result), testCount); 
     } else {
         result += " -> is not equal";
-        printResultFailed(result, testCount)
+        printResultFailed(std::move(result), testCount);
     }
 }
 
@@ -108,10 +108,10 @@ void assertTrue(const MaybeTrue maybeTrue, const size_t testCount)
 
     if (maybeTrue == true) {
         result += " is True";
-        printResultSuccess(result, testCount);
+        printResultSuccess(std::move(result), testCount);
     } else {
         result += " is not True";
-        printResultFailed(result, testCount);
+        printResultFailed(std::move(result), testCount);
     }
 }
 
