@@ -9,7 +9,7 @@
 namespace gruppe32
 {
 
-void test_ParserDecodeAndEncodeIdrettene() 
+void test_DecodeAndEncodeIdrettene() 
 {
 	constexpr char encodedIdrettene[] = ""
 "idretteneCount: 1\n"
@@ -115,10 +115,10 @@ void test_ParserDecodeAndEncodeIdrettene()
     DB::Idrettene idrettene;
     size_t testCount = 0;
     // Test 0: 
-    auto err = Parser::decodeIdrettene(idrettene, encodedIdrettene);
+    auto err = Decode::idrettene(idrettene, encodedIdrettene);
     Test::assertNot(err, testCount++);
 
-    auto encodedDecodedIdrettene = Parser::encodeIdrettene(idrettene);
+    auto encodedDecodedIdrettene = Encode::idrettene(idrettene);
 
     //
     // Testing character by character
@@ -142,7 +142,7 @@ void test_ParserDecodeAndEncodeIdrettene()
 }
 
 
-void test_ParserDecodeAndEncodeSpillerene() 
+void test_DecodeAndEncodeSpillerene() 
 {
     constexpr char encodedSpillerene[] = ""
 "autoIncrementer: 7\n"
@@ -186,11 +186,11 @@ void test_ParserDecodeAndEncodeSpillerene()
     std::size_t testCount = 0;
 
     // Test 1: 
-    auto err = Parser::decodeSpillerene(spillerene, encodedSpillerene);
+    auto err = Decode::spillerene(spillerene, encodedSpillerene);
     Test::assertNot(err, testCount++);
 
 
-    auto encodedDecodedSpillerene = Parser::encodeSpillerene(spillerene); 
+    auto encodedDecodedSpillerene = Encode::spillerene(spillerene); 
 
     //
     // Testing character by character
@@ -214,7 +214,7 @@ void test_ParserDecodeAndEncodeSpillerene()
 }
 
 
-void test_ParserDecodeResultatene() 
+void test_DecodeResultatene() 
 {
     constexpr char encodedResultatene[] = ""
 "resultateneCount: 2\n"
@@ -259,7 +259,7 @@ void test_ParserDecodeResultatene()
     std::size_t testCount = 0;
     
     // Test 0: 
-    auto err = Parser::decodeResultatene(resultatene, encodedResultatene);
+    auto err = Decode::resultatene(resultatene, encodedResultatene);
    
     Test::assertNot(err, testCount++); 
 
@@ -272,7 +272,7 @@ void test_ParserDecodeResultatene()
         return;
 
 }
-void test_ParserDecodeDivisjon() 
+void test_DecodeDivisjon() 
 {
 
     constexpr char encodedDivisjon[] = ""
@@ -315,7 +315,7 @@ void test_ParserDecodeDivisjon()
     DB::Divisjon divisjon;
     
     // Test 1: 
-    auto err = Parser::decodeDivisjon(divisjon, encodedDivisjon);
+    auto err = Decode::divisjon(divisjon, encodedDivisjon);
     Test::assertNot(
         err,
         testCount++);
@@ -336,7 +336,7 @@ using std::string;
 using std::vector;
 using std::size_t;
 
-void test_ParserEncodeResultateneDivisjon() 
+void test_EncodeResultateneDivisjon() 
 {   
 
     
@@ -385,7 +385,7 @@ void test_ParserEncodeResultateneDivisjon()
 "  - spiller: 0\n"
 "  - spiller: 0\n";
 
-    string encodedResultatene = Parser::encodeResultateneDivisjon(resultateneDivisjon, "Eliteserien 2018");
+    string encodedResultatene = Encode::resultateneDivisjon(resultateneDivisjon, "Eliteserien 2018");
 
     Test::assertEqual(
         encodedResultatene, 
@@ -393,7 +393,7 @@ void test_ParserEncodeResultateneDivisjon()
         testCount++);
 }
 
-void test_ParserEncodeResultateneIdrett() 
+void test_EncodeResultateneIdrett() 
 {
     size_t testCount = 0;
     auto resultateneIdrett = vector<DB::ResultatWithKeys> {
@@ -441,7 +441,7 @@ void test_ParserEncodeResultateneIdrett()
 "  - spiller: 0\n"
 "  - spiller: 2\n";
 
-    string encodedResultatene = Parser::encodeResultateneIdrett(resultateneIdrett, "Fotball");
+    string encodedResultatene = Encode::resultateneIdrett(resultateneIdrett, "Fotball");
 
     Test::assertEqual(
         encodedResultatene, 
@@ -449,7 +449,7 @@ void test_ParserEncodeResultateneIdrett()
         testCount++);
 }
 
-void test_ParserTabellDivisjon() 
+void test_EncodeTabellDivisjon() 
 {
     using std::vector;
 
@@ -514,7 +514,7 @@ void test_ParserTabellDivisjon()
 "  uavgjort: 1\n"
 "  tap: 5\n";
 
-    string _encodedTabellDivisjon = Parser::encodeTabellDivisjon(tabellDivisjon);
+    string _encodedTabellDivisjon = Encode::tabellDivisjon(tabellDivisjon);
 
     Test::assertEqual(
         _encodedTabellDivisjon, 
@@ -522,7 +522,7 @@ void test_ParserTabellDivisjon()
         testCount++);
 }
 
-void test_ParserTabelleneIdrett() 
+void test_EncodeTabelleneIdrett() 
 {   
     using std::vector;
     
@@ -594,7 +594,7 @@ void test_ParserTabelleneIdrett()
 "    uavgjort: 1\n"
 "    tap: 5\n";
 
-    string _encodedTabelleneIdrett = Parser::encodeTabelleneIdrett(
+    string _encodedTabelleneIdrett = Encode::tabelleneIdrett(
         tabelleneIdrett, 
         "Fotball", 
         DB::Idrett::SEIER_3_UAVGJORT_1_TAP_0);
@@ -621,7 +621,7 @@ void test_ParserTabelleneIdrett()
         testCount++);
 }
 
-void test_ParserTerminliste() 
+void test_EncodeTerminliste() 
 {
     using std::map;
     
@@ -658,7 +658,7 @@ void test_ParserTerminliste()
 "    - bortelag: Brann\n"
 "      dato: 2012-03-19\n";
 
-    string _encodedTerminliste = Parser::encodeTerminliste(terminliste);
+    string _encodedTerminliste = Encode::terminliste(terminliste);
 
     Test::assertEqual(
         _encodedTerminliste, 
@@ -666,7 +666,7 @@ void test_ParserTerminliste()
         testCount++);
 }
 
-void test_ParserToppscorereneDivisjon() 
+void test_EncodeToppscorereneDivisjon() 
 {
     using std::vector;
 
@@ -695,7 +695,7 @@ void test_ParserToppscorereneDivisjon()
 "- spiller: Andre Hansen\n"
 "  score: 8\n";
 
-    string _encodedToppscorerene = Parser::encodeToppscorereneDivisjon(toppscorerene, "Eliteserien 2018");
+    string _encodedToppscorerene = Encode::toppscorereneDivisjon(toppscorerene, "Eliteserien 2018");
 
     Test::assertEqual(
         _encodedToppscorerene, 
@@ -703,7 +703,7 @@ void test_ParserToppscorereneDivisjon()
         testCount++);
 }
 
-void test_ParserToppscorereneLag() 
+void test_EncodeToppscorereneLag() 
 {
     using std::vector;
 
@@ -725,7 +725,7 @@ void test_ParserToppscorereneLag()
 "  score: 18\n";
 
 
-    string _encodedToppscorerene = Parser::encodeToppscorereneLag(toppscorerene, "Brann");
+    string _encodedToppscorerene = Encode::toppscorereneLag(toppscorerene, "Brann");
 
     Test::assertEqual(
         _encodedToppscorerene, 
@@ -736,42 +736,42 @@ void test_ParserToppscorereneLag()
 
 void test_Parser() 
 {
-    std::cout << "\n\nRunning test_ParserDecodeAndEncodeIdrettene()\n\n";    
-    test_ParserDecodeAndEncodeIdrettene();
+    std::cout << "\n\nRunning test_DecodeAndEncodeIdrettene()\n\n";    
+    test_DecodeAndEncodeIdrettene();
 
     
-    std::cout << "\n\nRunning test_ParserDecodeAndEncodeSpillerene()\n\n";    
-    test_ParserDecodeAndEncodeSpillerene();
+    std::cout << "\n\nRunning test_DecodeAndEncodeSpillerene()\n\n";    
+    test_DecodeAndEncodeSpillerene();
 
 
-    std::cout << "\n\nRunning test_ParserDecodeResultatene()\n\n";    
-    test_ParserDecodeResultatene();
+    std::cout << "\n\nRunning test_DecodeResultatene()\n\n";    
+    test_DecodeResultatene();
 
 
-    std::cout << "\n\nRunning test_ParserDecodeDivisjon()\n\n";    
-    test_ParserDecodeDivisjon();
+    std::cout << "\n\nRunning test_DecodeDivisjon()\n\n";    
+    test_DecodeDivisjon();
 
 
-    std::cout << "\n\nRunning test_ParserEncodeResultateneDivisjon()\n\n";    
-    test_ParserEncodeResultateneDivisjon();
+    std::cout << "\n\nRunning test_EncodeResultateneDivisjon()\n\n";    
+    test_EncodeResultateneDivisjon();
 
-    std::cout << "\n\nRunning test_ParserEncodeResultateneIdrett()\n\n";    
-    test_ParserEncodeResultateneIdrett();
+    std::cout << "\n\nRunning test_EncodeResultateneIdrett()\n\n";    
+    test_EncodeResultateneIdrett();
 
-    std::cout << "\n\nRunning test_ParserTabellDivisjon()\n\n";    
-    test_ParserTabellDivisjon();
+    std::cout << "\n\nRunning test_EncodeTabellDivisjon()\n\n";    
+    test_EncodeTabellDivisjon();
 
-    std::cout << "\n\nRunning test_ParserTabelleneIdrett()\n\n";    
-    test_ParserTabelleneIdrett();
+    std::cout << "\n\nRunning test_EncodeTabelleneIdrett()\n\n";    
+    test_EncodeTabelleneIdrett();
 
-    std::cout << "\n\nRunning test_ParserTerminliste()\n\n";    
-    test_ParserTerminliste();
+    std::cout << "\n\nRunning test_EncodeTerminliste()\n\n";    
+    test_EncodeTerminliste();
 
-    std::cout << "\n\nRunning test_ParserToppscorereneDivisjon()\n\n";    
-    test_ParserToppscorereneDivisjon();
+    std::cout << "\n\nRunning test_EncodeToppscorereneDivisjon()\n\n";    
+    test_EncodeToppscorereneDivisjon();
 
-    std::cout << "\n\nRunning test_ParserToppscorereneLag()\n\n";    
-    test_ParserToppscorereneLag();
+    std::cout << "\n\nRunning test_EncodeToppscorereneLag()\n\n";    
+    test_EncodeToppscorereneLag();
 
 }
 
