@@ -9,13 +9,13 @@ resultatene:
   bortelag: Rosenborg
   dato: 2012-03-19
   overtid: true
-  hjemmepoengCount: 4
-  hjemmepoeng:
-  - lagSpillerid: 0
-  - lagSpillerid: 0
-  - lagSpillerid: 0
-  - lagSpillerid: 1
-  bortepoengCount: 2
-  bortepoeng:
-  - lagSpillerid: 0
-  - lagSpillerid: 0
+  hjemmeScorereneCount: 4
+  hjemmeScorerene:
+  - spiller: 0
+  - spiller: 0
+  - spiller: 0
+  - spiller: 1
+  borteScorereneCount: 2
+  borteScorerene:
+  - spiller: 0
+  - spiller: 0

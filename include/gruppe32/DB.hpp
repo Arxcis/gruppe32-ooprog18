@@ -188,7 +188,7 @@ public:
     }
 };
 
-
+using std::string;
 using std::size_t;
 using std::vector;
 ///
@@ -199,8 +199,9 @@ using std::vector;
 class TabellDivisjon 
 {
 public:
-    struct TabellLag 
+    struct Lag 
     {
+        string navn;
         size_t plassering;
         size_t poeng;
         size_t hjemmeScoringer;
@@ -214,8 +215,8 @@ public:
 
     string idrett;
     string divisjon;    
-    Idrett::Tabell tabellPoengType;
-    vector<TabellLag> lagene;
+    Idrett::TabellType tabellType;
+    vector<Lag> lagene;
 };
 
 

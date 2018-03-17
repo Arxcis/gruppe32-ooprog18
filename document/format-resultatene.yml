@@ -8,14 +8,14 @@ resultatene:
   bortelag: Rosenborg
   dato: 2012-03-19
   overtid: true
-  hjemmepoengCount: 4
-  hjemmepoeng:
+  hjemmeScorereneCount: 4
+  hjemmeScorerene:
   - spiller: 0
   - spiller: 0
   - spiller: 0
   - spiller: 1
-  bortepoengCount: 2
-  bortepoeng:
+  borteScorereneCount: 2
+  borteScorerene:
   - spiller: 0
   - spiller: 0
 
@@ -26,11 +26,11 @@ resultatene:
   bortelag: Tottenham
   dato: 2012-03-19
   overtid: false
-  hjemmepoengCount: 1
-  hjemmepoeng:
+  hjemmeScorereneCount: 1
+  hjemmeScorerene:
   - spiller: 1
-  bortepoengCount: 3
-  bortepoeng:
+  borteScorereneCount: 3
+  borteScorerene:
   - spiller: 1
   - spiller: 1
   - spiller: 0
