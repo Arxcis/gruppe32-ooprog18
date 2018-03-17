@@ -78,33 +78,6 @@ public:
     */
 };
 
-class ResultatWithKeys : public Resultat 
-{
-public:
-    string idrett;
-    string divisjon;
-    string hjemmelag;
-    string bortelag;
-
-    ResultatWithKeys(
-        string _idrett,
-        string _divisjon,
-        string _hjemmelag,
-        string _bortelag,
-        string _dato, 
-        bool _spilt,
-        bool _overtid) 
-    :idrett(_idrett)
-    ,divisjon(_divisjon)
-    ,hjemmelag(_hjemmelag)
-    ,bortelag(_bortelag)
-    {
-        dato = _dato;
-        spilt = _spilt;
-        overtid = overtid;
-    }
-};
-
 
 using std::size_t;
 using std::string;
@@ -174,6 +147,112 @@ struct Context
         spillerene = Spillerene(0);
         idrettene = Idrettene(0);
     }
+};
+
+
+//
+// INTERMEDIATE TYPES - IMPORT/EXPORT types
+//  Types which are not stored internally, but used for exporting/importing to console and files.
+//
+
+
+using std::string;
+///
+/// <summary> Used for importing new Resultat's from a user provided file.
+///           File format specified in format-resultatene.yml </summary>
+///
+class ResultatWithKeys : public Resultat 
+{
+public:
+    string idrett;
+    string divisjon;
+    string hjemmelag;
+    string bortelag;
+
+    ResultatWithKeys(
+        string _idrett,
+        string _divisjon,
+        string _hjemmelag,
+        string _bortelag,
+        string _dato, 
+        bool _spilt,
+        bool _overtid) 
+    :idrett(_idrett)
+    ,divisjon(_divisjon)
+    ,hjemmelag(_hjemmelag)
+    ,bortelag(_bortelag)
+    {
+        dato = _dato;
+        spilt = _spilt;
+        overtid = overtid;
+    }
+};
+
+
+using std::size_t;
+using std::vector;
+///
+/// <summary> Used for exporting a representation of the current table of a given Divisjon.
+///           Can be exported to console or file. 
+///           File format specified in format-tabell.yml files </summary>
+///
+class TabellDivisjon 
+{
+public:
+    struct TabellLag 
+    {
+        size_t plassering;
+        size_t poeng;
+        size_t hjemmeScoringer;
+        size_t hjemmeBaklengs;
+        size_t borteScoringer;
+        size_t borteBaklengs;
+        size_t seier;
+        size_t uavgjort;
+        size_t tap;
+    };
+
+    string idrett;
+    string divisjon;    
+    Idrett::Tabell tabellPoengType;
+    vector<TabellLag> lagene;
+};
+
+
+using std::string;
+using std::map;
+///
+/// <summary> Used for exporting only the dates on which matches are held. 
+///           Used like this: terminListe.data[hjemmelag][bortelag] = "2018-03-27"; 
+///           File format specified in format-terminliste.yml </summary>
+///
+class Terminliste 
+{ 
+public:
+    string idrett;
+    string divisjon;
+    map<string, map<string,string>> data;
+};
+
+
+using std::string;
+using std::size_t;
+using std::vector;
+///
+/// <summary> Used for exporting tables with topp 10 players. Exports to console of file.
+///           File formate specified in format-toppscorerene.yml </summary>
+///
+class Toppscorerene
+{
+public:
+    struct ToppScorer 
+    {
+        string navn;
+        size_t score;
+    };
+    string idrett;
+    string divisjon;
+    vector<ToppScorer> data;
 };
 
 
