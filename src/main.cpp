@@ -18,15 +18,37 @@ int main(int argc, char* argv[])
     // SET UP CONTEXTS
     //===================================================================================
     auto defaultContext = DB::Context();
-    auto myContext = DB::Context();
-    myContext.spillerene.data->add(new DB::Spiller(4, "Ola Nordmann", "Bergen, Norway"));
-    myContext.spillerene.data->add(new DB::Spiller(5, "Kari Nordmann", "Trondheim, Norway"));
-    myContext.spillerene.data->add(new DB::Spiller(6, "Tølløf Krambakk", "Kristiansund, Norway"));
-    myContext.spillerene.data->add(new DB::Spiller(7, "Hanz Bak", "Berlin, Germany"));
+    auto testPrintsContext = DB::Context();
+
+    testPrintsContext.spillerene.data->add(new DB::Spiller(0, "Arto Keininen", "Olou, Finland"));
+    testPrintsContext.spillerene.data->add(new DB::Spiller(1, "Tore Sørlund", "Hamar, Norway"));
+    testPrintsContext.spillerene.data->add(new DB::Spiller(2, "Gary Newman", "Orlando, Florida, USA"));
+    testPrintsContext.spillerene.data->add(new DB::Spiller(3, "Hanz Frem", "Berlin, Germany"));
+
+    testPrintsContext.spillerene.data->add(new DB::Spiller(4, "Ola Nordmann", "Bergen, Norway"));
+    testPrintsContext.spillerene.data->add(new DB::Spiller(5, "Kari Nordmann", "Trondheim, Norway"));
+    testPrintsContext.spillerene.data->add(new DB::Spiller(6, "Tølløf Krambakk", "Kristiansund, Norway"));
+    testPrintsContext.spillerene.data->add(new DB::Spiller(7, "Hanz Bak", "Berlin, Germany"));
+
+    auto idrettFotball = new DB::Idrett("Fotball", DB::Idrett::SEIER_3_UAVGJORT_1_TAP_0);
+    idrettFotball->divisjonene.push_back(
+        DB::Divisjon
+        { "Eliteserien", 
+            { 
+                DB::Lag{"Rosenborg Ballklubb", "Trondheim, Norway",{5, 6, 1, 3, 0}},
+                DB::Lag{"Brann", "Bergen, Norway", {4, 7, 2}},
+            } 
+        });
+    idrettFotball->divisjonene.push_back(DB::Divisjon{ "Premier League" });
+    testPrintsContext.idrettene.data->add(idrettFotball);
+
+    auto idrettBasket = new DB::Idrett("Basketball", DB::Idrett::SEIER_3_OVERTID_2_UAVGJORT_1_TAP_0);
+    idrettBasket->divisjonene.push_back(DB::Divisjon{ "Test" });
+    testPrintsContext.idrettene.data->add(idrettBasket);
 
     auto ctxMap = std::unordered_map<std::string, DB::Context&>{
         {DEFAULT_CONTEXT,   defaultContext},
-        {"myContext",       myContext}
+        {"testPrints",       testPrintsContext}
     };
 
     //===================================================================================
