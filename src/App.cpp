@@ -11,7 +11,6 @@ namespace gruppe32::App
  */
 void printSpillereAll(DB::Context& ctx) 
 {
-    //defined as lambda for later when we make a place for helperfuncs
     IO::printline("printSpillereAll()");
     std::size_t count = ctx.spillerene.data->noOfElements();
     for(std::size_t i = 1; i <= count; i++)
@@ -67,6 +66,13 @@ void printSpillereByNumber(DB::Context& ctx, const std::size_t number)
 void printIdretterAll(DB::Context& ctx) 
 {
     IO::printline("printIdretterAll()");
+    std::size_t count = ctx.idrettene.data->noOfElements();
+    for (std::size_t i = 1; i <= count; i++)
+    {
+        auto current = (DB::Idrett*)ctx.idrettene.data->removeNo(i);
+        printIdrett(*current);
+        ctx.idrettene.data->add(current);
+    }
 }
 
 void printIdretterByName( DB::Context& ctx, const std::string name) 
@@ -75,6 +81,55 @@ void printIdretterByName( DB::Context& ctx, const std::string name)
     IO::printline();
     IO::printline("Idrett med navn \"", name, "\" etterspurt");
 
+    //TODO the entire name needs to be written, we could make it robust by looping through, but that would involve discarding the usefulness of a sorted list.
+    auto idrett = (DB::Idrett*)ctx.idrettene.data->remove(name.c_str());
+    std::size_t count = ctx.idrettene.data->noOfElements();
+    if (!idrett && count > 0) 
+    {
+        for (std::size_t i = 1; i <= count; i++)
+        {
+            auto current = (DB::Idrett*)ctx.idrettene.data->removeNo(i);
+            if (current->name.find(name) != std::string::npos)
+            {
+                IO::printline("Idrett funnet!");
+                printIdrett(*current);
+                IO::printline();
+                for (auto const& divisjon : current->divisjonene)
+                {
+                    IO::printline("    ", divisjon.navn);
+                    IO::printline("     - Antall Lag:", divisjon.lagene.size());
+                    IO::printline();
+                    for (auto const& lag : divisjon.lagene)
+                    {
+                        IO::printline("      ", lag.navn);
+                        IO::printline("       - Spillere:", lag.spillerene.size());
+                        IO::printline("       - Adresse:", lag.adresse);
+                    }
+                }
+            }
+            ctx.idrettene.data->add(current);
+        }
+    }
+    else
+    {
+        IO::printline("Idrett funnet!");
+        printIdrett(*idrett);
+        IO::printline();
+        for (auto const& divisjon : idrett->divisjonene)
+        {
+            IO::printline("    ",divisjon.navn);
+            IO::printline("     - Antall Lag:", divisjon.lagene.size());
+            IO::printline();
+            for (auto const& lag : divisjon.lagene)
+            {
+                IO::printline("      ", lag.navn);
+                IO::printline("       - Spillere:", lag.spillerene.size());
+                IO::printline("       - Adresse:", lag.adresse);
+            }
+        }
+        IO::printline();
+        ctx.idrettene.data->add(idrett);
+    }
 }
 
 void createSpiller(DB::Context& ctx) 
@@ -194,9 +249,18 @@ void writeTopp10Lag(const DB::Context& ctx)
 
 void printSpiller(const DB::Spiller& spiller)
 {
-    IO::printline("Nr:", spiller.guid);
-    IO::printline("Navn:", spiller.name);
-    IO::printline("Adresse:", spiller.address);
+    IO::printline();
+    IO::printline("  ", spiller.name);
+    IO::printline("   - Nummer:", spiller.guid);
+    IO::printline("   - Adresse:", spiller.address);
 };
+
+void printIdrett(const DB::Idrett& idrett)
+{
+    IO::printline();
+    IO::printline("  ", idrett.name);
+    IO::printline("   - Tabelltype:", idrett.tabell);
+    IO::printline("   - Antall divisjoner:", idrett.divisjonene.size());
+}
 
 } // end namespace gruppe32::App
