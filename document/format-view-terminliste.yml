@@ -1,26 +1,27 @@
 divisjon: Eliteserien 2018
-lageneCount: 2
-
+lageneCount: 3 
 terminliste:
 
-- kamp:
-  hjemmelag: Brann
-  bortelag: Rosenborg
-  dato: 2018-03-19
+- hjemmelag: Brann
+  bortelagene:
 
-- kamp:
-  hjemmelag: Rosenborg
-  bortelag: Brann
-  dato: 2018-04-21
+  - bortelag: Rosenborg
+    dato: 2018-03-19
+  - bortelag: Stabekk
+    dato: 2018-04-19
 
-# TODO make this kinda the printout
+- hjemmelag: Rosenborg
+  bortelagene:
 
-```
-┌────────────────────────────────┐
-│            │ Brann │ Rosenborg │
-├────────────────────────────────┤
-│ Brann      │ 0     │ dd/mm     │
-├────────────────────────────────┤
-│ Rosenborg  │ dd/mm │ 0         │
-└────────────────────────────────┘
-```
+  - bortelag: Brann
+    dato: 2018-04-21
+  - bortelag: Stabekk
+    dato: 2018-06-19
+
+- hjemmelag: Stabekk
+  bortelagene:
+
+  - bortelag: Brann
+    dato: 2018-07-21
+  - bortelag: Rosenborg
+    dato: 2018-08-19

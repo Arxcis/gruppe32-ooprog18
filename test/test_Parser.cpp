@@ -39,32 +39,31 @@ void test_DecodeAndEncodeIdrettene()
 "      - spiller: 3\n"
 "\n"
 "    terminliste:\n"
-"      hjemmelagene:\n"
+"      \n"
+"    - hjemmelag: Brann\n"
+"      bortelagene:\n"
 "\n"
-"      - hjemmelag: Brann\n"
-"        bortelagene:\n"
+"      - bortelag: Rosenborg\n"
+"        dato: 2012-03-19\n"
+"        resultat:\n"
+"          overtid: true\n"
+"          hjemmeScorereneCount: 4\n"
+"          hjemmeScorerene:\n"
+"          - spiller: 0\n"
+"          - spiller: 0\n"
+"          - spiller: 0\n"
+"          - spiller: 1\n"
+"          borteScorereneCount: 2\n"
+"          borteScorerene:\n"
+"          - spiller: 0\n"
+"          - spiller: 0\n"
 "\n"
-"        - bortelag: Rosenborg\n"
-"          dato: 2012-03-19\n"
-"          resultat:\n"
-"            overtid: true\n"
-"            hjemmeScorereneCount: 4\n"
-"            hjemmeScorerene:\n"
-"            - spiller: 0\n"
-"            - spiller: 0\n"
-"            - spiller: 0\n"
-"            - spiller: 1\n"
-"            borteScorereneCount: 2\n"
-"            borteScorerene:\n"
-"            - spiller: 0\n"
-"            - spiller: 0\n"
+"    - hjemmelag: Rosenborg\n"
+"      bortelagene:\n"
 "\n"
-"      - hjemmelag: Rosenborg\n"
-"        bortelagene:\n"
-"\n"
-"        - bortelag: Brann\n"
-"          dato: 2013-03-19\n"
-"          resultat: false\n"
+"      - bortelag: Brann\n"
+"        dato: 2013-03-19\n"
+"        resultat: false\n"
 "\n"
 "  - divisjon: Premier League 2017/2018\n"
 "    lageneCount: 2\n"
@@ -85,41 +84,40 @@ void test_DecodeAndEncodeIdrettene()
 "      - spiller: 7\n"
 "\n"
 "    terminliste:\n"
-"      hjemmelagene:\n"
 "\n"
-"      - hjemmelag: Manchester United\n"
-"        bortelagene:\n"
+"    - hjemmelag: Manchester United\n"
+"      bortelagene:\n"
 "\n"
-"        - bortelag: Tottenham Hotspurs\n"
-"          dato: 2012-03-19\n"
-"          resultat:\n"
-"            overtid: false\n"
-"            hjemmeScorereneCount: 1\n"
-"            hjemmeScorerene:\n"
-"            - spiller: 1\n"
-"            borteScorereneCount: 3\n"
-"            borteScorerene:\n"
-"            - spiller: 1\n"
-"            - spiller: 1\n"
-"            - spiller: 0\n"
+"      - bortelag: Tottenham Hotspurs\n"
+"        dato: 2012-03-19\n"
+"        resultat:\n"
+"          overtid: false\n"
+"          hjemmeScorereneCount: 1\n"
+"          hjemmeScorerene:\n"
+"          - spiller: 1\n"
+"          borteScorereneCount: 3\n"
+"          borteScorerene:\n"
+"          - spiller: 1\n"
+"          - spiller: 1\n"
+"          - spiller: 0\n"
 "\n"
-"      - hjemmelag: Tottenham Hotspurs\n"
-"        bortelagene:\n"
+"    - hjemmelag: Tottenham Hotspurs\n"
+"      bortelagene:\n"
 "\n"
-"        - bortelag: Manchester United\n"
-"          dato: 2013-03-19\n"
-"          resultat: false\n";
+"      - bortelag: Manchester United\n"
+"        dato: 2013-03-19\n"
+"        resultat: false\n";
     
     using std::size_t;
     
     DB::Idrettene idrettene;
     size_t testCount = 0;
+
     // Test 0: 
-    auto err = Decode::idrettene(idrettene, encodedIdrettene);
+    auto err = Decode::dataIdrettene(idrettene, encodedIdrettene);
     Test::assertNot(err, testCount++);
 
-    auto encodedDecodedIdrettene = Encode::idrettene(idrettene);
-
+    auto encodedDecodedIdrettene = Encode::dataIdrettene(idrettene);
     //
     // Testing character by character
     // 
@@ -146,7 +144,6 @@ void test_DecodeAndEncodeSpillerene()
 {
     constexpr char encodedSpillerene[] = ""
 "autoIncrementer: 7\n"
-"\n"
 "spillereneCount: 8\n"
 "spillerene:\n"
 "\n"
@@ -158,7 +155,7 @@ void test_DecodeAndEncodeSpillerene()
 "  guid: 1\n"
 "  adresse: Bergen, Norway\n"
 "\n"
-"- spiller: Arild Østebø\n"
+"- spiller: Arild ├ÿsteb├©\n"
 "  guid: 2\n"
 "  adresse: Trondheim, Norway\n"
 "\n"
@@ -186,18 +183,18 @@ void test_DecodeAndEncodeSpillerene()
     std::size_t testCount = 0;
 
     // Test 1: 
-    auto err = Decode::spillerene(spillerene, encodedSpillerene);
+    auto err = Decode::dataSpillerene(spillerene, encodedSpillerene);
     Test::assertNot(err, testCount++);
 
 
-    auto encodedDecodedSpillerene = Encode::spillerene(spillerene); 
+    auto _encodedSpillerene = Encode::dataSpillerene(spillerene); 
 
     //
     // Testing character by character
     // 
-    for (std::size_t i = 0; i < encodedDecodedSpillerene.size(); ++i) 
+    for (std::size_t i = 0; i < _encodedSpillerene.size(); ++i) 
     {
-        auto c1 = encodedDecodedSpillerene[i];
+        auto c1 = _encodedSpillerene[i];
         auto c2 = encodedSpillerene[i];
         if (c1 != c2) {
        //     std::cout << "\nc1 = " << c1 << "  c2 = " << c2 << '\n';
@@ -208,7 +205,7 @@ void test_DecodeAndEncodeSpillerene()
 
     // Test 2:
     Test::assertEqual(
-        encodedDecodedSpillerene, 
+        _encodedSpillerene, 
         encodedSpillerene, 
         testCount++);
 }
@@ -255,11 +252,11 @@ void test_DecodeResultatene()
 "  - spiller: 0\n";
 
 
-    std::vector<DB::ResultatWithKeys> resultatene;
+    std::vector<DB::InputResultat> resultatene;
     std::size_t testCount = 0;
     
     // Test 0: 
-    auto err = Decode::resultatene(resultatene, encodedResultatene);
+    auto err = Decode::inputResultatene(resultatene, encodedResultatene);
    
     Test::assertNot(err, testCount++); 
 
@@ -277,7 +274,6 @@ void test_DecodeDivisjon()
 
     constexpr char encodedDivisjon[] = ""
 "divisjon: Eliteserien\n"
-"\n"
 "lageneCount: 2\n"
 "lagene:\n"
 "\n"
@@ -296,26 +292,24 @@ void test_DecodeDivisjon()
 "  - spiller: 3\n"
 "\n"
 "terminliste:\n"
-"  hjemmelagene:\n"
+"- hjemmelag: Brann\n"
+"  bortelagene:\n"
 "\n"
-"  - hjemmelag: Brann\n"
-"    bortelagene:\n"
+"  - bortelag: Rosenborg\n"
+"    dato: 2012-03-19\n"
 "\n"
-"    - bortelag: Rosenborg\n"
-"      dato: 2012-03-19\n"
+"- hjemmelag: Rosenborg\n"
+"  bortelagene:\n"
 "\n"
-"  - hjemmelag: Rosenborg\n"
-"    bortelagene:\n"
-"\n"
-"    - bortelag: Brann\n"
-"      dato: 2012-03-19\n";
+"  - bortelag: Brann\n"
+"    dato: 2012-03-19\n";
 
     using std::size_t;
     size_t testCount = 0;
     DB::Divisjon divisjon;
     
     // Test 1: 
-    auto err = Decode::divisjon(divisjon, encodedDivisjon);
+    auto err = Decode::inputDivisjon(divisjon, encodedDivisjon);
     Test::assertNot(
         err,
         testCount++);
@@ -328,7 +322,7 @@ void test_DecodeDivisjon()
         return;
 
     Test::assertTrue(
-        divisjon.terminListe["Brann"]["Rosenborg"].dato == "2012-03-19",
+        divisjon.terminliste["Brann"]["Rosenborg"].dato == "2012-03-19",
         testCount++);
 }
 
@@ -341,110 +335,103 @@ void test_EncodeResultateneDivisjon()
 
     
     size_t testCount = 0;
-    auto resultateneDivisjon = vector<DB::ResultatWithKeys> {
-        DB::ResultatWithKeys{
-            "Fotball",
+    size_t hjemmescoringer;
+    size_t bortescoringer;
+    auto resultateneDivisjon = vector<DB::ViewResultat> {
+        DB::ViewResultat {
+            "Eliteserien 2018",
+            "Rosenborg",
+            "Brann",
+            "2018-04-19",
+            hjemmescoringer = 1,
+            bortescoringer = 3
+        },
+        DB::ViewResultat{
             "Eliteserien 2018",
             "Brann",
             "Rosenborg",
-            "2012-03-19",
-            true,
-            true
+            "2018-05-19",
+            hjemmescoringer = 6,
+            bortescoringer = 0
         },
-    };
-    resultateneDivisjon[0].hjemmeScorerene = vector<size_t> {
-        0,
-        0,
-        0,
-        1
-    };
-    resultateneDivisjon[0].borteScorerene = vector<size_t> {
-        0,
-        0
     };
 
     constexpr char encodedResultateneDivisjon[] = ""
 "divisjon: Eliteserien 2018\n"
-"\n"
-"resultateneCount: 1\n"
+"resultateneCount: 2\n"
 "resultatene:\n"
+"\n"
+"- resultat:\n"
+"  hjemmelag: Rosenborg\n"
+"  bortelag: Brann\n"
+"  dato: 2018-04-19\n"
+"  hjemmescoringer: 1\n"
+"  bortescoringer: 3\n"
 "\n"
 "- resultat:\n"
 "  hjemmelag: Brann\n"
 "  bortelag: Rosenborg\n"
-"  dato: 2012-03-19\n"
-"  overtid: true\n"
-"  hjemmeScorereneCount: 4\n"
-"  hjemmeScorerene:\n"
-"  - spiller: 0\n"
-"  - spiller: 0\n"
-"  - spiller: 0\n"
-"  - spiller: 1\n"
-"  borteScorereneCount: 2\n"
-"  borteScorerene:\n"
-"  - spiller: 0\n"
-"  - spiller: 0\n";
+"  dato: 2018-05-19\n"
+"  hjemmescoringer: 6\n"
+"  bortescoringer: 0\n";
 
-    string encodedResultatene = Encode::resultateneDivisjon(resultateneDivisjon, "Eliteserien 2018");
+    string _encodedResultatene = Encode::viewResultateneDivisjon(resultateneDivisjon, "Eliteserien 2018");
 
     Test::assertEqual(
-        encodedResultatene, 
+        _encodedResultatene, 
         encodedResultateneDivisjon, 
         testCount++);
 }
 
 void test_EncodeResultateneIdrett() 
 {
+    size_t hjemmescoringer;
+    size_t bortescoringer;
     size_t testCount = 0;
-    auto resultateneIdrett = vector<DB::ResultatWithKeys> {
-        DB::ResultatWithKeys{
-            "Fotball",
+    auto resultateneIdrett = vector<DB::ViewResultat> {
+        DB::ViewResultat {
+            "Eliteserien 2018",
+            "Rosenborg",
+            "Brann",
+            "2018-04-19",
+            hjemmescoringer = 1,
+            bortescoringer = 3
+        },
+        DB::ViewResultat{
             "Eliteserien 2018",
             "Brann",
             "Rosenborg",
-            "2012-03-19",
-            true,
-            true
+            "2018-05-19",
+            hjemmescoringer = 4,
+            bortescoringer = 8
         },
     };
-    resultateneIdrett[0].hjemmeScorerene = vector<size_t> {
-        1,
-        0,
-        0,
-        1
-    };
-    resultateneIdrett[0].borteScorerene = vector<size_t> {
-        0,
-        2
-    };
-
 
     constexpr char encodedResultateneIdrett[] = ""
 "idrett: Fotball\n"
-"\n"
-"resultateneCount: 1\n"
+"resultateneCount: 2\n"
 "resultatene:\n"
 "\n"
 "- resultat:\n"
+"  divisjon: Eliteserien 2018\n"
+"  hjemmelag: Rosenborg\n"
+"  bortelag: Brann\n"
+"  dato: 2018-04-19\n"
+"  hjemmescoringer: 1\n"
+"  bortescoringer: 3\n"
+"\n"
+"- resultat:\n"
+"  divisjon: Eliteserien 2018\n"
 "  hjemmelag: Brann\n"
 "  bortelag: Rosenborg\n"
-"  dato: 2012-03-19\n"
-"  overtid: true\n"
-"  hjemmeScorereneCount: 4\n"
-"  hjemmeScorerene:\n"
-"  - spiller: 1\n"
-"  - spiller: 0\n"
-"  - spiller: 0\n"
-"  - spiller: 1\n"
-"  borteScorereneCount: 2\n"
-"  borteScorerene:\n"
-"  - spiller: 0\n"
-"  - spiller: 2\n";
+"  dato: 2018-05-19\n"
+"  hjemmescoringer: 4\n"
+"  bortescoringer: 8\n";
 
-    string encodedResultatene = Encode::resultateneIdrett(resultateneIdrett, "Fotball");
+    string _encodedResultatene = Encode::viewResultateneIdrett(resultateneIdrett, "Fotball");
 
     Test::assertEqual(
-        encodedResultatene, 
+        _encodedResultatene, 
         encodedResultateneIdrett, 
         testCount++);
 }
@@ -457,7 +444,6 @@ void test_EncodeTabellDivisjon()
     const auto tabellDivisjon = DB::Tabell {
         "Fotball",
         "Eliteserien 2018",
-        DB::Idrett::SEIER_3_UAVGJORT_1_TAP_0,
         vector<DB::Tabell::Lag> {
             DB::Tabell::Lag{
                 "Brann",
@@ -487,8 +473,6 @@ void test_EncodeTabellDivisjon()
     };
     constexpr char encodedTabellDivisjon[] = ""
 "tabell: Eliteserien 2018\n"
-"tabelltype: 310\n"
-"\n"
 "tabellLageneCount: 2\n"
 "tabellLagene:\n"
 "\n"
@@ -514,7 +498,7 @@ void test_EncodeTabellDivisjon()
 "  uavgjort: 1\n"
 "  tap: 5\n";
 
-    string _encodedTabellDivisjon = Encode::tabellDivisjon(tabellDivisjon);
+    string _encodedTabellDivisjon = Encode::viewTabellDivisjon(tabellDivisjon);
 
     Test::assertEqual(
         _encodedTabellDivisjon, 
@@ -531,7 +515,6 @@ void test_EncodeTabelleneIdrett()
         DB::Tabell {
             "Fotball",
             "Eliteserien 2018",
-            DB::Idrett::SEIER_3_UAVGJORT_1_TAP_0,
             vector<DB::Tabell::Lag> {
                 DB::Tabell::Lag{
                     "Brann",
@@ -562,8 +545,6 @@ void test_EncodeTabelleneIdrett()
     };
     constexpr char encodedTabelleneIdrett[] = ""
 "idrett: Fotball\n"
-"tabelltype: 310\n"
-"\n"
 "tabelleneCount: 1\n"
 "tabellene:\n"
 "\n"
@@ -594,26 +575,7 @@ void test_EncodeTabelleneIdrett()
 "    uavgjort: 1\n"
 "    tap: 5\n";
 
-    string _encodedTabelleneIdrett = Encode::tabelleneIdrett(
-        tabelleneIdrett, 
-        "Fotball", 
-        DB::Idrett::SEIER_3_UAVGJORT_1_TAP_0);
-
-
-    //
-    // Testing character by character
-    // 
-   /* for (std::size_t i = 0; i < _encodedTabelleneIdrett.size(); ++i)
-    {
-        auto c1 = _encodedTabelleneIdrett[i];
-        auto c2 = encodedTabelleneIdrett[i];
-        if (c1 != c2) {
-          //  std::cout << "\nc1 = " << ((c1=='\n')?"newline":"somethingelse") 
-            //                      << "  c2 = " << ((c2=='\n')?"newline":"somethingelse") << '\n';
-        //    assert(false);
-        }
-      //  std::cout << c1;
-    }*/
+    string _encodedTabelleneIdrett = Encode::viewTabelleneIdrett(tabelleneIdrett, "Fotball");
 
     Test::assertEqual(
         _encodedTabelleneIdrett, 
@@ -641,24 +603,34 @@ void test_EncodeTerminliste()
     };
     constexpr char encodedTerminliste[] = ""
 "divisjon: Eliteserien 2018\n"
-"\n"
+"lageneCount: 3 \n"
 "terminliste:\n"
-"  lageneCount: 2\n"
-"  hjemmelagene:\n"
 "\n"
-"  - hjemmelag: Brann\n"
-"    bortelagene:\n"
+"- hjemmelag: Brann\n"
+"  bortelagene:\n"
 "\n"
-"    - bortelag: Rosenborg\n"
-"      dato: 2012-03-19\n"
+"  - bortelag: Rosenborg\n"
+"    dato: 2018-03-19\n"
+"  - bortelag: Stabekk\n"
+"    dato: 2018-04-19\n"
 "\n"
-"  - hjemmelag: Rosenborg\n"
-"    bortelagene:\n"
+"- hjemmelag: Rosenborg\n"
+"  bortelagene:\n"
 "\n"
-"    - bortelag: Brann\n"
-"      dato: 2012-03-19\n";
+"  - bortelag: Brann\n"
+"    dato: 2018-04-21\n"
+"  - bortelag: Stabekk\n"
+"    dato: 2018-06-19\n"
+"\n"
+"- hjemmelag: Stabekk\n"
+"  bortelagene:\n"
+"\n"
+"  - bortelag: Brann\n"
+"    dato: 2018-07-21\n"
+"  - bortelag: Rosenborg\n"
+"    dato: 2018-08-19";
 
-    string _encodedTerminliste = Encode::terminliste(terminliste);
+    string _encodedTerminliste = Encode::viewTerminliste(terminliste);
 
     Test::assertEqual(
         _encodedTerminliste, 
@@ -679,7 +651,6 @@ void test_EncodeToppscorereneDivisjon()
     };
     constexpr char encodedToppscorerene[] = ""
 "divisjon: Eliteserien 2018\n"
-"\n"
 "toppscorereneCount: 4\n"
 "toppscorerene:\n"
 "\n"
@@ -695,7 +666,7 @@ void test_EncodeToppscorereneDivisjon()
 "- spiller: Andre Hansen\n"
 "  score: 8\n";
 
-    string _encodedToppscorerene = Encode::toppscorereneDivisjon(toppscorerene, "Eliteserien 2018");
+    string _encodedToppscorerene = Encode::viewToppscorereneDivisjon(toppscorerene, "Eliteserien 2018");
 
     Test::assertEqual(
         _encodedToppscorerene, 
@@ -714,7 +685,6 @@ void test_EncodeToppscorereneLag()
     };
     constexpr char encodedToppscorerene[] = ""
 "lag: Brann\n"
-"\n"
 "toppscorereneCount: 2\n"
 "toppscorerene:\n"
 "\n"
@@ -725,7 +695,7 @@ void test_EncodeToppscorereneLag()
 "  score: 18\n";
 
 
-    string _encodedToppscorerene = Encode::toppscorereneLag(toppscorerene, "Brann");
+    string _encodedToppscorerene = Encode::viewToppscorereneLag(toppscorerene, "Brann");
 
     Test::assertEqual(
         _encodedToppscorerene, 
@@ -734,12 +704,182 @@ void test_EncodeToppscorereneLag()
 }
 
 
+void test_EncodeViewIdrett() 
+{
+    using std::vector;
+    using std::size_t;
+
+    size_t testCount = 0;
+    auto idrett = DB::Idrett("Fotball", DB::Idrett::SEIER_3_UAVGJORT_1_TAP_0);
+
+    idrett.divisjonene = vector<DB::Divisjon> 
+    {
+        DB::Divisjon {
+            "Eliteserien",
+            vector<DB::Lag> 
+            {
+                DB::Lag {
+                    "Brann",
+                    "Bergen, Norway",
+                    vector<size_t> { 1,2 }
+                },
+                DB::Lag {
+                    "Rosenborg",
+                    "Trondheim, Norway",
+                    vector<size_t> { 3,4 }
+                }
+            }
+        },
+        DB::Divisjon {
+            "Premier League 2017/2018",
+            vector<DB::Lag> 
+            {
+                DB::Lag {
+                    "Manchester United",
+                    "Manchester, United Kingdom",
+                    vector<size_t> { 1,2 }
+                },
+                DB::Lag {
+                    "Tottenham",
+                    "London, United Kingdom",
+                    vector<size_t> { 1,2 }
+                }
+            }
+        }
+    };
+
+
+
+    constexpr char encodedIdrett[] = ""
+"idrett: Fotball\n"
+"  tabelltype:  SEIER:3, UAVGJORT:1, TAP:0\n"
+"  divisjoneneCount: 2\n"
+"  divisjonene:\n"
+"\n"
+"  - divisjon: Eliteserien\n"
+"    lageneCount: 2\n"
+"    lagene:\n"
+"\n"
+"    - lag: Brann\n"
+"      adresse: Bergen, Norway\n"
+"      spillereneCount: 2\n"
+"\n"
+"    - lag: Rosenborg\n"
+"      adresse: Trondheim, Norway\n"
+"      spillereneCount: 2\n"
+"\n"
+"  - divisjon: Premier League 2017/2018\n"
+"    lageneCount: 2\n"
+"    lagene:\n"
+"\n"
+"    - lag: Manchester United\n"
+"      adresse: Manchester, United Kingdom\n"
+"      spillereneCount: 2\n"
+"\n"
+"    - lag: Tottenham Hotspurs\n"
+"      adresse: London, United Kingdom\n"
+"      spillereneCount: 2\n";
+
+    auto result = Encode::viewIdrett(idrett);
+
+    Test::assertEqual(
+        result,
+        encodedIdrett,
+        testCount++);
+}
+void test_EncodeViewIdrettene() 
+{
+    size_t testCount = 0;
+    DB::Idrettene idrettene;
+
+    auto idrettFotball = new DB::Idrett("Fotball", DB::Idrett::SEIER_3_UAVGJORT_1_TAP_0);
+    idrettFotball->divisjonene = vector<DB::Divisjon>
+    {
+        DB::Divisjon {},
+        DB::Divisjon {}
+    };
+
+    auto idrettBasketball = new DB::Idrett("Basketball", DB::Idrett::SEIER_2_UAVGJORT_1_TAP_0);
+    idrettBasketball->divisjonene = vector<DB::Divisjon>
+    {
+        DB::Divisjon {},
+        DB::Divisjon {}
+    };
+
+    idrettene.data->add(idrettFotball);
+    idrettene.data->add(idrettBasketball);
+
+    constexpr char encodedIdrettene[] = ""
+"idretteneCount: 2\n"
+"idrettene:\n"
+"  \n"
+"- idrett: Fotball\n"
+"  tabelltype:  SEIER:3, UAVGJORT:1, TAP:0\n"
+"  divisjoneneCount: 2\n"
+"\n"
+"- idrett: Basketball\n"
+"  tabelltype:  SEIER:2, UAVGJORT:1, TAP:0\n"
+"  divisjoneneCount: 2\n";
+
+    auto result = Encode::viewIdrettene(idrettene);
+
+    Test::assertEqual(
+        result,
+        encodedIdrettene,
+        testCount++);
+}
+void test_EncodeViewSpillerene() 
+{
+    size_t testCount = 0;
+    DB::Spillerene spillerene;
+
+    spillerene.data->add(new DB::Spiller{
+        2,
+        "Gray Newman",
+        "Orlando, Florida, USA"
+    });
+    spillerene.data->add(new DB::Spiller {
+        5,
+        "Kari Nordmann",
+        "Trondheim, Norway"
+    });
+
+    constexpr char encodedSpillerene[] = ""
+"spillereneCount: 8\n"
+"spillerene:\n"
+"\n"
+"- spiller: Gary Newman\n"
+"  nummer: 2\n"
+"  Adresse: Orlando, Florida, USA\n"
+"\n"
+"- spiller: Kari Nordmann\n"
+"  nummer: 5\n"
+"  Adresse: Trondheim, Norway\n";
+
+    auto result = Encode::viewSpillerene(spillerene);
+
+    Test::assertEqual(
+        result,
+        encodedSpillerene,
+        testCount++);
+}
+
 void test_Parser() 
 {
+
+
+    std::cout << "\n\nRunning test_EncodeViewIdrett()\n\n";    
+    test_EncodeViewIdrett();
+    std::cout << "\n\nRunning test_EncodeViewIdrettene()\n\n";    
+    test_EncodeViewIdrettene();
+    std::cout << "\n\nRunning test_EncodeViewSpillerene()\n\n";    
+    test_EncodeViewSpillerene();
+
+
+    /*
     std::cout << "\n\nRunning test_DecodeAndEncodeIdrettene()\n\n";    
     test_DecodeAndEncodeIdrettene();
 
-    
     std::cout << "\n\nRunning test_DecodeAndEncodeSpillerene()\n\n";    
     test_DecodeAndEncodeSpillerene();
 
@@ -747,9 +887,11 @@ void test_Parser()
     std::cout << "\n\nRunning test_DecodeResultatene()\n\n";    
     test_DecodeResultatene();
 
-
     std::cout << "\n\nRunning test_DecodeDivisjon()\n\n";    
     test_DecodeDivisjon();
+
+
+
 
 
     std::cout << "\n\nRunning test_EncodeResultateneDivisjon()\n\n";    
@@ -771,7 +913,7 @@ void test_Parser()
     test_EncodeToppscorereneDivisjon();
 
     std::cout << "\n\nRunning test_EncodeToppscorereneLag()\n\n";    
-    test_EncodeToppscorereneLag();
+    test_EncodeToppscorereneLag();*/
 
 }
 

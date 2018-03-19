@@ -1,11 +1,8 @@
 idrett: Fotball
-tabelltype: 310
-
 tabelleneCount: 1
 tabellene:
 
 - tabell: Eliteserien 2018
-
   tabellLageneCount: 2
   tabellLagene:
 

@@ -1,5 +1,4 @@
 divisjon: Eliteserien
-
 lageneCount: 2
 lagene:
 
@@ -18,16 +17,14 @@ lagene:
   - spiller: 3
 
 terminliste:
-  hjemmelagene:
+- hjemmelag: Brann
+  bortelagene:
 
-  - hjemmelag: Brann
-    bortelagene:
+  - bortelag: Rosenborg
+    dato: 2012-03-19
 
-    - bortelag: Rosenborg
-      dato: 2012-03-19
+- hjemmelag: Rosenborg
+  bortelagene:
 
-  - hjemmelag: Rosenborg
-    bortelagene:
-
-    - bortelag: Brann
-      dato: 2012-03-19
+  - bortelag: Brann
+    dato: 2012-03-19

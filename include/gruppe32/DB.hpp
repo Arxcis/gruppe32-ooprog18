@@ -64,11 +64,7 @@ using std::string;
 class Resultat
 {    
 public:
-    // constexpr static size_t LENGTH_DATE = 9;
-    // array<char, LENGTH_DATE> dato;
-    string dato; // @TODO Discuss how critical it is to use a char array here.
-                 //   It is difficult to copy a string into the char array.
-                 //   Using a string as convencience for now - JSolsvik 16.03.18
+    string dato;
     bool spilt = false;
     bool overtid = false;
     vector<size_t> hjemmeScorerene{};
@@ -86,7 +82,7 @@ class Divisjon
 public:
     string navn;
     vector<Lag> lagene;
-    map<string, map<string,Resultat>> terminListe;
+    map<string, map<string,Resultat>> terminliste;
     /*
     size_t lagCount() {
         return lag.size();
@@ -147,18 +143,22 @@ struct Context
 };
 
 
+
+
 //
 // INTERMEDIATE TYPES - IMPORT/EXPORT types
-//  Types which are not stored internally, but used for exporting/importing to console and files.
+//  Types which are not stored internally, but used for exporting/importing to console(display) and files.
 //
 
 
+using std::vector;
+using std::size_t;
 using std::string;
 ///
 /// <summary> Used for importing new Resultat's from a user provided file.
-///           File format specified in format-resultatene.yml </summary>
+///           File format specified in format-input-resultatene.yml </summary>
 ///
-class ResultatWithKeys : public Resultat 
+class InputResultat
 {
 public:
     string idrett;
@@ -166,25 +166,31 @@ public:
     string hjemmelag;
     string bortelag;
 
-    ResultatWithKeys() = delete;
-    ResultatWithKeys(
-        string _idrett,
-        string _divisjon,
-        string _hjemmelag,
-        string _bortelag,
-        string _dato, 
-        bool _spilt,
-        bool _overtid) 
-    :idrett(_idrett)
-    ,divisjon(_divisjon)
-    ,hjemmelag(_hjemmelag)
-    ,bortelag(_bortelag)
-    {
-        dato = _dato;
-        spilt = _spilt;
-        overtid = _overtid;
-    }
+    string dato;
+    bool spilt = false;
+    bool overtid = false;
+    vector<size_t> hjemmeScorerene{};
+    vector<size_t> borteScorerene{};
 };
+
+
+using std::size_t;
+using std::string;
+///
+/// <summary> Used for displaying resultat to the user.
+///           Format found at format-view-resultatene.yml </summary>
+///
+class ViewResultat 
+{
+public:
+    string divisjon;
+    string hjemmelag;
+    string bortelag;
+    string dato;
+    size_t hjemmescoringer;
+    size_t bortescoringer;
+};
+
 
 using std::string;
 using std::size_t;
@@ -213,7 +219,6 @@ public:
 
     string idrett;
     string divisjon;    
-    Idrett::TabellType tabellType;
     vector<Lag> lagene;
 };
 
@@ -246,4 +251,7 @@ public:
     size_t score;
 };
 
-} // end namespace 
+
+
+
+} // ::DB 

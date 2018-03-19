@@ -36,8 +36,8 @@ void printResult(const string result, const size_t n)
               << n 
               << ": "
               << std::setw(10)
-              << std::left
-              << " | Result: " << result;
+              << std::left;
+              //<< " | Result: " << result;
 }
 
 

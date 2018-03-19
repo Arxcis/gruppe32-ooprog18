@@ -1,20 +1,17 @@
-idrett: Fotball
-
-resultateneCount: 1
+divisjon: Eliteserien 2018
+resultateneCount: 2
 resultatene:
+
+- resultat:
+  hjemmelag: Rosenborg
+  bortelag: Brann
+  dato: 2018-04-19
+  hjemmescoringer: 1
+  bortescoringer: 3
 
 - resultat:
   hjemmelag: Brann
   bortelag: Rosenborg
-  dato: 2012-03-19
-  overtid: true
-  hjemmeScorereneCount: 4
-  hjemmeScorerene:
-  - spiller: 1
-  - spiller: 0
-  - spiller: 0
-  - spiller: 1
-  borteScorereneCount: 2
-  borteScorerene:
-  - spiller: 0
-  - spiller: 2
+  dato: 2018-05-19
+  hjemmescoringer: 6
+  bortescoringer: 0

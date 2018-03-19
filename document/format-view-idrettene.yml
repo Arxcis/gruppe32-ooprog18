@@ -1,9 +1,10 @@
 idretteneCount: 2
 idrettene:
+  
 - idrett: Fotball
-  tabelltype:  SEIER:2, UAVGJORT:1, TAP:0 | SEIER:3, UAVGJORT:1, TAP:0 |SEIER:3, OVERTID:2, UAVGJORT:1, TAP:0
+  tabelltype:  SEIER:3, UAVGJORT:1, TAP:0
   divisjoneneCount: 2
 
 - idrett: Basketball
-  tabelltype:  SEIER:2, UAVGJORT:1, TAP:0 | SEIER:3, UAVGJORT:1, TAP:0 |SEIER:3, OVERTID:2, UAVGJORT:1, TAP:0
+  tabelltype:  SEIER:2, UAVGJORT:1, TAP:0
   divisjoneneCount: 2

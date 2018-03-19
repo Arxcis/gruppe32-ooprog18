@@ -82,18 +82,18 @@ auto KeyValueGenerator::nextStringBoolPair() -> pair<string,bool>
     else if (valueString == "false") {
         trueFalse = false;
     }
-    // @note special case with resultat: in format-idrettene.yml meaning true
+    // @note special case with resultat: in format-idrettene.Pyml meaning true
     else if (valueString == "") {  
         trueFalse = true;
     }
     else {
-        assert(false && "Boolean not supported");
+       // assert(false && "Boolean not supported");
     }
     return pair<string,bool>{key, trueFalse};
 };
 
 
-auto Decode::idrettene(DB::Idrettene& idrettene, string_view strview) -> Decode::Error 
+auto Decode::dataIdrettene(DB::Idrettene& idrettene, string_view strview) -> Decode::Error 
 {
     auto gen = KeyValueGenerator{strview, 0};
 
@@ -198,7 +198,7 @@ auto Decode::idrettene(DB::Idrettene& idrettene, string_view strview) -> Decode:
                             resultat.borteScorerene.push_back(spiller);
                         }
                     }
-                    divisjon.terminListe[hjemmelag][bortelag] = resultat;
+                    divisjon.terminliste[hjemmelag][bortelag] = resultat;
                 }
             }
             idrett->divisjonene.push_back(divisjon);
@@ -210,7 +210,7 @@ auto Decode::idrettene(DB::Idrettene& idrettene, string_view strview) -> Decode:
 }
 
 
-auto Decode::spillerene(DB::Spillerene& spillerene, string_view strview) -> Decode::Error
+auto Decode::dataSpillerene(DB::Spillerene& spillerene, string_view strview) -> Decode::Error
 {
  
     auto gen = KeyValueGenerator{strview};
@@ -239,7 +239,7 @@ auto Decode::spillerene(DB::Spillerene& spillerene, string_view strview) -> Deco
 }
 
 
-auto Decode::resultatene(vector<DB::ResultatWithKeys>& resultatene, string_view strview) -> Decode::Error
+auto Decode::inputResultatene(vector<DB::InputResultat>& resultatene, string_view strview) -> Decode::Error
 {
     auto gen = KeyValueGenerator{strview};
 
@@ -260,13 +260,14 @@ auto Decode::resultatene(vector<DB::ResultatWithKeys>& resultatene, string_view 
         auto[overtidKey, overtid]     = gen.nextStringBoolPair();
         auto[hjemmepoengCountKey, hjemmepoengCount] = gen.nextStringUintPair();
 
-        auto resultat = DB::ResultatWithKeys{
+        bool harSpiltKamp = false;
+        auto resultat = DB::InputResultat {
             idrett,
             divisjon,
             hjemmelag,
             bortelag,
             dato,
-            true,
+            harSpiltKamp,
             overtid
         };
 
@@ -293,7 +294,7 @@ auto Decode::resultatene(vector<DB::ResultatWithKeys>& resultatene, string_view 
 }
 
 
-auto Decode::divisjon(DB::Divisjon& divisjon, string_view strview) -> Decode::Error
+auto Decode::inputDivisjon(DB::Divisjon& divisjon, string_view strview) -> Decode::Error
 {
     auto gen = KeyValueGenerator{strview};
 
@@ -342,7 +343,7 @@ auto Decode::divisjon(DB::Divisjon& divisjon, string_view strview) -> Decode::Er
             auto resultat = DB::Resultat{
                 dato
             };
-            divisjon.terminListe[hjemmelag][bortelag] = resultat;
+            divisjon.terminliste[hjemmelag][bortelag] = resultat;
         }
     }
     return 0;
@@ -434,7 +435,7 @@ auto LinePrinter::getString() -> string {
 }
 
 
-auto Encode::idrettene(DB::Idrettene& idrettene) -> string 
+auto Encode::dataIdrettene(DB::Idrettene& idrettene) -> string 
 {
  //  // IO::printline("\n\n------ DEBUG encodeIdrettene ------\n\n");
 
@@ -493,7 +494,7 @@ auto Encode::idrettene(DB::Idrettene& idrettene) -> string
            
             print.lineString("hjemmelagene");
 
-            for (const auto& [hjemmelag, bortelagene]: divisjon.terminListe) 
+            for (const auto& [hjemmelag, bortelagene]: divisjon.terminliste) 
             {
                 print.lineEmpty();
                 print.lineDashStringString("hjemmelag", hjemmelag);
@@ -554,7 +555,7 @@ auto Encode::idrettene(DB::Idrettene& idrettene) -> string
 }
 
 
-auto Encode::spillerene(DB::Spillerene& spillerene) -> string 
+auto Encode::dataSpillerene(DB::Spillerene& spillerene) -> string 
 {
 
     LinePrinter print;
@@ -586,7 +587,7 @@ auto Encode::spillerene(DB::Spillerene& spillerene) -> string
 }
 
 
-void Encode::resultatene(LinePrinter& p, const vector<DB::ResultatWithKeys>& resultatene) 
+void Encode::viewResultatene(LinePrinter& p, const vector<DB::ViewResultat>& resultatene) 
 {
     p.lineEmpty();
     p.lineStringUint("resultateneCount", resultatene.size());
@@ -603,55 +604,43 @@ void Encode::resultatene(LinePrinter& p, const vector<DB::ResultatWithKeys>& res
         p.lineStringString("hjemmelag", resultat.hjemmelag);
         p.lineStringString("bortelag", resultat.bortelag);
         p.lineStringString("dato", resultat.dato);
-        p.lineStringBool("overtid", resultat.overtid);
 
-        p.lineStringUint("hjemmeScorereneCount", resultat.hjemmeScorerene.size());
         p.lineString("hjemmeScorerene");
 
-        for (const auto& spiller: resultat.hjemmeScorerene)
-        { 
-            p.lineDashStringUint("spiller", spiller);
-        }
-
-        p.lineStringUint("borteScorereneCount", resultat.borteScorerene.size()); 
         p.lineString("borteScorerene");
 
-        for (const auto& spiller: resultat.borteScorerene)
-        { 
-            p.lineDashStringUint("spiller", spiller);
-        }
 
         p.tabLeft();
     }
 }
 
 
-auto Encode::resultateneDivisjon(const vector<DB::ResultatWithKeys>& resultatene,
+auto Encode::viewResultateneDivisjon(const vector<DB::ViewResultat>& resultatene,
                                const string divisjon) -> string 
 {
     LinePrinter p;
 
     p.lineStringString("divisjon", divisjon);
 
-    Encode::resultatene(p, resultatene);
+    Encode::viewResultatene(p, resultatene);
 
     return p.getString();
 }
 
 
-auto Encode::resultateneIdrett(const vector<DB::ResultatWithKeys>& resultatene,
+auto Encode::viewResultateneIdrett(const vector<DB::ViewResultat>& resultatene,
                              const string idrett) -> string 
 {
     LinePrinter p;
     p.lineStringString("idrett", idrett);
 
-    Encode::resultatene(p, resultatene);
+    Encode::viewResultatene(p, resultatene);
     return p.getString();
 }
 
 
 
-void Encode::tabellLagene(LinePrinter& p, const vector<DB::Tabell::Lag>& lagene) 
+void Encode::viewTabellLagene(LinePrinter& p, const vector<DB::Tabell::Lag>& lagene) 
 {
     p.lineEmpty();
     p.lineStringUint("tabellLageneCount", lagene.size());
@@ -679,27 +668,24 @@ void Encode::tabellLagene(LinePrinter& p, const vector<DB::Tabell::Lag>& lagene)
 }
 
 
-auto Encode::tabellDivisjon(const DB::Tabell& tabell) -> string 
+auto Encode::viewTabellDivisjon(const DB::Tabell& tabell) -> string 
 {
     LinePrinter p;
 
     p.lineStringString("tabell", tabell.divisjon);
-    p.lineStringUint("tabelltype", tabell.tabellType);
 
-    Encode::tabellLagene(p, tabell.lagene);
+    Encode::viewTabellLagene(p, tabell.lagene);
 
     return p.getString();
 }
 
 
-auto Encode::tabelleneIdrett(const vector<DB::Tabell>& tabellene,
-                     const string idrett,
-                     const DB::Idrett::TabellType tabelltype) -> string 
+auto Encode::viewTabelleneIdrett(const vector<DB::Tabell>& tabellene,
+                                 const string idrett) -> string 
 {
     LinePrinter p;
 
     p.lineStringString("idrett", idrett);
-    p.lineStringUint("tabelltype", tabelltype);
 
     p.lineEmpty();
     p.lineStringUint("tabelleneCount", tabellene.size());
@@ -712,7 +698,7 @@ auto Encode::tabelleneIdrett(const vector<DB::Tabell>& tabellene,
         
         p.tabRight();
       
-        Encode::tabellLagene(p, tabell.lagene);
+        Encode::viewTabellLagene(p, tabell.lagene);
        
         p.tabLeft();
     }
@@ -721,7 +707,7 @@ auto Encode::tabelleneIdrett(const vector<DB::Tabell>& tabellene,
 }
 
 
-auto Encode::terminliste(const DB::Terminliste& terminliste) -> string 
+auto Encode::viewTerminliste(const DB::Terminliste& terminliste) -> string 
 {
 
     LinePrinter p;
@@ -761,7 +747,7 @@ auto Encode::terminliste(const DB::Terminliste& terminliste) -> string
 }
 
 
-void Encode::toppscorerene(LinePrinter& p, const vector<DB::Toppscorer>& toppscorerene) 
+void Encode::viewToppscorerene(LinePrinter& p, const vector<DB::Toppscorer>& toppscorerene) 
 {
     p.lineEmpty();
 
@@ -782,23 +768,42 @@ void Encode::toppscorerene(LinePrinter& p, const vector<DB::Toppscorer>& toppsco
 }
 
 
-auto Encode::toppscorereneDivisjon(const vector<DB::Toppscorer>& toppscorerene,
-                                   const string divisjon) -> string 
+auto Encode::viewToppscorereneDivisjon(const vector<DB::Toppscorer>& toppscorerene,
+                                       const string divisjon) -> string 
 {
     LinePrinter p;
     p.lineStringString("divisjon", divisjon);
-    Encode::toppscorerene(p, toppscorerene);
+    Encode::viewToppscorerene(p, toppscorerene);
     return p.getString();
 }
 
 
-auto Encode::toppscorereneLag(const vector<DB::Toppscorer>& toppscorerene,
+auto Encode::viewToppscorereneLag(const vector<DB::Toppscorer>& toppscorerene,
                             const string lag) -> string 
 {
     LinePrinter p;
     p.lineStringString("lag", lag);
-    Encode::toppscorerene(p, toppscorerene);
+    Encode::viewToppscorerene(p, toppscorerene);
     return p.getString();
 }
+
+
+auto Encode::viewIdrett(const DB::Idrett& idrett) -> string 
+{
+    return "";
+}
+
+
+auto Encode::viewIdrettene(DB::Idrettene& idrettene) -> string 
+{
+    return "";
+}
+
+
+auto Encode::viewSpillerene(DB::Spillerene& spiller) -> string 
+{
+    return "";
+}
+
 
 } // ::gruppe32
