@@ -788,15 +788,86 @@ auto Encode::viewToppscorereneLag(const vector<DB::Toppscorer>& toppscorerene,
 }
 
 
+auto Encode::viewTabelltype(DB::Idrett::TabellType tabellType) -> string 
+{
+    switch(tabellType) 
+    {
+    case DB::Idrett::SEIER_2_UAVGJORT_1_TAP_0:
+        return "Seier 2, Uavgjort 1, Tap 0";
+    case DB::Idrett::SEIER_3_UAVGJORT_1_TAP_0:
+        return "Seier 3, Uavgjort 1, Tap 0";
+    case DB::Idrett::SEIER_3_OVERTID_2_UAVGJORT_1_TAP_0:
+        return "Seier 3, Overtid 2, Uavgjort 1, Tap 0";
+    default:
+        assert(false && "Uknown tabelltype!!!");
+    }
+    return "";
+};
+
 auto Encode::viewIdrett(const DB::Idrett& idrett) -> string 
 {
-    return "";
+    LinePrinter p;
+
+    p.lineStringString("idrett", idrett.name);
+    
+    p.tabRight();
+
+    p.lineStringString("tabelltype", Encode::viewTabelltype(idrett.tabell));
+    p.lineStringUint(  "divisjoneneCount", idrett.divisjonene.size());
+    p.lineString("divisjonene");
+
+    for (const auto& divisjon : idrett.divisjonene) 
+    {
+        p.lineEmpty();
+        p.lineDashStringString("divisjon", divisjon.navn);
+        
+        p.tabRight();
+
+        p.lineStringUint("lageneCount", divisjon.lagene.size());
+        p.lineString("lagene");
+
+        for (const auto& lag : divisjon.lagene) 
+        {
+            p.lineEmpty();
+            p.lineDashStringString("lag", lag.navn);
+
+            p.tabRight();
+
+            p.lineStringString("adresse", lag.adresse);
+            p.lineStringUint(  "spillereneCount", lag.spillerene.size());
+
+            p.tabLeft();
+        }
+        p.tabLeft();
+    }
+    return p.getString();
 }
 
 
 auto Encode::viewIdrettene(DB::Idrettene& idrettene) -> string 
 {
-    return "";
+
+    LinePrinter p;
+
+    p.lineStringUint("idretteneCount", idrettene.data->noOfElements());
+    p.lineString(    "idrettene");
+
+    for (size_t i = 1; i <= idrettene.data->noOfElements(); ++i) 
+    {
+        auto idrett = (DB::Idrett* ) idrettene.data->removeNo(i);
+
+        p.lineEmpty();
+        p.lineDashStringString("idrett", idrett->name);
+
+        p.tabRight();
+
+        p.lineStringString("tabelltype", Encode::viewTabelltype(idrett->tabell));
+        p.lineStringUint(  "divisjoneneCount", idrett->divisjonene.size());
+
+        p.tabLeft();
+        idrettene.data->add(idrett);
+    }
+    return p.getString();
 }
 
 

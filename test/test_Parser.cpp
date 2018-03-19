@@ -740,7 +740,7 @@ void test_EncodeViewIdrett()
                     vector<size_t> { 1,2 }
                 },
                 DB::Lag {
-                    "Tottenham",
+                    "Tottenham Hotspur",
                     "London, United Kingdom",
                     vector<size_t> { 1,2 }
                 }
@@ -752,7 +752,7 @@ void test_EncodeViewIdrett()
 
     constexpr char encodedIdrett[] = ""
 "idrett: Fotball\n"
-"  tabelltype:  SEIER:3, UAVGJORT:1, TAP:0\n"
+"  tabelltype: Seier: 3, Uavgjort: 1, Tap: 0\n"
 "  divisjoneneCount: 2\n"
 "  divisjonene:\n"
 "\n"
@@ -776,7 +776,7 @@ void test_EncodeViewIdrett()
 "      adresse: Manchester, United Kingdom\n"
 "      spillereneCount: 2\n"
 "\n"
-"    - lag: Tottenham Hotspurs\n"
+"    - lag: Tottenham Hotspur\n"
 "      adresse: London, United Kingdom\n"
 "      spillereneCount: 2\n";
 
@@ -812,16 +812,28 @@ void test_EncodeViewIdrettene()
     constexpr char encodedIdrettene[] = ""
 "idretteneCount: 2\n"
 "idrettene:\n"
-"  \n"
-"- idrett: Fotball\n"
-"  tabelltype:  SEIER:3, UAVGJORT:1, TAP:0\n"
-"  divisjoneneCount: 2\n"
 "\n"
 "- idrett: Basketball\n"
-"  tabelltype:  SEIER:2, UAVGJORT:1, TAP:0\n"
+"  tabelltype: Seier 2, Uavgjort 1, Tap 0\n"
+"  divisjoneneCount: 2\n"
+"  \n"
+"- idrett: Fotball\n"
+"  tabelltype: Seier 3, Uavgjort 1, Tap 0\n"
 "  divisjoneneCount: 2\n";
 
     auto result = Encode::viewIdrettene(idrettene);
+
+
+    for (std::size_t i = 0; i < result.size(); ++i)
+    {
+        auto c1 = encodedIdrettene[i];
+        auto c2 = result[i];
+        if (c1 != c2) {
+            std::cout << "\nc1 = " << int(c1) << "  c2 = " << int(c2) << '\n';
+        //  assert(false);
+        }
+        //std::cout << c1;
+    }
 
     Test::assertEqual(
         result,
@@ -867,16 +879,21 @@ void test_EncodeViewSpillerene()
 void test_Parser() 
 {
 
-
+    /*
     std::cout << "\n\nRunning test_EncodeViewIdrett()\n\n";    
     test_EncodeViewIdrett();
-    std::cout << "\n\nRunning test_EncodeViewIdrettene()\n\n";    
+    
+    */
+   
+    std::cout << "\n\nRunning test_EncodeViewIdrettene()\n\n";
     test_EncodeViewIdrettene();
-    std::cout << "\n\nRunning test_EncodeViewSpillerene()\n\n";    
+   
+    
+    /*
+    std::cout << "\n\nRunning test_EncodeViewSpillerene()\n\n";
     test_EncodeViewSpillerene();
 
 
-    /*
     std::cout << "\n\nRunning test_DecodeAndEncodeIdrettene()\n\n";    
     test_DecodeAndEncodeIdrettene();
 

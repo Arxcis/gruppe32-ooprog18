@@ -99,6 +99,8 @@ using std::string_view;
 using std::vector;
 
 
+auto viewTabelltype(DB::Idrett::TabellType tabellType) -> string;
+
 /// <summary> Encode entire 'Idrettene' to string as yaml. Lossless encoding. 
 //              Use case: Store internal datastructure 'idrettene' to file. /summary>
 /// <returns> string - example found in format-data-idrettene.yml </returns>
