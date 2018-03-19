@@ -1,0 +1,27 @@
+tabell: Eliteserien 2018
+tabelltype: 310
+
+tabellLageneCount: 2
+tabellLagene:
+
+- lag: Brann
+  plassering: 1
+  poeng: 16
+  hjemmeScoringer: 18
+  hjemmeBaklengs: 2
+  borteScoringer: 12
+  borteBaklengs: 7
+  seier: 5
+  uavgjort: 1
+  tap: 2
+
+- lag: Rosenborg
+  plassering: 2
+  poeng: 7
+  hjemmeScoringer: 7
+  hjemmeBaklengs: 12
+  borteScoringer: 2
+  borteBaklengs: 18
+  seier: 2
+  uavgjort: 1
+  tap: 5

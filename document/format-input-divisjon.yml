@@ -1,0 +1,33 @@
+divisjon: Eliteserien
+
+lageneCount: 2
+lagene:
+
+- lag: Brann
+  adresse: Bergen, Norway
+  spillereneCount: 2
+  spillerene:
+  - spiller: 0
+  - spiller: 1
+
+- lag: Rosenborg
+  adresse: Trondheim, Norway 
+  spillereneCount: 2
+  spillerene: 
+  - spiller: 2
+  - spiller: 3
+
+terminliste:
+  hjemmelagene:
+
+  - hjemmelag: Brann
+    bortelagene:
+
+    - bortelag: Rosenborg
+      dato: 2012-03-19
+
+  - hjemmelag: Rosenborg
+    bortelagene:
+
+    - bortelag: Brann
+      dato: 2012-03-19

@@ -1,0 +1,20 @@
+idrett: Fotball
+
+resultateneCount: 1
+resultatene:
+
+- resultat:
+  hjemmelag: Brann
+  bortelag: Rosenborg
+  dato: 2012-03-19
+  overtid: true
+  hjemmeScorereneCount: 4
+  hjemmeScorerene:
+  - spiller: 1
+  - spiller: 0
+  - spiller: 0
+  - spiller: 1
+  borteScorereneCount: 2
+  borteScorerene:
+  - spiller: 0
+  - spiller: 2

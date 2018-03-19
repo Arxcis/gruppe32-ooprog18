@@ -1,0 +1,26 @@
+divisjon: Eliteserien 2018
+lageneCount: 2
+
+terminliste:
+
+- kamp:
+  hjemmelag: Brann
+  bortelag: Rosenborg
+  dato: 2018-03-19
+
+- kamp:
+  hjemmelag: Rosenborg
+  bortelag: Brann
+  dato: 2018-04-21
+
+# TODO make this kinda the printout
+
+```
+┌────────────────────────────────┐
+│            │ Brann │ Rosenborg │
+├────────────────────────────────┤
+│ Brann      │ 0     │ dd/mm     │
+├────────────────────────────────┤
+│ Rosenborg  │ dd/mm │ 0         │
+└────────────────────────────────┘
+```

@@ -1,0 +1,35 @@
+idretteneCount: 2
+idrettene:
+- idrett: Fotball
+  tabelltype:  SEIER:2, UAVGJORT:1, TAP:0 | SEIER:3, UAVGJORT:1, TAP:0 |SEIER:3, OVERTID:2, UAVGJORT:1, TAP:0
+  divisjoneneCount: 2
+  divisjonene:
+
+  - divisjon: Eliteserien
+    lageneCount: 2
+    lagene:
+
+    - lag: Brann
+      adresse: Bergen, Norway
+      spillereneCount: 2
+
+    - lag: Rosenborg
+      adresse: Trondheim, Norway
+      spillereneCount: 2
+
+  - divisjon: Premier League 2017/2018
+    lageneCount: 2
+    lagene:
+
+    - lag: Manchester United
+      adresse: Machester, United Kingdom
+      spillereneCount: 2
+
+    - lag: Tottenham Hotspurs
+      adresse: London, United Kingdom
+      spillereneCount: 2
+
+- idrett: Basketball
+  tabelltype:  SEIER:2, UAVGJORT:1, TAP:0 | SEIER:3, UAVGJORT:1, TAP:0 |SEIER:3, OVERTID:2, UAVGJORT:1, TAP:0
+  divisjoneneCount: 0
+  divisjonene:

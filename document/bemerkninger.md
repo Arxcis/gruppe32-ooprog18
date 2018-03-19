@@ -5,7 +5,7 @@
 #### 1. Navneendring DivAvd -> Divisjon
 Vi navngir klassen  for å tydeliggjøre klassens bruksområde.
 
-#### 2. Namespacing av Listtool og egne moduler 
+#### 2. Namespacing av Listtool og egne moduler
 Vi velger å sette ListTool, samt egne moduler inn i egne *namespaces* for tydeligere sepparering av modulær kode.
 
 #### 3. Om Dynamiske arrayer (vectorer)
@@ -57,9 +57,9 @@ Merk deg at dersom neste kamp ender med 0-0, så vil minnebruken med array versj
 
 
 #### 4. Bruke GUID på spillere i Resultat objektene.
-Vi vurderer det hensiktsmessig å bruke den GUID-en til spillere for å markere hvem som har scoret hvilke mål i en kamp. Vi vurderte en stund å bruke lagindeksen til spilleren, men dette kan bli vanskelig å håndtere over tid. 
+Vi vurderer det hensiktsmessig å bruke den GUID-en til spillere for å markere hvem som har scoret hvilke mål i en kamp. Vi vurderte en stund å bruke lagindeksen til spilleren, men dette kan bli vanskelig å håndtere over tid.
 
-Hva om spilleren bytter indeks i laget, foreksempel får et nytt draktnummer? Hva om spilleren bytter klubb? Skal alle resultater da også slettes? 
+Hva om spilleren bytter indeks i laget, foreksempel får et nytt draktnummer? Hva om spilleren bytter klubb? Skal alle resultater da også slettes?
 
 
 #### 5. Nøstet datastruktur på fil
@@ -74,19 +74,48 @@ uint spillerIDFørsteMåletIEnkamp = idrettene[0].divisjonene[0]
 
 ```
 
-Vi ønsker å bevare denne nøstingen i filformatet. Vi ønsker også at det skal være enkelt å lese og forstå det som ligger på fil. Det en del standard filformater der ute for dette. 
+Vi ønsker å bevare denne nøstingen i filformatet. Vi ønsker også at det skal være enkelt å lese og forstå det som ligger på fil. Det en del standard filformater der ute for dette.
 
 JSON vurderer vi som for vanskelig å parse. Det har mye rar syntax, og blir litt for generisk. Det at vi ikke kan lese linje for linje gjør det også vanskeligere å parse JSON.
 
 YAML kan representere det samme som JSON, men har en mye enklere syntax å parse dersom skriver så enkel YAML som mulig.
 I tillegg kan YAML leses linje for linje som key-value par.
 
-Om vi hadde snekret sammen en egen datastruktur, så hadde vi uansett endt opp med noe som ligner på en key-value store. Derfor så er steget ganske lite over til YAML. 
+Om vi hadde snekret sammen en egen datastruktur, så hadde vi uansett endt opp med noe som ligner på en key-value store. Derfor så er steget ganske lite over til YAML.
 
 Om vi bruker YAML så får vi også fordeler med at det er mange andre verktøy og systemer som støtter YAML formatet, og det er enkelt å konvertere YAML over til andre formater.
 
 Det er også en bonus å lære seg standarder som blir mye brukt i profesjonell sammenheng.
 
+#### 6. Menyer som tar imot <navn\>  
+Vi har valgt å la menyer som tar imot <navn\> gjøre et oppslag på substrengen <navn\> dersom ListTool ikke finner en egnet node med TextElementet med verdien <navn\>, dette kan medføre et sett med resultater vi i såfall tar hensyn til, og printer ut alle resultater.
+
+**Eksempel**
+```
+
+*********************************************************
+**  HOME -> Info spiller(e)
+*********************************************************
+*   A      - Skriv Alle Spillerne
+*   B      - Back to last menu
+*   <nr>   - Skriv spiller med <nr>
+*   Q      - Quit the application
+*   <navn> - Skriv spiller med <navn>
+*********************************************************
+-> ar
+---------------------------------------------------------
+Spiller som inneholder "ar":
+
+Spiller funnet!
+   Gary Newman
+   - Nummer: 2
+   - Adresse: Orlando, Florida, USA
+
+Spiller funnet!
+   Kari Nordmann
+   - Nummer: 5
+   - Adresse: Trondheim, Norway
+```
 
 ### C++17 features tatt i bruk
 

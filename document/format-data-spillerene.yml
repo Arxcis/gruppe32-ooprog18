@@ -1,0 +1,36 @@
+autoIncrementer: 7
+
+spillereneCount: 8
+spillerene:
+
+- spiller: Ronny Knarvik
+  guid: 0
+  adresse: Bergen, Norway
+
+- spiller: Erik Huseklepp
+  guid: 1
+  adresse: Bergen, Norway
+
+- spiller: Arild ├ÿsteb├©
+  guid: 2
+  adresse: Trondheim, Norway
+
+- spiller: Andre Hansen
+  guid: 3
+  adresse: Trondheim, Norway
+
+- spiller: Alexis Sanchez
+  guid: 4
+  adresse: Manchester, United Kingdom
+
+- spiller: Paul Pogba
+  guid: 5
+  adresse: Manchester, United Kingdom
+
+- spiller: Harry Kane
+  guid: 6
+  adresse: London, United Kingdom
+
+- spiller: Son Hueng-min
+  guid: 7
+  adresse: London, United Kingdom
