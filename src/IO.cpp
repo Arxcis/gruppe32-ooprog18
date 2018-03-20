@@ -174,7 +174,7 @@ auto readEitherCommandName(const CommandMap & validCommands) -> CommandPairWithD
         std::string commandString{};
         for (;;)
         {
-            std::cout << "-> ";
+            std::cout << "Number: ";
             std::getline(std::cin, commandString);
             
             if (Valid::isUint(commandString))
@@ -197,7 +197,7 @@ auto readEitherCommandName(const CommandMap & validCommands) -> CommandPairWithD
         std::string commandString{};
         for(;;) 
         {
-            std::cout << "-> ";
+            std::cout << "Year: ";
             std::getline(std::cin, commandString);
 
             if (Valid::isYear(commandString)) {
@@ -218,7 +218,7 @@ auto readEitherCommandName(const CommandMap & validCommands) -> CommandPairWithD
         std::string commandString{};
         for(;;) 
         {
-            std::cout << "-> ";
+            std::cout << "Month: ";
             std::getline(std::cin, commandString);
        
             if (Valid::isMonth(commandString)) {
@@ -239,7 +239,7 @@ auto readEitherCommandName(const CommandMap & validCommands) -> CommandPairWithD
         std::string commandString{};
         for(;;) 
         {
-            std::cout << "-> ";
+            std::cout << "Day: ";
             std::getline(std::cin, commandString);
 
             if (Valid::isDay(commandString)) {
@@ -260,7 +260,7 @@ auto readEitherCommandName(const CommandMap & validCommands) -> CommandPairWithD
         std::string maybeName{};
         for (;;)
         {
-            std::cout << "-> ";
+            std::cout << "Name: ";
 
             std::getline(std::cin, maybeName);
 
@@ -269,6 +269,23 @@ auto readEitherCommandName(const CommandMap & validCommands) -> CommandPairWithD
                 return maybeName;
             }
             printline("Not valid name!");
+        }
+    }
+
+    auto readAdress() -> std::string
+    {
+        std::string maybeAddress{};
+        for (;;)
+        {
+            std::cout << "Address: ";
+
+            std::getline(std::cin, maybeAddress);
+
+            if (Valid::isAddress(maybeAddress))
+            {
+                return maybeAddress;
+            }
+            printline("Not valid address!");
         }
     }
 } // end namespace
