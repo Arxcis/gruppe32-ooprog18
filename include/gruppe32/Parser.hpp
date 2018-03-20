@@ -129,6 +129,7 @@ auto viewIdrett(const DB::Idrett& idrett) -> string;
 auto viewIdrettene(DB::Idrettene& idrettene) -> string;
 
 
+auto viewIdretteneCompact(DB::Idrettene& idrettene, bool divisjon=false, bool lag=false, bool spillere=false) -> string;
 
 
 /// <summary> Helper function for encodeResultateneDivisjon and encodeResultateneIdrett </summary>

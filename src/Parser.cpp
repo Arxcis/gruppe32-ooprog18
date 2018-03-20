@@ -441,6 +441,57 @@ auto LinePrinter::getString() -> string {
 }
 
 
+auto Encode::viewIdretteneCompact(DB::Idrettene& idrettene, bool divisjon, bool lag, bool spiller) -> string 
+{
+    LinePrinter print;
+    auto idretteneCount = idrettene.data->noOfElements();
+    print.lineString(    "idrettene");
+    for (auto iIdrett = 1; iIdrett <= idretteneCount; ++iIdrett)
+    {
+        auto idrett = (DB::Idrett*)(idrettene.data->removeNo(iIdrett));
+    
+                            print.lineDashStringString("idrett", idrett->name);
+
+        if (divisjon) 
+        { // bool divisjon
+            print.tabRight();
+            for (const auto& divisjon: idrett->divisjonene) 
+            {
+
+                                print.lineDashStringString("divisjon", divisjon.navn);
+
+                if (lag) 
+                { // bool divisjon
+                    print.tabRight();
+                    for(const auto& lag: divisjon.lagene) 
+                    {
+
+                                    print.lineDashStringString("lag", lag.navn);
+
+                        if (spiller) 
+                        { // bool spiller
+                            print.tabRight();
+                            for (const auto& spiller: lag.spillerene) 
+                            {
+        
+                                        print.lineDashStringUint("spiller", spiller);
+
+                            }
+                            print.tabLeft();
+                        }
+                    }
+                    print.tabLeft();
+                }    
+            }
+            print.tabLeft();
+        }
+
+        idrettene.data->add(idrett);
+    }
+    return print.getString();
+}
+
+
 auto Encode::dataIdrettene(DB::Idrettene& idrettene) -> string 
 {
  //  // IO::printline("\n\n------ DEBUG encodeIdrettene ------\n\n");
