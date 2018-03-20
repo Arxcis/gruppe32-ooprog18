@@ -86,6 +86,9 @@ auto readEitherCommandNumberName (const CommandMap& validCommands) -> CommandPai
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 auto readEitherCommandName(const CommandMap& validCommands) -> CommandPairWithData;
 
+auto readEitherCommandNumber(const CommandMap & validCommands) -> CommandPairWithData;
+
+
 auto readName() -> std::string;
 
 

@@ -86,6 +86,11 @@ const Command::Pair keyCommandNameDivisjon  = { CMD_NAME, Command{ "<divisjon>",
 const Command::Pair keyCommandBack          = { CMD_BACK, Command{ string(1,CMD_BACK), "Back to last menu" }};     
 
 
+const Command::Pair keyCommandYear   = { CMD_NAME, Command{ "<year>",     "Example: 2018" }};     
+const Command::Pair keyCommandMonth  = { CMD_NAME, Command{ "<month>",   "Example: 07"   }};     
+const Command::Pair keyCommandDay    = { CMD_NAME, Command{ "<day>",     "Example: 21" }};     
+
+
 void run(DB::Context& ctx);
 
 } // end namespace terminal

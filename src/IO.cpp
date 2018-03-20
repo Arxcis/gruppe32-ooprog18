@@ -19,6 +19,9 @@ void divider(char c, size_t count)
         std::cout << c;   
     }
     std::cout << '\n';
+
+    if (c == '_')
+        IO::printline();
 }
 
 void printMenu(const CommandMap & commands, const std::string & title)
@@ -160,6 +163,70 @@ auto readEitherCommandName(const CommandMap & validCommands) -> CommandPairWithD
     }
     return CommandPairWithData();
 }
+
+
+auto readNumber() -> size_t
+{
+    std::string commandString{};
+    for (;;)
+    {
+        std::getline(std::cin, commandString);
+        
+        bool userWroteNumber = ;
+        if (Valid::isUint(commandString))
+        {
+            auto cmd = validCommands.at(Terminal::CMD_SPILLER_NR);
+            std::stringstream strStream;
+            strStream << commandString;
+            std::size_t number;
+            strStream >> number;
+            
+            return number;
+        }
+        printline("Not a number.");
+    }
+    return 0;
+}
+
+
+    auto readYear() -> size_t 
+    {
+        for(;;) 
+        {
+            size_t number = readNumber();
+            if (Valid::isYear(number)) {
+                return number;
+            }
+            IO::printline("Not a valid year: 1970-2099");
+        }
+    }
+
+
+    auto readMonth() -> size_t 
+    {
+        for(;;) 
+        {
+            size_t number = readNumber();
+            if (Valid::isMonth(number)) {
+                return number;
+            }
+            IO::printline("Not a valid month: 01-12");
+        }
+    }
+
+
+    auto readDay() -> size_t 
+    {
+        for(;;) 
+        {
+            size_t number = readNumber();
+            if (Valid::isDay(number)) {
+                return number;
+            }
+            IO::printline("Not a day: 01-31");
+        }
+    }
+
 
     auto readName() -> std::string 
     {

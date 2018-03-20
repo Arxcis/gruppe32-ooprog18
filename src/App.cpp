@@ -218,11 +218,12 @@ void printTerminDivisjon(DB::Context& ctx)
     using std::size_t;
     using std::string;
 
-    IO::printline("printTerminDivisjon()");
-    IO::printline();
-
     // 0. Skriv ut idretter
+    IO::printline();
+    IO::divider('_', 80);    
+    IO::printline();
     IO::printline(Encode::viewIdrettene(ctx.idrettene));
+    IO::divider('_', 80);
     for (;;) 
     {
         // 1. Setup possible commands
@@ -231,7 +232,7 @@ void printTerminDivisjon(DB::Context& ctx)
             Terminal::keyCommandBack
         };
         // 2. Print menu
-        IO::printMenu(commandMap, "Terminliste for idrett ?");
+        IO::printMenu(commandMap, "HOME -> Skriv Terminliste -> Velg en Idrett");
 
         // 3. Read command
         auto [cmdkey, command, _, idrettName] = IO::readEitherCommandName(commandMap);
@@ -253,7 +254,11 @@ void printTerminDivisjon(DB::Context& ctx)
 
         // 5. Print out possible divisjoner to help the user pick
         IO::printline();
+        IO::printline();
+        IO::printline();
+        IO::divider('_', 80);
         printDivisjonene((*idrett));
+        IO::divider('_', 80);
             
         // 6. Setup possible commands for read divisjon
         commandMap = Terminal::Command::Map {
@@ -261,7 +266,7 @@ void printTerminDivisjon(DB::Context& ctx)
             Terminal::keyCommandBack
         };
         // 7. Print menu
-        IO::printMenu(commandMap, "Terminliste for divisjon ?");
+        IO::printMenu(commandMap, "HOME -> Skriv Terminliste -> Velg en divisjon");
 
         // 8. Read divisjon
         auto [cmdkey2, command2, _2, divisjonName] = IO::readEitherCommandName(commandMap);
@@ -270,22 +275,25 @@ void printTerminDivisjon(DB::Context& ctx)
             return;
         }
 
-        IO::printline("------------------------------------");
+        IO::divider('_', 80);
 
         // 9. Iterate through all divisjoner
         for (const auto& divisjon : idrett->divisjonene)
         {
             if (divisjon.navn.find(divisjonName) != std::string::npos)
             {
+                IO::printline(divisjon.navn, ": terminliste");
+                IO::printline();
                 auto terminliste = DB::Terminliste {
                     divisjon.navn,
                     divisjon.terminliste
                 };
                 IO::printline(Encode::viewTerminliste(terminliste));
+                IO::printline();
             }
         }
 
-        IO::printline("------------------------------------");
+        IO::divider('_', 80);
 
         ctx.idrettene.data->add(idrett);
     }
@@ -294,11 +302,103 @@ void printTerminDivisjon(DB::Context& ctx)
 
 void printResultatKampDivisjon(DB::Context& ctx) 
 {
-    auto divisjonNameCommand = Terminal::commandNamePair;
-    divisjonNameCommand.second.help = "Name of ";
+   // 0. Skriv ut idretter
+    IO::printline();
+    IO::divider('_', 80);    
+    IO::printline();
+    IO::printline(Encode::viewIdrettene(ctx.idrettene));
+    IO::divider('_', 80);
+    for (;;) 
+    {
+        // 1. Setup possible commands
+        auto commandMap = Terminal::Command::Map {
+            Terminal::keyCommandNameIdrett,
+            Terminal::keyCommandBack
+        };
+        // 2. Print menu
+        IO::printMenu(commandMap, "HOME -> Resultater Divisjon -> Velg en Idrett");
+
+        // 3. Read command
+        auto [cmdkey, command, _, idrettName] = IO::readEitherCommandName(commandMap);
+        if (cmdkey == Terminal::CMD_BACK)
+            return;
+
+
+        // 4. Try to find idrett
+        auto idrett = (DB::Idrett*)ctx.idrettene.data->remove(idrettName.c_str());
+        if (!idrett) {
+            IO::printline("Idrett not found");
+            continue;
+        }
+        if (idrett->divisjonene.size() == 0) {
+            ctx.idrettene.data->add(idrett);
+            IO::printline(idrett->name, "has no divisjoner");
+            continue;
+        }
+
+        // 5. Print out possible divisjoner to help the user pick
+        IO::printline();
+        IO::printline();
+        IO::printline();
+        IO::divider('_', 80);
+        printDivisjonene((*idrett));
+        IO::divider('_', 80);
+            
+        // 6. Setup possible commands for read divisjon
+        commandMap = Terminal::Command::Map {
+            Terminal::keyCommandNameDivisjon,
+            Terminal::keyCommandBack
+        };
+        // 7. Print menu
+        IO::printMenu(commandMap, "HOME -> Resultater Divisjon -> Velg Divisjon");
+
+        // 8. Read divisjon
+        auto [cmdkey2, command2, _2, divisjonName] = IO::readEitherCommandName(commandMap);
+        if (cmdkey2 == Terminal::CMD_BACK) {
+            ctx.idrettene.data->add(idrett);
+            return;
+        }
+            
+        // 9. Read year
+        IO::printline("HOME -> Resultater Divisjon -> Skriv årstall");
+        
+        for (;;) {
+            size_t number = IO::readEitherCommandNumber(commandMap);
+            if (Valid::isYear(number)) {
+                break;
+            }
+            IO::printline("Not a valid year between 1970-2099");
+        }
+
+        // 10. Read month
+        commandMap = Terminal::Command::Map {
+            Terminal::keyCommandMonth,
+            Terminal::keyCommandBack
+        };
+        IO::printMenu(commandMap, "HOME -> Resultater Divisjon -> Skriv Måned");
+        auto [cmdkey4, command4, _4, month] = IO::readEitherCommandNumber(commandMap);
+        if (cmdkey3 == Terminal::CMD_BACK) {
+            ctx.idrettene.data->add(idrett);
+            return;
+        }
+
+        // 11. Read day
+        commandMap = Terminal::Command::Map {
+            Terminal::keyCommandYear,
+            Terminal::keyCommandBack
+        };
+        IO::printMenu(commandMap, "HOME -> Resultater Divisjon -> Skriv Dag");
+        auto [cmdkey5, command5, _5, day] = IO::readEitherCommandNumber(commandMap);
+        if (cmdkey3 == Terminal::CMD_BACK) {
+            ctx.idrettene.data->add(idrett);
+            return;
+        }
+    }
 
     IO::printline("printResultatKampDivisjon()");
 }
+
+
 void writeResultatKampDivisjon(DB::Context& ctx) 
 {
     IO::printline("writeResultatKampDivisjon()");
