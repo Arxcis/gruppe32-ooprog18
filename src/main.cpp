@@ -20,6 +20,7 @@ int main(int argc, char* argv[])
     // SET UP CONTEXTS
     //===================================================================================
     auto defaultContext    = DB::Context();
+    auto mandatoryContext  = DB::Context();
     auto testPrintsContext = DB::Context();
     {
         testPrintsContext.spillerene.data->add(new DB::Spiller(0, "Arto Keininen", "Olou, Finland"));
@@ -48,11 +49,7 @@ int main(int argc, char* argv[])
         idrettBasket->divisjonene.push_back(DB::Divisjon{ "Test" });
         testPrintsContext.idrettene.data->add(idrettBasket);
     }
-    auto mandatoryContext  = DB::Context();
-    {
-        App::readIdrettene(mandatoryContext.idrettene,"./data/read/seed-idrettene.yml");
-        App::readSpillerene(mandatoryContext.spillerene,"./data/read/seed-spillerene.yml");
-    }
+
 
     // Map contexts
     auto ctxMap = std::unordered_map<std::string, DB::Context&>{
@@ -78,9 +75,25 @@ int main(int argc, char* argv[])
                 IO::printline("    -", "\""+key+"\"");
             }
             IO::printline();
+            exit(-1);
         }
         ctxSelector = argv[1];
+
+        if (ctxMap.find(ctxSelector) == ctxMap.end()) 
+        {
+            IO::printline(ctxSelector, " option does not exist");
+            exit(-1);
+        }
     }
+
+    // Read from file
+    if (ctxSelector == "seed")
+    {
+        App::readIdrettene(mandatoryContext.idrettene,"./data/read/seed-idrettene.yml");
+        App::readSpillerene(mandatoryContext.spillerene,"./data/read/seed-spillerene.yml");
+    }        
+
+
     auto ctx = ctxMap.at(ctxSelector);
     IO::printline("Using context:", ctxSelector);
 
@@ -88,5 +101,12 @@ int main(int argc, char* argv[])
     // RUN APP
     //===================================================================================
     Terminal::run(ctx);
+
+
+    if (ctxSelector == "seed") 
+    {
+
+    }
+
     return 0;
 }

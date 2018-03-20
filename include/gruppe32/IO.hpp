@@ -13,7 +13,8 @@
 #include <gruppe32/Valid.hpp>
 
 // Forward declaration
-namespace gruppe32::Terminal {
+namespace gruppe32::Terminal 
+{
     enum CommandID : char;
     struct Command;
 }
