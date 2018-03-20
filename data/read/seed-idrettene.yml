@@ -46,7 +46,7 @@ idrettene:
 
       - bortelag: Rosenborg
         dato: 2012-03-19
-        resultat:
+        resultat: true
           overtid: true
           hjemmeScorereneCount: 4
           hjemmeScorerene:
@@ -90,7 +90,7 @@ idrettene:
 
       - bortelag: Ham-Kam
         dato: 2012-03-19
-        resultat: false 
+        resultat: false
 
     - hjemmelag: Ham-Kam
       bortelagene:

@@ -62,7 +62,7 @@ auto KeyValueGenerator::nextStringString() -> pair<string,string>
     if (line.find(":")+2 < line.size())
         valueString = line.substr(line.find(":")+2);
 
-    /* @debug
+    // @debug
     std::cout << std::setw(35) << std::left 
               << line  
 
@@ -72,7 +72,7 @@ auto KeyValueGenerator::nextStringString() -> pair<string,string>
               
               << " val: " 
               << valueString
-              << '\n';*/
+              << '\n';
 
     return pair<string,string>{ key, valueString };
 };
@@ -94,12 +94,8 @@ auto KeyValueGenerator::nextStringBool() -> pair<string,bool>
     else if (valueString == "false") {
         trueFalse = false;
     }
-    // @note special case with resultat: in format-idrettene.Pyml meaning true
-    else if (valueString == "") {  
-        trueFalse = true;
-    }
     else {
-       // assert(false && "Boolean not supported");
+       assert(false && "Boolean have to be either true or false");
     }
     return pair<string,bool>{key, trueFalse};
 };
