@@ -871,9 +871,30 @@ auto Encode::viewIdrettene(DB::Idrettene& idrettene) -> string
 }
 
 
-auto Encode::viewSpillerene(DB::Spillerene& spiller) -> string 
+auto Encode::viewSpillerene(DB::Spillerene& spillerene) -> string 
 {
-    return "";
+    LinePrinter p;
+
+    p.lineStringUint("spillereneCount", spillerene.data->noOfElements());
+    p.lineString(    "spillerene");
+
+    for (size_t i = 1; i <= spillerene.data->noOfElements(); ++i) 
+    {
+        auto spiller = (DB::Spiller* ) spillerene.data->removeNo(i);
+
+        p.lineEmpty();
+        p.lineDashStringString("spiller", spiller->name);
+        
+        p.tabRight();
+
+        p.lineStringUint("nummer", spiller->guid);
+        p.lineStringString("adresse", spiller->address);
+        p.tabLeft();
+
+        spillerene.data->add(spiller);
+    }
+
+    return p.getString();
 }
 
 

@@ -823,18 +823,6 @@ void test_EncodeViewIdrettene()
 
     auto result = Encode::viewIdrettene(idrettene);
 
-
-    for (std::size_t i = 0; i < result.size(); ++i)
-    {
-        auto c1 = encodedIdrettene[i];
-        auto c2 = result[i];
-        if (c1 != c2) {
-            std::cout << "\nc1 = " << int(c1) << "  c2 = " << int(c2) << '\n';
-        //  assert(false);
-        }
-        //std::cout << c1;
-    }
-
     Test::assertEqual(
         result,
         encodedIdrettene,
@@ -847,7 +835,7 @@ void test_EncodeViewSpillerene()
 
     spillerene.data->add(new DB::Spiller{
         2,
-        "Gray Newman",
+        "Gary Newman",
         "Orlando, Florida, USA"
     });
     spillerene.data->add(new DB::Spiller {
@@ -857,16 +845,16 @@ void test_EncodeViewSpillerene()
     });
 
     constexpr char encodedSpillerene[] = ""
-"spillereneCount: 8\n"
+"spillereneCount: 2\n"
 "spillerene:\n"
 "\n"
 "- spiller: Gary Newman\n"
 "  nummer: 2\n"
-"  Adresse: Orlando, Florida, USA\n"
+"  adresse: Orlando, Florida, USA\n"
 "\n"
 "- spiller: Kari Nordmann\n"
 "  nummer: 5\n"
-"  Adresse: Trondheim, Norway\n";
+"  adresse: Trondheim, Norway\n";
 
     auto result = Encode::viewSpillerene(spillerene);
 
@@ -880,22 +868,22 @@ void test_Parser()
 {
 
     /*
-    std::cout << "\n\nRunning test_EncodeViewIdrett()\n\n";    
+    std::cout << "\n\nRunning test_EncodeViewIdrett()\n\n";    // SUCCESS
     test_EncodeViewIdrett();
     
-    */
    
-    std::cout << "\n\nRunning test_EncodeViewIdrettene()\n\n";
+    std::cout << "\n\nRunning test_EncodeViewIdrettene()\n\n"; // SUCCESS - but CRLF vs CR vs LF 
     test_EncodeViewIdrettene();
    
     
-    /*
-    std::cout << "\n\nRunning test_EncodeViewSpillerene()\n\n";
+    std::cout << "\n\nRunning test_EncodeViewSpillerene()\n\n"; // SUCESS
     test_EncodeViewSpillerene();
-
+    */
 
     std::cout << "\n\nRunning test_DecodeAndEncodeIdrettene()\n\n";    
     test_DecodeAndEncodeIdrettene();
+    
+    /*
 
     std::cout << "\n\nRunning test_DecodeAndEncodeSpillerene()\n\n";    
     test_DecodeAndEncodeSpillerene();

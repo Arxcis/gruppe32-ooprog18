@@ -1,5 +1,7 @@
 #include <gruppe32/App.hpp>
 
+#include <gruppe32/Parser.hpp>
+
 namespace gruppe32::App 
 {
 
@@ -11,15 +13,21 @@ namespace gruppe32::App
  */
 void printSpillereAll(DB::Context& ctx) 
 {
+    IO::printline(ctx.spillerene.data->noOfElements());
     IO::printline("printSpillereAll()");
-    std::size_t count = ctx.spillerene.data->noOfElements();
-    for(std::size_t i = 1; i <= count; i++)
-    {
-        auto current = (DB::Spiller*)ctx.spillerene.data->removeNo(i);
-        printSpiller(*current);
-        ctx.spillerene.data->add(current);
-    }
+    IO::printline();
+    IO::printline(Encode::viewSpillerene(ctx.spillerene));
 
+    // @DEPRECATED jsolsvik 20.03.2018
+    /*
+        std::size_t count = ctx.spillerene.data->noOfElements();
+        for(std::size_t i = 1; i <= count; i++)
+        {
+            auto current = (DB::Spiller*)ctx.spillerene.data->removeNo(i);
+            printSpiller(*current);
+            ctx.spillerene.data->add(current);
+        }
+    */      
 }
 void printSpillereByName(DB::Context& ctx, const std::string name) 
 {
@@ -27,19 +35,30 @@ void printSpillereByName(DB::Context& ctx, const std::string name)
     IO::printline();
     IO::printline("Spiller", "\"" + name + "\"", "etterspurt");
     
+    DB::Spillerene viewSpillerene;
+
     std::size_t count = ctx.spillerene.data->noOfElements();
     for (std::size_t i = 1; i <= count; i++)
     {
         auto current = (DB::Spiller*)ctx.spillerene.data->removeNo(i);
         if (current->name.find(name) != std::string::npos)
         {
-            IO::printline("Spiller funnet!");
-            IO::printline();
-            printSpiller(*current);
-            IO::printline();
+
+            // @DEPRECATED jsolsvik 20.03.2018 
+            /*
+                  //  IO::printline("Spiller funnet!");
+                   // IO::printline();
+                    // printSpiller(*current);
+                   // IO::printline();
+            */
+
+            viewSpillerene.data->add(new DB::Spiller(current->guid, current->name, current->address));
         }
         ctx.spillerene.data->add(current);
     }
+
+    IO::printline();
+    IO::printline(Encode::viewSpillerene(viewSpillerene));
 }
 void printSpillereByNumber(DB::Context& ctx, const std::size_t number) 
 {
@@ -47,14 +66,24 @@ void printSpillereByNumber(DB::Context& ctx, const std::size_t number)
     IO::printline();
     IO::printline("Spiller nr", number, "etterspurt");
 
+    DB::Spillerene viewSpillerene;
+
     auto element = (DB::Spiller*)ctx.spillerene.data->remove((int)number);
     if (element) 
     {
-        IO::printline("Spiller funnet!");
-        IO::printline();
-        printSpiller(*element);
-        IO::printline();
+
+            // @DEPRECATED jsolsvik 20.03.2018
+            /*
+                IO::printline("Spiller funnet!");
+                IO::printline();
+                printSpiller(*element);
+                IO::printline();
+            */
+        viewSpillerene.data->add(new DB::Spiller(element->guid, element->name, element->address));
         ctx.spillerene.data->add(element);
+
+        IO::printline();
+        IO::printline(Encode::viewSpillerene(viewSpillerene));
     }
     else 
     {
@@ -66,13 +95,20 @@ void printSpillereByNumber(DB::Context& ctx, const std::size_t number)
 void printIdretterAll(DB::Context& ctx) 
 {
     IO::printline("printIdretterAll()");
-    std::size_t count = ctx.idrettene.data->noOfElements();
-    for (std::size_t i = 1; i <= count; i++)
-    {
-        auto current = (DB::Idrett*)ctx.idrettene.data->removeNo(i);
-        printIdrett(*current);
-        ctx.idrettene.data->add(current);
-    }
+    IO::printline();
+    IO::printline(Encode::viewIdrettene(ctx.idrettene));
+    
+    // @DEPRECATED jsolsvik 20.03.2018
+    /*
+        std::size_t count = ctx.idrettene.data->noOfElements();
+        for (std::size_t i = 1; i <= count; i++)
+        {
+            auto current = (DB::Idrett*)ctx.idrettene.data->removeNo(i);
+            
+            printIdrett(*current);
+            ctx.idrettene.data->add(current);
+        }
+    */
 }
 
 void printIdretterByName( DB::Context& ctx, const std::string name) 
@@ -91,6 +127,12 @@ void printIdretterByName( DB::Context& ctx, const std::string name)
             auto current = (DB::Idrett*)ctx.idrettene.data->removeNo(i);
             if (current->name.find(name) != std::string::npos)
             {
+
+                IO::printline();
+                IO::printline(Encode::viewIdrett(*current));
+
+    // @DEPRECATED jsolsvik 20.03.2018
+    /*
                 IO::printline("Idrett funnet!");
                 printIdrett(*current);
                 IO::printline();
@@ -106,12 +148,19 @@ void printIdretterByName( DB::Context& ctx, const std::string name)
                         IO::printline("       - Adresse:", lag.adresse);
                     }
                 }
+      
+    */
             }
             ctx.idrettene.data->add(current);
         }
     }
     else
     {
+        IO::printline();
+        IO::printline(Encode::viewIdrett(*idrett));
+
+    // @DEPRECATED jsolsvik 20.03.2018
+    /*
         IO::printline("Idrett funnet!");
         printIdrett(*idrett);
         IO::printline();
@@ -128,6 +177,7 @@ void printIdretterByName( DB::Context& ctx, const std::string name)
             }
         }
         IO::printline();
+        */
         ctx.idrettene.data->add(idrett);
     }
 }
@@ -247,6 +297,9 @@ void writeTopp10Lag(const DB::Context& ctx)
 // HELPER FUNCTIONS
 //======================================
 
+// @DEPRECATED jsolsvik 20.03.2018
+
+/*
 void printSpiller(const DB::Spiller& spiller)
 {
     IO::printline();
@@ -262,5 +315,6 @@ void printIdrett(const DB::Idrett& idrett)
     IO::printline("   - Tabelltype:", idrett.tabell);
     IO::printline("   - Antall divisjoner:", idrett.divisjonene.size());
 }
+*/
 
 } // end namespace gruppe32::App
