@@ -360,42 +360,14 @@ void printResultatKampDivisjon(DB::Context& ctx)
         }
             
         // 9. Read year
-        IO::printline("HOME -> Resultater Divisjon -> Skriv årstall");
-        
-        for (;;) {
-            size_t number = IO::readEitherCommandNumber(commandMap);
-            if (Valid::isYear(number)) {
-                break;
-            }
-            IO::printline("Not a valid year between 1970-2099");
-        }
-
-        // 10. Read month
-        commandMap = Terminal::Command::Map {
-            Terminal::keyCommandMonth,
-            Terminal::keyCommandBack
-        };
-        IO::printMenu(commandMap, "HOME -> Resultater Divisjon -> Skriv Måned");
-        auto [cmdkey4, command4, _4, month] = IO::readEitherCommandNumber(commandMap);
-        if (cmdkey3 == Terminal::CMD_BACK) {
-            ctx.idrettene.data->add(idrett);
-            return;
-        }
-
-        // 11. Read day
-        commandMap = Terminal::Command::Map {
-            Terminal::keyCommandYear,
-            Terminal::keyCommandBack
-        };
-        IO::printMenu(commandMap, "HOME -> Resultater Divisjon -> Skriv Dag");
-        auto [cmdkey5, command5, _5, day] = IO::readEitherCommandNumber(commandMap);
-        if (cmdkey3 == Terminal::CMD_BACK) {
-            ctx.idrettene.data->add(idrett);
-            return;
-        }
+        IO::printline("Årstall: 1970-2099");
+        size_t year = IO::readYear();
+        IO::printline("Måned:   01-12");
+        size_t month = IO::readMonth();
+        IO::printline("Dag:     01-31");
+        size_t day = IO::readDay();
+        ctx.idrettene.data->add(idrett);
     }
-
-    IO::printline("printResultatKampDivisjon()");
 }
 
 

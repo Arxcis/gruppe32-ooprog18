@@ -169,36 +169,43 @@ auto readEitherCommandName(const CommandMap & validCommands) -> CommandPairWithD
 }
 
 
-auto readNumber() -> size_t
-{
-    std::string commandString{};
-    for (;;)
+    auto readNumber() -> size_t
     {
-        std::getline(std::cin, commandString);
-        
-        bool userWroteNumber = ;
-        if (Valid::isUint(commandString))
+        std::string commandString{};
+        for (;;)
         {
-            auto cmd = validCommands.at(Terminal::CMD_SPILLER_NR);
-            std::stringstream strStream;
-            strStream << commandString;
-            std::size_t number;
-            strStream >> number;
+            std::cout << "-> ";
+            std::getline(std::cin, commandString);
             
-            return number;
+            if (Valid::isUint(commandString))
+            {
+                std::stringstream strStream;
+                strStream << commandString;
+                std::size_t number;
+                strStream >> number;
+                
+                return number;
+            }
+            printline("Not a number.");
         }
-        printline("Not a number.");
+        return 0;
     }
-    return 0;
-}
 
 
     auto readYear() -> size_t 
     {
+        std::string commandString{};
         for(;;) 
         {
-            size_t number = readNumber();
-            if (Valid::isYear(number)) {
+            std::cout << "-> ";
+            std::getline(std::cin, commandString);
+
+            if (Valid::isYear(commandString)) {
+                std::stringstream strStream;
+                strStream << commandString;
+                std::size_t number;
+                strStream >> number;
+
                 return number;
             }
             IO::printline("Not a valid year: 1970-2099");
@@ -208,10 +215,18 @@ auto readNumber() -> size_t
 
     auto readMonth() -> size_t 
     {
+        std::string commandString{};
         for(;;) 
         {
-            size_t number = readNumber();
-            if (Valid::isMonth(number)) {
+            std::cout << "-> ";
+            std::getline(std::cin, commandString);
+       
+            if (Valid::isMonth(commandString)) {
+                std::stringstream strStream;
+                strStream << commandString;
+                std::size_t number;
+                strStream >> number;
+
                 return number;
             }
             IO::printline("Not a valid month: 01-12");
@@ -221,10 +236,18 @@ auto readNumber() -> size_t
 
     auto readDay() -> size_t 
     {
+        std::string commandString{};
         for(;;) 
         {
-            size_t number = readNumber();
-            if (Valid::isDay(number)) {
+            std::cout << "-> ";
+            std::getline(std::cin, commandString);
+
+            if (Valid::isDay(commandString)) {
+                std::stringstream strStream;
+                strStream << commandString;
+                std::size_t number;
+                strStream >> number;
+                
                 return number;
             }
             IO::printline("Not a day: 01-31");

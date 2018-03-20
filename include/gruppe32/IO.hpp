@@ -90,6 +90,9 @@ auto readEitherCommandNumber(const CommandMap & validCommands) -> CommandPairWit
 
 
 auto readName() -> std::string;
+auto readYear() -> size_t;
+auto readMonth() -> size_t;
+auto readDay() -> size_t ;
 
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
