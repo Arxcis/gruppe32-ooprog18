@@ -22,6 +22,7 @@ enum CommandID : char
         CMD_SPILLER_ALLE = 'A',
         CMD_SPILLER_NR   = 'R',
         CMD_SPILLER_NAVN = 'N',
+        CMD_SPILLER_ADRESSE = 'A',
 
     CMD_IDRETT          = 'I',
         CMD_IDRETT_ALLE = 'A',
@@ -64,6 +65,7 @@ enum CommandID : char
 
     CMD_BACK     = 'B',
     CMD_QUIT     = 'Q',
+    CMD_COMMIT   = 'F',
     CMD_NAME     = 'N'
  };
 
@@ -78,6 +80,7 @@ struct Command {
 };
 
 const Command::Pair commandNamePair         = { CMD_NAME, Command{ "<name>", "A name" }};     
+const Command::Pair commandCommitPair       = { CMD_COMMIT, Command{ string(1,CMD_COMMIT), "Fullfør!" } };
 const Command::Pair commandBackPair         = { CMD_BACK, Command{ string(1,CMD_BACK), "Back to last menu" }};     
 const Command::Pair commandQuitPair         = { CMD_QUIT, Command{ string(1,CMD_QUIT), "Quit the application"}};   
 

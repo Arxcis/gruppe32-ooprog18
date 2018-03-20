@@ -6,9 +6,6 @@ namespace gruppe32::Terminal
 void run(DB::Context& ctx) 
 {
     using string = std::string;
-
-    const Command::Pair commandBackPair = { CMD_BACK, Command{ string(1,CMD_BACK), "Back to last menu" }};     
-    const Command::Pair commandQuitPair = { CMD_QUIT, Command{ string(1,CMD_QUIT), "Quit the application"}};   
     
 const Command::Map commandMap
 {
