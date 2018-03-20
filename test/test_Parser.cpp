@@ -39,7 +39,7 @@ void test_DecodeAndEncodeIdrettene()
 "      - spiller: 3\n"
 "\n"
 "    terminliste:\n"
-"      \n"
+"\n"
 "    - hjemmelag: Brann\n"
 "      bortelagene:\n"
 "\n"
@@ -285,7 +285,7 @@ void test_DecodeDivisjon()
 "  - spiller: 1\n"
 "\n"
 "- lag: Rosenborg\n"
-"  adresse: Trondheim, Norway \n"
+"  adresse: Trondheim, Norway\n"
 "  spillereneCount: 2\n"
 "  spillerene: \n"
 "  - spiller: 2\n"
@@ -413,7 +413,6 @@ void test_EncodeResultateneIdrett()
 "resultatene:\n"
 "\n"
 "- resultat:\n"
-"  divisjon: Eliteserien 2018\n"
 "  hjemmelag: Rosenborg\n"
 "  bortelag: Brann\n"
 "  dato: 2018-04-19\n"
@@ -421,7 +420,6 @@ void test_EncodeResultateneIdrett()
 "  bortescoringer: 3\n"
 "\n"
 "- resultat:\n"
-"  divisjon: Eliteserien 2018\n"
 "  hjemmelag: Brann\n"
 "  bortelag: Rosenborg\n"
 "  dato: 2018-05-19\n"
@@ -549,7 +547,6 @@ void test_EncodeTabelleneIdrett()
 "tabellene:\n"
 "\n"
 "- tabell: Eliteserien 2018\n"
-"\n"
 "  tabellLageneCount: 2\n"
 "  tabellLagene:\n"
 "\n"
@@ -592,13 +589,20 @@ void test_EncodeTerminliste()
         "Eliteserien 2018", 
         map<string, map<string,string>> {
             { "Brann", map<string, string> {
-                    { "Rosenborg", "2012-03-19" } 
+                    { "Rosenborg", "2018-03-19" },
+                    { "Stabekk", "2018-04-19" }
                 }
             },
             { "Rosenborg", map<string, string> {
-                    { "Brann", "2012-03-19" }
+                    { "Brann", "2018-04-21" },
+                    { "Stabekk", "2018-06-19" }
                 }
             },
+            { "Stabekk", map<string, string> {
+                    { "Brann", "2018-07-21" },
+                    { "Rosenborg", "2018-08-19" }
+                }
+            }
         }
     };
     constexpr char encodedTerminliste[] = ""
@@ -628,7 +632,7 @@ void test_EncodeTerminliste()
 "  - bortelag: Brann\n"
 "    dato: 2018-07-21\n"
 "  - bortelag: Rosenborg\n"
-"    dato: 2018-08-19";
+"    dato: 2018-08-19\n";
 
     string _encodedTerminliste = Encode::viewTerminliste(terminliste);
 
@@ -878,12 +882,10 @@ void test_Parser()
     
     std::cout << "\n\nRunning test_EncodeViewSpillerene()\n\n"; // SUCESS
     test_EncodeViewSpillerene();
-    */
 
     std::cout << "\n\nRunning test_DecodeAndEncodeIdrettene()\n\n";    
     test_DecodeAndEncodeIdrettene();
     
-    /*
 
     std::cout << "\n\nRunning test_DecodeAndEncodeSpillerene()\n\n";    
     test_DecodeAndEncodeSpillerene();
@@ -897,10 +899,9 @@ void test_Parser()
 
 
 
-
-
     std::cout << "\n\nRunning test_EncodeResultateneDivisjon()\n\n";    
     test_EncodeResultateneDivisjon();
+
 
     std::cout << "\n\nRunning test_EncodeResultateneIdrett()\n\n";    
     test_EncodeResultateneIdrett();
@@ -908,17 +909,23 @@ void test_Parser()
     std::cout << "\n\nRunning test_EncodeTabellDivisjon()\n\n";    
     test_EncodeTabellDivisjon();
 
+
     std::cout << "\n\nRunning test_EncodeTabelleneIdrett()\n\n";    
     test_EncodeTabelleneIdrett();
 
-    std::cout << "\n\nRunning test_EncodeTerminliste()\n\n";    
+    std::cout << "\n\nRunning test_EncodeTerminliste()\n\n";   // @SUCCESS - but CRLF vs LF problems 
     test_EncodeTerminliste();
 
     std::cout << "\n\nRunning test_EncodeToppscorereneDivisjon()\n\n";    
     test_EncodeToppscorereneDivisjon();
+    */
 
     std::cout << "\n\nRunning test_EncodeToppscorereneLag()\n\n";    
-    test_EncodeToppscorereneLag();*/
+    test_EncodeToppscorereneLag();
+    
+    /*
+
+    */
 
 }
 

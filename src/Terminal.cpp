@@ -75,10 +75,10 @@ const Command::Map commandMap
             "Skriv (resultatet av) alle Kampene en gitt dato for en hel idrett eller en divisjon/avdeling til skjerm eller fil" , 
             "Kampinfo",
             {
-                {CMD_KAMP_IDRETT,       Command{ string(1, CMD_KAMP_IDRETT), "Skriv alle kamper for en IDRETT"}},
-                {CMD_KAMP_IDRETT_FIL,   Command{ string(1, CMD_KAMP_IDRETT_FIL), "Skriv alle kamper for en IDRETT til fil"}},
-                {CMD_KAMP_DIVISJON,     Command{ string(1, CMD_KAMP_DIVISJON), "Skriv alle kamper for en DIVISJON"}},
-                {CMD_KAMP_DIVISJON_FIL, Command{ string(1, CMD_KAMP_DIVISJON_FIL), "Skriv alle kamper for en DIVISJON til fil"}},
+                {CMD_KAMP_IDRETT,       Command{ string(1, CMD_KAMP_IDRETT), "Resultatene for <IDRETT>"}},
+                {CMD_KAMP_IDRETT_FIL,   Command{ string(1, CMD_KAMP_IDRETT_FIL), "Resultatene for <IDRETT> til fil"}},
+                {CMD_KAMP_DIVISJON,     Command{ string(1, CMD_KAMP_DIVISJON), "Resultatene for <DIVISJON>"}},
+                {CMD_KAMP_DIVISJON_FIL, Command{ string(1, CMD_KAMP_DIVISJON_FIL), "Resultatene for <DIVISJON> til fil"}},
                 commandBackPair,
                 commandQuitPair
             },
@@ -90,10 +90,10 @@ const Command::Map commandMap
             "skriv Tabell(er) for en hel idrett eller en divisjon/avdeling til skjerm eller fil",
             "Tabellinfo",
             {
-                {CMD_TABELL_IDRETT,       Command{ string(1, CMD_TABELL_IDRETT), "Skriv alle tabell(er) for en IDRETT"}},
-                {CMD_TABELL_IDRETT_FIL,   Command{ string(1, CMD_TABELL_IDRETT_FIL), "Skriv alle tabell(er) for en IDRETT til fil"}},
-                {CMD_TABELL_DIVISJON,     Command{ string(1, CMD_TABELL_DIVISJON), "Skriv alle tabell(er) for en DIVISJON"}},
-                {CMD_TABELL_DIVISJON_FIL, Command{ string(1, CMD_TABELL_DIVISJON_FIL), "Skriv alle tabell(er) for en DIVISJON til fil"}},
+                {CMD_TABELL_IDRETT,       Command{ string(1, CMD_TABELL_IDRETT), "Tabellene for <IDRETT>"}},
+                {CMD_TABELL_IDRETT_FIL,   Command{ string(1, CMD_TABELL_IDRETT_FIL), "Tabellene for <IDRETT> til fil"}},
+                {CMD_TABELL_DIVISJON,     Command{ string(1, CMD_TABELL_DIVISJON), "Tabell for <DIVISJON>"}},
+                {CMD_TABELL_DIVISJON_FIL, Command{ string(1, CMD_TABELL_DIVISJON_FIL), "Tabell for <DIVISJON> til fil"}},
                 commandBackPair,
                 commandQuitPair
             },

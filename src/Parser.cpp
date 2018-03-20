@@ -39,7 +39,7 @@ auto KeyValueGenerator::nextLine() -> std::string
     return line;
 };
 
-auto KeyValueGenerator::nextStringStringPair() -> pair<string,string>
+auto KeyValueGenerator::nextStringString() -> pair<string,string>
 {
     auto line = nextLine();
 
@@ -66,15 +66,15 @@ auto KeyValueGenerator::nextStringStringPair() -> pair<string,string>
 };
 
 
-auto KeyValueGenerator::nextStringUintPair() -> pair<string, size_t>
+auto KeyValueGenerator::nextStringUint() -> pair<string, size_t>
 {
-    auto[key, valueString] = nextStringStringPair();
+    auto[key, valueString] = nextStringString();
     return pair<string, size_t>{key, std::stoi(valueString)};
 };
 
-auto KeyValueGenerator::nextStringBoolPair() -> pair<string,bool>
+auto KeyValueGenerator::nextStringBool() -> pair<string,bool>
 {
-    auto[key, valueString] = nextStringStringPair();
+    auto[key, valueString] = nextStringString();
     bool trueFalse;
     if (valueString == "true") {
         trueFalse = true;
@@ -97,16 +97,16 @@ auto Decode::dataIdrettene(DB::Idrettene& idrettene, string_view strview) -> Dec
 {
     auto gen = KeyValueGenerator{strview, 0};
 
-    auto[idretteneCountkey, idretteneCount] = gen.nextStringUintPair();
+    auto[idretteneCountkey, idretteneCount] = gen.nextStringUint();
 
     gen.nextLine(); // ignore idrettene:
 
     for (size_t iIdrett = 0; iIdrett < idretteneCount; ++iIdrett)
     {
 
-        auto[idrettKey, idrettNavn]     = gen.nextStringStringPair();
-        auto[tabelltypekey, tabelltype] = gen.nextStringUintPair();
-        auto[divisjoneneCountkey, divisjoneneCount] = gen.nextStringUintPair();
+        auto[idrettKey, idrettNavn]     = gen.nextStringString();
+        auto[tabelltypekey, tabelltype] = gen.nextStringUint();
+        auto[divisjoneneCountkey, divisjoneneCount] = gen.nextStringUint();
 
         // Create Idrett
         auto idrett = new DB::Idrett {
@@ -118,8 +118,8 @@ auto Decode::dataIdrettene(DB::Idrettene& idrettene, string_view strview) -> Dec
 
         for (size_t iDivisjon = 0; iDivisjon < divisjoneneCount; ++iDivisjon)
         {
-            auto[divisjonkey, divisjonNavn] = gen.nextStringStringPair();
-            auto[lageneCountkey, lageneCount] = gen.nextStringUintPair();
+            auto[divisjonkey, divisjonNavn] = gen.nextStringString();
+            auto[lageneCountkey, lageneCount] = gen.nextStringUint();
 
             // Create Divisjon
             auto divisjon = DB::Divisjon {
@@ -130,9 +130,9 @@ auto Decode::dataIdrettene(DB::Idrettene& idrettene, string_view strview) -> Dec
 
             for (size_t iLag = 0; iLag < lageneCount; ++iLag)
             {
-                auto[lagkey, lagName]     = gen.nextStringStringPair();
-                auto[adressekey, adresse] = gen.nextStringStringPair();
-                auto[spillereneCountkey, spillereneCount] = gen.nextStringUintPair();
+                auto[lagkey, lagName]     = gen.nextStringString();
+                auto[adressekey, adresse] = gen.nextStringString();
+                auto[spillereneCountkey, spillereneCount] = gen.nextStringUint();
                 
                 auto lag = DB::Lag {
                     lagName,
@@ -144,7 +144,7 @@ auto Decode::dataIdrettene(DB::Idrettene& idrettene, string_view strview) -> Dec
                 for (size_t iSpiller = 0; iSpiller < spillereneCount; ++iSpiller)
                 {
 
-                    auto[spillerkey, spiller] = gen.nextStringUintPair();
+                    auto[spillerkey, spiller] = gen.nextStringUint();
                     lag.spillerene.push_back(spiller);         
                 }
                 divisjon.lagene.push_back(lag);
@@ -152,20 +152,19 @@ auto Decode::dataIdrettene(DB::Idrettene& idrettene, string_view strview) -> Dec
 
             
             gen.nextLine(); // ignore terminliste:
-            gen.nextLine(); // ignore hjemmelagene:
 
             for (size_t iHjemmelag = 0; iHjemmelag < lageneCount; ++iHjemmelag)
             {
 
-                auto[hjemmelagkey, hjemmelag] = gen.nextStringStringPair();
+                auto[hjemmelagkey, hjemmelag] = gen.nextStringString();
 
                 gen.nextLine(); // ignore bortelagene:
 
                 for (size_t iBortelag = 0; iBortelag < lageneCount-1; ++iBortelag)
                 {
-                    auto[bortelagkey, bortelag] = gen.nextStringStringPair();
-                    auto[datokey, dato]         = gen.nextStringStringPair();
-                    auto[resultkey, isResult]   = gen.nextStringBoolPair();
+                    auto[bortelagkey, bortelag] = gen.nextStringString();
+                    auto[datokey, dato]         = gen.nextStringString();
+                    auto[resultkey, isResult]   = gen.nextStringBool();
 
                     // Create Resultat
                     auto resultat = DB::Resultat {
@@ -174,8 +173,8 @@ auto Decode::dataIdrettene(DB::Idrettene& idrettene, string_view strview) -> Dec
 
                     if (isResult) 
                     {
-                        auto[overtidkey, overtid] = gen.nextStringBoolPair();
-                        auto[hjemmepoengCountkey, hjemmepoengCount] = gen.nextStringUintPair();
+                        auto[overtidkey, overtid] = gen.nextStringBool();
+                        auto[hjemmepoengCountkey, hjemmepoengCount] = gen.nextStringUint();
 
                         resultat.spilt = true;
                         resultat.overtid = overtid;
@@ -184,17 +183,17 @@ auto Decode::dataIdrettene(DB::Idrettene& idrettene, string_view strview) -> Dec
 
                         for (size_t iHjemmepoeng = 0; iHjemmepoeng < hjemmepoengCount; ++iHjemmepoeng)
                         {
-                            auto[spillerkey, spiller] = gen.nextStringUintPair();
+                            auto[spillerkey, spiller] = gen.nextStringUint();
                             resultat.hjemmeScorerene.push_back(spiller);
                         }
                         
-                        auto[bortepoengCountKey, bortepoengCount] = gen.nextStringUintPair();
+                        auto[bortepoengCountKey, bortepoengCount] = gen.nextStringUint();
 
                         gen.nextLine(); // ignore 'bortepoeng:'
 
                         for (size_t iBortepoeng = 0; iBortepoeng < bortepoengCount; ++iBortepoeng)
                         {
-                            auto[spillerkey, spiller] = gen.nextStringUintPair();
+                            auto[spillerkey, spiller] = gen.nextStringUint();
                             resultat.borteScorerene.push_back(spiller);
                         }
                     }
@@ -215,8 +214,8 @@ auto Decode::dataSpillerene(DB::Spillerene& spillerene, string_view strview) -> 
  
     auto gen = KeyValueGenerator{strview};
 
-    auto[autoIncrementerKey, autoIncrementer] = gen.nextStringUintPair();
-    auto[spillereneCountKey, spillereneCount] = gen.nextStringUintPair();
+    auto[autoIncrementerKey, autoIncrementer] = gen.nextStringUint();
+    auto[spillereneCountKey, spillereneCount] = gen.nextStringUint();
 
     spillerene.autoIncrementer = autoIncrementer;
 
@@ -224,9 +223,9 @@ auto Decode::dataSpillerene(DB::Spillerene& spillerene, string_view strview) -> 
 
     for (size_t iSpiller = 0; iSpiller < spillereneCount; ++iSpiller)
     {
-        auto[spillerNameKey, spillerName] = gen.nextStringStringPair();
-        auto[guidKey, guid]               = gen.nextStringUintPair();
-        auto[adresseKey, adresse]         = gen.nextStringStringPair();
+        auto[spillerNameKey, spillerName] = gen.nextStringString();
+        auto[guidKey, guid]               = gen.nextStringUint();
+        auto[adresseKey, adresse]         = gen.nextStringString();
     
         auto spiller = new DB::Spiller {
             guid,
@@ -243,7 +242,7 @@ auto Decode::inputResultatene(vector<DB::InputResultat>& resultatene, string_vie
 {
     auto gen = KeyValueGenerator{strview};
 
-    auto[resultateneCountKey, resultateneCount] = gen.nextStringUintPair();
+    auto[resultateneCountKey, resultateneCount] = gen.nextStringUint();
 
     gen.nextLine(); // ignore 'resultatene:''
 
@@ -252,13 +251,13 @@ auto Decode::inputResultatene(vector<DB::InputResultat>& resultatene, string_vie
 
         gen.nextLine(); // ignore '- resultat:'
 
-        auto[idrettKey, idrett]       = gen.nextStringStringPair();
-        auto[divisjonKey, divisjon]   = gen.nextStringStringPair();
-        auto[hjemmelagKey, hjemmelag] = gen.nextStringStringPair();
-        auto[bortelagKey, bortelag]   = gen.nextStringStringPair();
-        auto[datoKey, dato]           = gen.nextStringStringPair();
-        auto[overtidKey, overtid]     = gen.nextStringBoolPair();
-        auto[hjemmepoengCountKey, hjemmepoengCount] = gen.nextStringUintPair();
+        auto[idrettKey, idrett]       = gen.nextStringString();
+        auto[divisjonKey, divisjon]   = gen.nextStringString();
+        auto[hjemmelagKey, hjemmelag] = gen.nextStringString();
+        auto[bortelagKey, bortelag]   = gen.nextStringString();
+        auto[datoKey, dato]           = gen.nextStringString();
+        auto[overtidKey, overtid]     = gen.nextStringBool();
+        auto[hjemmepoengCountKey, hjemmepoengCount] = gen.nextStringUint();
 
         bool harSpiltKamp = false;
         auto resultat = DB::InputResultat {
@@ -275,16 +274,16 @@ auto Decode::inputResultatene(vector<DB::InputResultat>& resultatene, string_vie
 
         for (size_t iHjemmepoeng = 0; iHjemmepoeng < hjemmepoengCount; ++iHjemmepoeng)
         {
-            auto[spillerkey, spiller] = gen.nextStringUintPair();
+            auto[spillerkey, spiller] = gen.nextStringUint();
             resultat.hjemmeScorerene.push_back(spiller);
         }
-        auto[bortepoengCountKey, bortepoengCount] = gen.nextStringUintPair();
+        auto[bortepoengCountKey, bortepoengCount] = gen.nextStringUint();
 
         gen.nextLine(); // ignore 'bortepoeng:'
 
         for (size_t iBortepoeng = 0; iBortepoeng < bortepoengCount; ++iBortepoeng)
         {
-            auto[spillerkey, spiller] = gen.nextStringUintPair();
+            auto[spillerkey, spiller] = gen.nextStringUint();
             resultat.borteScorerene.push_back(spiller);
         }
 
@@ -298,8 +297,8 @@ auto Decode::inputDivisjon(DB::Divisjon& divisjon, string_view strview) -> Decod
 {
     auto gen = KeyValueGenerator{strview};
 
-    auto[divisjonkey, divisjonName] = gen.nextStringStringPair();
-    auto[lageneCountkey, lageneCount] = gen.nextStringUintPair();
+    auto[divisjonkey, divisjonName] = gen.nextStringString();
+    auto[lageneCountkey, lageneCount] = gen.nextStringUint();
 
     divisjon.navn = divisjonName;
 
@@ -307,9 +306,9 @@ auto Decode::inputDivisjon(DB::Divisjon& divisjon, string_view strview) -> Decod
 
     for (size_t iLag = 0; iLag < lageneCount; ++iLag) 
     {
-        auto[lagkey, lagNavn]     = gen.nextStringStringPair();
-        auto[adressekey, adresse] = gen.nextStringStringPair();
-        auto[spillereneCountkey, spillereneCount] = gen.nextStringUintPair();
+        auto[lagkey, lagNavn]     = gen.nextStringString();
+        auto[adressekey, adresse] = gen.nextStringString();
+        auto[spillereneCountkey, spillereneCount] = gen.nextStringUint();
         
         auto lag = DB::Lag {
             lagNavn,
@@ -320,25 +319,24 @@ auto Decode::inputDivisjon(DB::Divisjon& divisjon, string_view strview) -> Decod
             
         for (size_t iSpiller = 0; iSpiller < spillereneCount; ++iSpiller)
         {
-            auto[spillerkey, spiller] = gen.nextStringUintPair();
+            auto[spillerkey, spiller] = gen.nextStringUint();
             lag.spillerene.push_back(spiller);
         }
         divisjon.lagene.push_back(lag);
     }   
     
     gen.nextLine(); // ignore terminliste:
-    gen.nextLine(); // ignore hjemmelagene:
 
     for (size_t iHjemmelag = 0; iHjemmelag < lageneCount; ++iHjemmelag)
     {
-        auto[hjemmelagkey, hjemmelag] = gen.nextStringStringPair();
+        auto[hjemmelagkey, hjemmelag] = gen.nextStringString();
 
         gen.nextLine(); // ignore bortelagene:
 
         for (size_t iBortelag = 0; iBortelag < lageneCount-1; ++iBortelag)
         {
-            auto[bortelagkey, bortelag] = gen.nextStringStringPair();
-            auto[datokey, dato] = gen.nextStringStringPair();
+            auto[bortelagkey, bortelag] = gen.nextStringString();
+            auto[datokey, dato] = gen.nextStringString();
 
             auto resultat = DB::Resultat{
                 dato
@@ -489,10 +487,6 @@ auto Encode::dataIdrettene(DB::Idrettene& idrettene) -> string
             print.lineEmpty();
            
             print.lineString("terminliste");
-           
-            print.tabRight();
-           
-            print.lineString("hjemmelagene");
 
             for (const auto& [hjemmelag, bortelagene]: divisjon.terminliste) 
             {
@@ -544,7 +538,6 @@ auto Encode::dataIdrettene(DB::Idrettene& idrettene) -> string
                 print.tabLeft();    
             }
             print.tabLeft();
-            print.tabLeft();
         }
         print.tabLeft();        
         idrettene.data->add(idrett);
@@ -562,7 +555,6 @@ auto Encode::dataSpillerene(DB::Spillerene& spillerene) -> string
     size_t spillereneCount = spillerene.data->noOfElements();
 
     print.lineStringUint("autoIncrementer", spillerene.autoIncrementer);
-    print.lineEmpty();
     print.lineStringUint("spillereneCount", spillereneCount);
     print.lineString("spillerene");
 
@@ -589,14 +581,13 @@ auto Encode::dataSpillerene(DB::Spillerene& spillerene) -> string
 
 void Encode::viewResultatene(LinePrinter& p, const vector<DB::ViewResultat>& resultatene) 
 {
-    p.lineEmpty();
     p.lineStringUint("resultateneCount", resultatene.size());
     p.lineString("resultatene");
-    p.lineEmpty();
 
 
     for (const auto& resultat: resultatene) 
     {
+        p.lineEmpty();
         p.lineDashString("resultat");
         
         p.tabRight();
@@ -605,10 +596,9 @@ void Encode::viewResultatene(LinePrinter& p, const vector<DB::ViewResultat>& res
         p.lineStringString("bortelag", resultat.bortelag);
         p.lineStringString("dato", resultat.dato);
 
-        p.lineString("hjemmeScorerene");
+        p.lineStringUint("hjemmescoringer", resultat.hjemmescoringer);
 
-        p.lineString("borteScorerene");
-
+        p.lineStringUint("bortescoringer", resultat.bortescoringer);
 
         p.tabLeft();
     }
@@ -642,7 +632,6 @@ auto Encode::viewResultateneIdrett(const vector<DB::ViewResultat>& resultatene,
 
 void Encode::viewTabellLagene(LinePrinter& p, const vector<DB::Tabell::Lag>& lagene) 
 {
-    p.lineEmpty();
     p.lineStringUint("tabellLageneCount", lagene.size());
     p.lineString("tabellLagene");
 
@@ -687,7 +676,6 @@ auto Encode::viewTabelleneIdrett(const vector<DB::Tabell>& tabellene,
 
     p.lineStringString("idrett", idrett);
 
-    p.lineEmpty();
     p.lineStringUint("tabelleneCount", tabellene.size());
     p.lineString(    "tabellene");
 
@@ -713,14 +701,9 @@ auto Encode::viewTerminliste(const DB::Terminliste& terminliste) -> string
     LinePrinter p;
 
     p.lineStringString("divisjon", terminliste.divisjon);
-    p.lineEmpty();
+    p.lineStringUint("lageneCount", terminliste.data.size());
     p.lineString("terminliste");
 
-    p.tabRight();
-
-    p.lineStringUint("lageneCount", terminliste.data.size());
-    p.lineString("hjemmelagene");
-   
     for (const auto [hjemmelag, bortelagene]: terminliste.data)
     {
         p.lineEmpty();
@@ -749,8 +732,6 @@ auto Encode::viewTerminliste(const DB::Terminliste& terminliste) -> string
 
 void Encode::viewToppscorerene(LinePrinter& p, const vector<DB::Toppscorer>& toppscorerene) 
 {
-    p.lineEmpty();
-
     p.lineStringUint("toppscorereneCount", toppscorerene.size());
     p.lineString("toppscorerene");
 

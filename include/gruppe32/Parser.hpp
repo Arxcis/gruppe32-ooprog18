@@ -24,9 +24,9 @@ public:
     size_t startofline =  0;
     
     auto nextLine() -> string;
-    auto nextStringStringPair() -> pair<string,string>;
-    auto nextStringUintPair() -> pair<string, size_t>;
-    auto nextStringBoolPair() -> pair<string, bool>;
+    auto nextStringString() -> pair<string,string>;
+    auto nextStringUint() -> pair<string, size_t>;
+    auto nextStringBool() -> pair<string, bool>;
 };
 
 /// <summary> Decoding strings to the internal datastructure </summary>
