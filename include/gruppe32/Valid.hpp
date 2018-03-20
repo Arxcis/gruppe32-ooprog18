@@ -18,9 +18,6 @@ bool isAsciiChar(const string& value);
 /// <summary> string - validating single letter A-Z, a-z, æ,ø,å,Æ,Ø,Å </summary>
 bool isAsciiCharPlusNorwegian(const string& value);
 
-/// <summary> string - validating any norwegian postnumber between 0001-9999 </summary>
-bool isPostnummer(const string& value);
-
 /// <summary> string - validating uint Min 0, Max 3 999 999 999 </summary>
 bool isUint(const string& value);
 

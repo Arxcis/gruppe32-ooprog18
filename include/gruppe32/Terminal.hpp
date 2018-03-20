@@ -77,9 +77,13 @@ struct Command {
     Map subcmd{};
 };
 
-const Command::Pair commandNamePair = { CMD_NAME, Command{ string(1,CMD_NAME), "A given name" }};     
-const Command::Pair commandBackPair = { CMD_BACK, Command{ string(1,CMD_BACK), "Back to last menu" }};     
-const Command::Pair commandQuitPair = { CMD_QUIT, Command{ string(1,CMD_QUIT), "Quit the application"}};   
+const Command::Pair commandNamePair         = { CMD_NAME, Command{ "<name>", "A name" }};     
+const Command::Pair commandBackPair         = { CMD_BACK, Command{ string(1,CMD_BACK), "Back to last menu" }};     
+const Command::Pair commandQuitPair         = { CMD_QUIT, Command{ string(1,CMD_QUIT), "Quit the application"}};   
+
+const Command::Pair keyCommandNameIdrett    = { CMD_NAME, Command{ "<idrett>",         "A name of an Idrett" }};     
+const Command::Pair keyCommandNameDivisjon  = { CMD_NAME, Command{ "<divisjon>",       "A name of a Divisjon" }};     
+const Command::Pair keyCommandBack          = { CMD_BACK, Command{ string(1,CMD_BACK), "Back to last menu" }};     
 
 
 void run(DB::Context& ctx);

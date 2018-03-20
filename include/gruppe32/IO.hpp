@@ -48,6 +48,7 @@ void printSubMenu(const CommandMap& commands,
 
 
 
+void divider(char c, size_t count=80);
 
 
 
