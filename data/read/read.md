@@ -8,6 +8,8 @@
 * format of the file-names are like this:
     - divisjon-\<divisjonname\>.yml  // can be many files
     - resultatene.yml                // only one file
+    - seed-idrettene.yml  // file which is used to seed/reset the database
+    - seed-spillerene.yml // ------------ // ----------------
 
 * An example of the file format is documented in:
     - document/format-divsjon.yml

@@ -62,7 +62,7 @@ auto KeyValueGenerator::nextStringString() -> pair<string,string>
     if (line.find(":")+2 < line.size())
         valueString = line.substr(line.find(":")+2);
 
-    
+    /* @debug
     std::cout << std::setw(35) << std::left 
               << line  
 
@@ -72,7 +72,7 @@ auto KeyValueGenerator::nextStringString() -> pair<string,string>
               
               << " val: " 
               << valueString
-              << '\n';
+              << '\n';*/
 
     return pair<string,string>{ key, valueString };
 };

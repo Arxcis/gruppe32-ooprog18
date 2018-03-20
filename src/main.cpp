@@ -19,8 +19,9 @@ int main(int argc, char* argv[])
     //===================================================================================
     // SET UP CONTEXTS
     //===================================================================================
-    auto defaultContext    = DB::Context();
-    auto mandatoryContext  = DB::Context();
+    auto defaultContext  = DB::Context();
+    auto seedContext     = DB::Context();
+    auto fileContext     = DB::Context();
     auto testPrintsContext = DB::Context();
     {
         testPrintsContext.spillerene.data->add(new DB::Spiller(0, "Arto Keininen", "Olou, Finland"));
@@ -55,7 +56,8 @@ int main(int argc, char* argv[])
     auto ctxMap = std::unordered_map<std::string, DB::Context&>{
         {DEFAULT_CONTEXT, defaultContext },
         {"testPrints",    testPrintsContext },
-        {"seed",          mandatoryContext }
+        {"seed",          seedContext },
+        {"file",          fileContext } 
     };
 
     //===================================================================================
@@ -86,26 +88,54 @@ int main(int argc, char* argv[])
         }
     }
 
-    // Read from file
+    //===================================================================================
+    // READ FILE (optional)
+    //===================================================================================
+    const string pathSeedIdrettene = "./data/read/seed-idrettene.yml";
+    const string pathSeedSpillerene = "./data/read/seed-spillerene.yml";
+    const string pathDataIdrettene = "./data/read-write/idrettene.yml";
+    const string pathDataSpillerene = "./data/read-write/spillerene.yml";
+
+    // Read from seed
     if (ctxSelector == "seed")
     {
-        App::readIdrettene(mandatoryContext.idrettene,"./data/read/seed-idrettene.yml");
-        App::readSpillerene(mandatoryContext.spillerene,"./data/read/seed-spillerene.yml");
-    }        
+        IO::printline("Reading mandatory seed data @", pathSeedIdrettene);
+        App::readIdrettene(seedContext.idrettene, pathSeedIdrettene);
+        
+        IO::printline("Reading mandatory seed data @", pathSeedSpillerene);
+        App::readSpillerene(seedContext.spillerene, pathSeedSpillerene);
+    }
 
+    // Read from existing file
+    if (ctxSelector == "file")
+    {
+        IO::printline("Reading existing data @", pathDataIdrettene);
+        App::readIdrettene(fileContext.idrettene,"./data/read-write/idrettene.yml");
 
-    auto ctx = ctxMap.at(ctxSelector);
-    IO::printline("Using context:", ctxSelector);
+        IO::printline("Reading existing data @", pathDataSpillerene);
+        App::readSpillerene(fileContext.spillerene, pathDataSpillerene);
+    }
+
 
     //===================================================================================
     // RUN APP
     //===================================================================================
+    auto ctx = ctxMap.at(ctxSelector);
+    IO::printline("Using context:", ctxSelector);
+
     Terminal::run(ctx);
 
 
-    if (ctxSelector == "seed") 
+    //===================================================================================
+    // WRITE FILE (optional)
+    //===================================================================================
+    if (ctxSelector == "seed" || ctxSelector == "file") 
     {
+        IO::printline("Writing existing data @", pathDataIdrettene);
+        App::writeIdrettene(ctx.idrettene, pathDataIdrettene);
 
+        IO::printline("Writing existing data @", pathDataSpillerene);
+        App::writeSpillerene(ctx.spillerene,"./data/read-write/spillerene.yml");
     }
 
     return 0;

@@ -32,7 +32,7 @@ if(WINDOWS)
 file(COPY "${CMAKE_SOURCE_DIR}/data/" DESTINATION "${CMAKE_BINARY_DIR}/../data/")
 endif()
 
-# test_valid.cpp build
+#[[# test_valid.cpp build
 add_executable(testgruppe32 "${CMAKE_SOURCE_DIR}/test/test.cpp")
 
 set_target_properties(testgruppe32
@@ -56,6 +56,6 @@ target_include_directories(testgruppe32
 )
 
 
-
+]]
 
 

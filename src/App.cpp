@@ -330,24 +330,15 @@ void readIdrettene(DB::Idrettene& idrettene, const std::string filepath)
         return;
     }
 
-
     std::stringstream ss;
     ss << infile.rdbuf();
     std::string instring = ss.str();
 
-
-    IO::printline("Reading mandatory seed data @", filepath);
     auto err = Decode::dataIdrettene(idrettene, instring.c_str());
     if (err) {
         IO::printline("Error when encoding idrettene! ", filepath);
         return;
     } 
-
-
-
-
-
-
 }
 
 void readSpillerene(DB::Spillerene& spillerene, const std::string filepath)
@@ -358,7 +349,6 @@ void readSpillerene(DB::Spillerene& spillerene, const std::string filepath)
         return;
     }
 
-    IO::printline("Reading mandatory seed data @", filepath);
     std::stringstream ss;
     ss << instream.rdbuf();
     auto err = Decode::dataSpillerene(spillerene, ss.str());
@@ -375,6 +365,9 @@ void writeIdrettene(DB::Idrettene& ctx, const std::string filepath)
         IO::printline("No files at filepath", filepath);
         return;
     }
+
+    auto outstring = Encode::dataIdrettene(ctx);
+    outstream << outstring;
 }
 
 void writeSpillerene(DB::Spillerene& ctx, const std::string filepath)
@@ -384,6 +377,9 @@ void writeSpillerene(DB::Spillerene& ctx, const std::string filepath)
         IO::printline("No files at filepath", filepath);
         return;
     }
+
+    auto outstring = Encode::dataSpillerene(ctx);
+    outstream << outstring; 
 }
 
 } // end namespace gruppe32::App
