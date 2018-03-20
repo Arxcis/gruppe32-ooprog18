@@ -11,30 +11,43 @@ namespace gruppe32
 
 auto KeyValueGenerator::nextLine() -> std::string
 {
-    auto endofline = strview.find('\n', startofline);
-    auto diff = endofline-startofline;
+    endofline   = strview.find('\n', startofline);
+    startofline = strview.find_first_of(whitelistedCharacters, startofline);
 
-    // 1. skip empty lines
-    while (diff == 0) {
+    // Eat spaces
+    if (startofline == std::string::npos) {
+        assert(false && "No whitelisted characters found after last line!!");
+    }
+    if (endofline == std::string::npos) {
+        assert(false && "No end of line character found after the last line!!");
+    }
+
+
+    while (endofline-startofline <= 0) {
+
         startofline = endofline+1;
-        endofline = strview.find('\n', startofline);
-        diff = endofline-startofline;
+        endofline   = strview.find('\n', startofline);
+        startofline = strview.find_first_of(whitelistedCharacters, startofline);
+
+        // Eat spaces
+        if (startofline == std::string::npos) {
+            assert(false && "No whitelisted characters found after last line!!");
+        }
+        if (endofline == std::string::npos) {
+            assert(false && "No end of line character found after the last line!!");
+        }
     }
 
     auto line = std::string { 
         strview.substr(startofline, endofline-startofline)
-    };
+    };        
 
-    // 2. Trim whitespace
-    while(line.front() == ' ') line.erase(0,1);
-    if(line.front() == '-') line.erase(0,2);
-
-    /* @debug 
-    std::cout << std::setw(40) << std::left << line
+/*   std::cout << std::setw(40) << std::left << line
               << " | start: "  << startofline
               << " | end: "    << endofline
               << " | DIFF: "   << endofline-startofline << '\n';
-    */
+*/
+
     startofline = endofline+1;
     return line;
 };
@@ -49,7 +62,7 @@ auto KeyValueGenerator::nextStringString() -> pair<string,string>
     if (line.find(":")+2 < line.size())
         valueString = line.substr(line.find(":")+2);
 
-    /* @debug
+    
     std::cout << std::setw(35) << std::left 
               << line  
 
@@ -60,7 +73,6 @@ auto KeyValueGenerator::nextStringString() -> pair<string,string>
               << " val: " 
               << valueString
               << '\n';
-    */
 
     return pair<string,string>{ key, valueString };
 };
@@ -152,7 +164,6 @@ auto Decode::dataIdrettene(DB::Idrettene& idrettene, string_view strview) -> Dec
 
             
             auto whoareouy = gen.nextLine(); // ignore terminliste:
-            whoareouy = gen.nextLine(); // ignore terminliste:
 
             for (size_t iHjemmelag = 0; iHjemmelag < lageneCount; ++iHjemmelag)
             {
@@ -781,7 +792,8 @@ auto Encode::viewTabelltype(DB::Idrett::TabellType tabellType) -> string
     case DB::Idrett::SEIER_3_OVERTID_2_UAVGJORT_1_TAP_0:
         return "Seier 3, Overtid 2, Uavgjort 1, Tap 0";
     default:
-        assert(false && "Uknown tabelltype!!!");
+        std::cout << "\n\n\n!!!!tabellType: " << tabellType << "\n\n\n";
+        assert(false && "Unknown tabelltype!!!");
     }
     return "";
 };

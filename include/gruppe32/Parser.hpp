@@ -21,7 +21,9 @@ class KeyValueGenerator
 {
 public:
     string_view strview;
-    size_t startofline =  0;
+    int startofline =  0;
+    int endofline = 9999999;
+    const string whitelistedCharacters = "abcdefghijklmnopqrstuvwxyzæøåABCDEFGHIJKLMNOPQRSTUVWXYZÆØÅ-";
     
     auto nextLine() -> string;
     auto nextStringString() -> pair<string,string>;

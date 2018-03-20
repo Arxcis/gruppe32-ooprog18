@@ -102,7 +102,7 @@ public:
     {
         SEIER_2_UAVGJORT_1_TAP_0 = 210,
         SEIER_3_UAVGJORT_1_TAP_0 = 310, 
-        SEIER_3_OVERTID_2_UAVGJORT_1_TAP_0 = 320
+        SEIER_3_OVERTID_2_UAVGJORT_1_TAP_0 = 3210
     };
 
     string name; // @todo discuss - name or navn? jsolsvik 16.03.18
