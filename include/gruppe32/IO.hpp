@@ -122,4 +122,29 @@ constexpr void printline(Arg arg, Args ... args)
     printline(std::forward<Args>(args)...);
 }
 
+////////////////////////////////////////////////////////////////////////////////////////////////////
+/// <summary>   Print a line with the s given argument. </summary>
+/// <typeparam name="Arg">  Type of the argument. </typeparam>
+/// <param name="arg">  The content of the line to be printed. </param>
+////////////////////////////////////////////////////////////////////////////////////////////////////
+template<class Arg>
+constexpr void printlineNoSpace(Arg arg)
+{
+    printline(arg);
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+/// <summary>   Print a line with no spaces between all the given arguments. </summary>
+/// <typeparam name="Arg">      the argument list head-Type. </typeparam>
+/// <typeparam name="...Args">  the argument list tail-Type. </typeparam>
+/// <param name="arg">  The head of argument list. </param>
+/// <param name="args"> The tail of arguments which is passed on recursively. </param>
+////////////////////////////////////////////////////////////////////////////////////////////////////
+template<class Arg, class ...Args>
+constexpr void printlineNoSpace(Arg arg, Args ... args)
+{
+    std::cout << arg;
+    printlineNoSpace(std::forward<Args>(args)...);
+}
+
 } // end namespace
