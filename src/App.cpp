@@ -7,36 +7,16 @@ namespace gruppe32::App
 // COMMAND FUNCTIONS
 //======================================
 
-
-/**
- * short description. - Doxygen example
- * detailed description.
- * @param int - blah
- * @return int - blah
- */
 void printSpillereAll(DB::Context& ctx) 
 {
     IO::printline(ctx.spillerene.data->noOfElements());
-    IO::printline("printSpillereAll()");
     IO::printline();
     IO::printline(Encode::viewSpillerene(ctx.spillerene));
-
-    // @DEPRECATED jsolsvik 20.03.2018
-    /*
-        std::size_t count = ctx.spillerene.data->noOfElements();
-        for(std::size_t i = 1; i <= count; i++)
-        {
-            auto current = (DB::Spiller*)ctx.spillerene.data->removeNo(i);
-            printSpiller(*current);
-            ctx.spillerene.data->add(current);
-        }
-    */      
 }
 void printSpillereByName(DB::Context& ctx, const std::string name) 
 {
-    IO::printline("printSpillereByName()");
     IO::printline();
-    IO::printline("Spiller", "\"" + name + "\"", "etterspurt");
+    IO::printlineNoSpace("Spiller \"", name, "\" etterspurt");
     
     DB::Spillerene viewSpillerene;
 
@@ -46,15 +26,6 @@ void printSpillereByName(DB::Context& ctx, const std::string name)
         auto current = (DB::Spiller*)ctx.spillerene.data->removeNo(i);
         if (current->name.find(name) != std::string::npos)
         {
-
-            // @DEPRECATED jsolsvik 20.03.2018 
-            /*
-                  //  IO::printline("Spiller funnet!");
-                   // IO::printline();
-                    // printSpiller(*current);
-                   // IO::printline();
-            */
-
             viewSpillerene.data->add(new DB::Spiller(current->guid, current->name, current->address));
         }
         ctx.spillerene.data->add(current);
@@ -72,122 +43,93 @@ void printSpillereByNumber(DB::Context& ctx, const std::size_t number)
     DB::Spillerene viewSpillerene;
 
     auto element = (DB::Spiller*)ctx.spillerene.data->remove((int)number);
-    if (element) 
+    if (!element)
     {
-
-            // @DEPRECATED jsolsvik 20.03.2018
-            /*
-                IO::printline("Spiller funnet!");
-                IO::printline();
-                printSpiller(*element);
-                IO::printline();
-            */
-        viewSpillerene.data->add(new DB::Spiller(element->guid, element->name, element->address));
-        ctx.spillerene.data->add(element);
-
-        IO::printline();
-        IO::printline(Encode::viewSpillerene(viewSpillerene));
+        IO::printline("Ingen spiller med nr:", number);
+        return;
     }
-    else 
-    {
-        IO::printline("Spiller ikke funnet!");
-    }
-    
+    viewSpillerene.data->add(new DB::Spiller(element->guid, element->name, element->address));
+    ctx.spillerene.data->add(element);
+
+    IO::printline();
+    IO::printline(Encode::viewSpillerene(viewSpillerene));
 }
 
 void printIdretterAll(DB::Context& ctx) 
 {
-    IO::printline("printIdretterAll()");
     IO::printline();
     IO::printline(Encode::viewIdrettene(ctx.idrettene));
-    
-    // @DEPRECATED jsolsvik 20.03.2018
-    /*
-        std::size_t count = ctx.idrettene.data->noOfElements();
-        for (std::size_t i = 1; i <= count; i++)
-        {
-            auto current = (DB::Idrett*)ctx.idrettene.data->removeNo(i);
-            
-            printIdrett(*current);
-            ctx.idrettene.data->add(current);
-        }
-    */
 }
 
 void printIdretterByName( DB::Context& ctx, const std::string name) 
 {
-    IO::printline("printIdretterByName()");
     IO::printline();
-    IO::printline("Idrett med navn \"", name, "\" etterspurt");
+    IO::printlineNoSpace("Idrett med navn \"", name, "\" etterspurt");
 
-    //TODO the entire name needs to be written, we could make it robust by looping through, but that would involve discarding the usefulness of a sorted list.
-    auto idrett = (DB::Idrett*)ctx.idrettene.data->remove(name.c_str());
     std::size_t count = ctx.idrettene.data->noOfElements();
-    if (!idrett && count > 0) 
+    if (count == 0)
     {
-        for (std::size_t i = 1; i <= count; i++)
-        {
-            auto current = (DB::Idrett*)ctx.idrettene.data->removeNo(i);
-            if (current->name.find(name) != std::string::npos)
-            {
-
-                IO::printline();
-                IO::printline(Encode::viewIdrett(*current));
-
-    // @DEPRECATED jsolsvik 20.03.2018
-    /*
-                IO::printline("Idrett funnet!");
-                printIdrett(*current);
-                IO::printline();
-                for (auto const& divisjon : current->divisjonene)
-                {
-                    IO::printline("    ", divisjon.navn);
-                    IO::printline("     - Antall Lag:", divisjon.lagene.size());
-                    IO::printline();
-                    for (auto const& lag : divisjon.lagene)
-                    {
-                        IO::printline("      ", lag.navn);
-                        IO::printline("       - Spillere:", lag.spillerene.size());
-                        IO::printline("       - Adresse:", lag.adresse);
-                    }
-                }
-      
-    */
-            }
-            ctx.idrettene.data->add(current);
-        }
+        IO::printline("Ingen idretter i systemet!");
+        return;
     }
-    else
+    for (std::size_t i = 1; i <= count; i++)
     {
-        IO::printline();
-        IO::printline(Encode::viewIdrett(*idrett));
-
-    // @DEPRECATED jsolsvik 20.03.2018
-    /*
-        IO::printline("Idrett funnet!");
-        printIdrett(*idrett);
-        IO::printline();
-        for (auto const& divisjon : idrett->divisjonene)
+        auto current = (DB::Idrett*)ctx.idrettene.data->removeNo(i);
+        if (current->name.find(name) != std::string::npos)
         {
-            IO::printline("    ",divisjon.navn);
-            IO::printline("     - Antall Lag:", divisjon.lagene.size());
+
             IO::printline();
-            for (auto const& lag : divisjon.lagene)
-            {
-                IO::printline("      ", lag.navn);
-                IO::printline("       - Spillere:", lag.spillerene.size());
-                IO::printline("       - Adresse:", lag.adresse);
-            }
+            IO::printline(Encode::viewIdrett(*current));
         }
-        IO::printline();
-        */
-        ctx.idrettene.data->add(idrett);
+        ctx.idrettene.data->add(current);
     }
+
 }
 
 void createSpiller(DB::Context& ctx) 
 {
-    IO::printline("createSpiller()");
+
+    const auto validCommands = IO::CommandMap{
+        { Terminal::CMD_SPILLER_NAVN, Terminal::Command{ string(1, Terminal::CMD_SPILLER_NAVN), "Sett navn" } },
+        { Terminal::CMD_SPILLER_ADRESSE, Terminal::Command{ string(1, Terminal::CMD_SPILLER_ADRESSE), "Sett adresse..." } },
+        Terminal::commandCommitPair,
+        Terminal::commandBackPair
+    };
+    auto nySpiller = new DB::Spiller{ 0, "", "" };
+    for (;;)
+    {
+        IO::printMenu(validCommands, "HOME -> Lag ny -> Spiller");
+        IO::printline("Navn:",      nySpiller->name);
+        IO::printline("Adresse:",   nySpiller->address);
+        IO::divider('_', 40);
+        auto[cmdKey, cmd] = IO::readCommand(validCommands);
+            switch (cmdKey)
+            {
+            case Terminal::CMD_SPILLER_NAVN:
+                nySpiller->name = IO::readName();
+                break;
+            case Terminal::CMD_SPILLER_ADRESSE:
+                nySpiller->address = IO::readAdress();
+                break;
+
+            case Terminal::CMD_COMMIT:
+                //TODO -> VALIDER SPILLER
+                IO::printline("Legger til ", nySpiller->name);
+                //TODO assign guid
+                IO::printline(nySpiller->name, "lagt til med nr:", nySpiller->guid);
+                //ctx.spillerene.data->add(nySpiller);
+                return;
+            case Terminal::CMD_BACK:
+                IO::printline("Avbryter...");
+                IO::printline("Ingen ny spiller lagt til.");
+                delete nySpiller;
+                return;
+            default:
+                IO::printline("Not a valid command!");
+                break;
+            }
+    }
+    
 }
 void createIdrett(DB::Context& ctx) 
 {
