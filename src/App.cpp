@@ -252,6 +252,7 @@ void printTerminDivisjon(DB::Context& ctx)
         }
 
         // 5. Print out possible divisjoner to help the user pick
+        IO::printline();
         printDivisjonene((*idrett));
             
         // 6. Setup possible commands for read divisjon
@@ -283,7 +284,7 @@ void printTerminDivisjon(DB::Context& ctx)
                 IO::printline(Encode::viewTerminliste(terminliste));
             }
         }
-        
+
         IO::printline("------------------------------------");
 
         ctx.idrettene.data->add(idrett);
