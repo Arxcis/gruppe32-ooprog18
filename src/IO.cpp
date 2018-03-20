@@ -13,14 +13,22 @@ void printSubMenu(const CommandMap & commands, const std::string & title, const 
     printMenu(commands, parentTitle + " -> " + title);
 }
 
+void divider(char c, size_t count) 
+{
+    for(size_t i = 0; i < count; ++i) {
+        std::cout << c;   
+    }
+    std::cout << '\n';
+}
 
 void printMenu(const CommandMap & commands, const std::string & title)
 {
     const std::size_t columnSymbolWidth = 6;
     printline();
-    printline("*********************************************************");
+
+    divider('*', 80);
     printline("** ", title);
-    printline("*********************************************************");
+    divider('*',80);
 
     for (const auto&[_, command] : commands) {
         std::cout << "*   "
@@ -30,7 +38,7 @@ void printMenu(const CommandMap & commands, const std::string & title)
             << " - "
             << command.help << '\n';
     }
-    printline("*********************************************************");
+    divider('*', 80);
 }
 
 

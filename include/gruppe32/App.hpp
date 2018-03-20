@@ -67,7 +67,7 @@ void writeTopp10Lag(DB::Context& ctx);
 //
 void printSpiller(const DB::Spiller& spiller);
 void printIdrett(const DB::Idrett& idrett);
-void printDivisjonene(DB::Idrettene& idrettene);
+void printDivisjonene(const DB::Idrett& idrett);
 
 //
 // BACKGROUND FUNCTIONS

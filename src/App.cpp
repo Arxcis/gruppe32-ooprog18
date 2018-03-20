@@ -216,33 +216,66 @@ void deleteDivisjon(DB::Context& ctx)
 void printTerminDivisjon(DB::Context& ctx) 
 {
     using std::size_t;
+    using std::string;
 
     IO::printline("printTerminDivisjon()");
     IO::printline();
 
-    printDivisjonene(ctx.idrettene);
-
-
-    IO::printline(
-        "---------------------------------\n",
-        "Skriv inn <divisjon> or b for back:");
-    
-
-    auto [cmdkey, command, _, name] = IO::readEitherCommandName({
-        Terminal::commandBackPair,
-        Terminal::commandNamePair
-    });
-    if (cmdkey == Terminal::CMD_BACK)
-        return;
-
-    IO::printline("--------------");
-
-    for (size_t i = 1; i <= ctx.idrettene.data->noOfElements(); i++)
+    // 0. Skriv ut idretter
+    IO::printline(Encode::viewIdrettene(ctx.idrettene));
+    for (;;) 
     {
-        auto idrett = (DB::Idrett*)ctx.idrettene.data->removeNo(i);
+        // 1. Setup possible commands
+        auto commandMap = Terminal::Command::Map {
+            Terminal::keyCommandNameIdrett,
+            Terminal::keyCommandBack
+        };
+        // 2. Print menu
+        IO::printMenu(commandMap, "Terminliste for idrett ?");
+
+        // 3. Read command
+        auto [cmdkey, command, _, idrettName] = IO::readEitherCommandName(commandMap);
+        if (cmdkey == Terminal::CMD_BACK)
+            return;
+
+
+        // 4. Try to find idrett
+        auto idrett = (DB::Idrett*)ctx.idrettene.data->remove(idrettName.c_str());
+        if (!idrett) {
+            IO::printline("Idrett not found");
+            continue;
+        }
+        if (idrett->divisjonene.size() == 0) {
+            ctx.idrettene.data->add(idrett);
+            IO::printline(idrett->name, "has no divisjoner");
+            continue;
+        }
+
+        // 5. Print out possible divisjoner to help the user pick
+        IO::printline();
+        printDivisjonene((*idrett));
+            
+        // 6. Setup possible commands for read divisjon
+        commandMap = Terminal::Command::Map {
+            Terminal::keyCommandNameDivisjon,
+            Terminal::keyCommandBack
+        };
+        // 7. Print menu
+        IO::printMenu(commandMap, "Terminliste for divisjon ?");
+
+        // 8. Read divisjon
+        auto [cmdkey2, command2, _2, divisjonName] = IO::readEitherCommandName(commandMap);
+        if (cmdkey2 == Terminal::CMD_BACK) {
+            ctx.idrettene.data->add(idrett);
+            return;
+        }
+
+        IO::printline("------------------------------------");
+
+        // 9. Iterate through all divisjoner
         for (const auto& divisjon : idrett->divisjonene)
         {
-            if (divisjon.navn.find(name) != std::string::npos)
+            if (divisjon.navn.find(divisjonName) != std::string::npos)
             {
                 auto terminliste = DB::Terminliste {
                     divisjon.navn,
@@ -251,6 +284,9 @@ void printTerminDivisjon(DB::Context& ctx)
                 IO::printline(Encode::viewTerminliste(terminliste));
             }
         }
+
+        IO::printline("------------------------------------");
+
         ctx.idrettene.data->add(idrett);
     }
 }
@@ -258,6 +294,9 @@ void printTerminDivisjon(DB::Context& ctx)
 
 void printResultatKampDivisjon(DB::Context& ctx) 
 {
+    auto divisjonNameCommand = Terminal::commandNamePair;
+    divisjonNameCommand.second.help = "Name of ";
+
     IO::printline("printResultatKampDivisjon()");
 }
 void writeResultatKampDivisjon(DB::Context& ctx) 
@@ -352,18 +391,12 @@ void writeTopp10Lag(DB::Context& ctx)
 
 // @DEPRECATED jsolsvik 20.03.2018
 
-void printDivisjonene(DB::Idrettene& idrettene)
+void printDivisjonene(const DB::Idrett& idrett)
 {
     IO::printline("Divisjonene:");
-    // Print list of divisjon
-    for (size_t i = 1; i <= idrettene.data->noOfElements(); i++)
+    for (const auto& divisjon : idrett.divisjonene)
     {
-        auto idrett = (DB::Idrett*)idrettene.data->removeNo(i);
-        for (const auto& divisjon : idrett->divisjonene)
-        {
-            IO::printline("- ", divisjon.navn);
-        }
-        idrettene.data->add(idrett);
+        IO::printline("- ", divisjon.navn);
     }
 }
 
