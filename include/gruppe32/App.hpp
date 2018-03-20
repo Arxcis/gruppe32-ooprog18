@@ -35,31 +35,31 @@ void deleteDivisjon(DB::Context& ctx);
 
 
 // Print to console
-void printTerminDivisjon(const DB::Context& ctx);
-void printResultatKampDivisjon(const DB::Context& ctx);
-void printResultatKampIdrett(const DB::Context& ctx);
-void printTabellDivisjon(const DB::Context& ctx);
-void printTabellIdrett(const DB::Context& ctx);
+void printTerminDivisjon(DB::Context& ctx);
+void printResultatKampDivisjon(DB::Context& ctx);
+void printResultatKampIdrett(DB::Context& ctx);
+void printTabellDivisjon(DB::Context& ctx);
+void printTabellIdrett(DB::Context& ctx);
 
 // or Write to file
-void writeTerminDivisjon(const DB::Context& ctx);
-void writeResultatKampDivisjon(const DB::Context& ctx);
-void writeResultatKampIdrett(const DB::Context& ctx);
-void writeTabellDivisjon(const DB::Context& ctx);
-void writeTabellIdrett(const DB::Context& ctx);
+void writeTerminDivisjon(DB::Context& ctx);
+void writeResultatKampDivisjon(DB::Context& ctx);
+void writeResultatKampIdrett(DB::Context& ctx);
+void writeTabellDivisjon(DB::Context& ctx);
+void writeTabellIdrett(DB::Context& ctx);
 
 void readResultatliste(DB::Context& ctx);
 
-void printLagSpillerdata(const DB::Context& ctx);
+void printLagSpillerdata(DB::Context& ctx);
 void insertLagSpiller(DB::Context& ctx);
 void removeLagSpiller(DB::Context& ctx);
 
 // Topp 10
-void printTopp10Divisjon(const DB::Context& ctx);
-void printTopp10Lag(const DB::Context& ctx);
+void printTopp10Divisjon(DB::Context& ctx);
+void printTopp10Lag(DB::Context& ctx);
 
-void writeTopp10Divisjon(const DB::Context& ctx);
-void writeTopp10Lag(const DB::Context& ctx);
+void writeTopp10Divisjon(DB::Context& ctx);
+void writeTopp10Lag(DB::Context& ctx);
 
 
 //
@@ -67,6 +67,7 @@ void writeTopp10Lag(const DB::Context& ctx);
 //
 void printSpiller(const DB::Spiller& spiller);
 void printIdrett(const DB::Idrett& idrett);
+void printDivisjonene(DB::Idrettene& idrettene);
 
 //
 // BACKGROUND FUNCTIONS

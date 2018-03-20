@@ -726,13 +726,13 @@ auto Encode::viewTerminliste(const DB::Terminliste& terminliste) -> string
         p.lineEmpty();
 
 
-        for (const auto [bortelag, dato]: bortelagene)
+        for (const auto [bortelag, resultat]: bortelagene)
         {
             p.lineDashStringString("bortelag", bortelag);
             
             p.tabRight();
 
-            p.lineStringString("dato", dato);
+            p.lineStringString("dato", resultat.dato);
 
             p.tabLeft();
         }

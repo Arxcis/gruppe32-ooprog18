@@ -153,4 +153,18 @@ auto readEitherCommandName(const CommandMap & validCommands) -> CommandPairWithD
     return CommandPairWithData();
 }
 
+    auto readName() -> std::string 
+    {
+        std::string maybeName{};
+        for (;;)
+        {
+            std::getline(std::cin, maybeName);
+
+            if (Valid::isName(maybeName)) 
+            {
+                return maybeName;
+            }
+            printline("Not valid name!");
+        }
+    }
 } // end namespace

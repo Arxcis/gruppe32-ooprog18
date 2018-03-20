@@ -213,45 +213,77 @@ void deleteDivisjon(DB::Context& ctx)
 
 
 // print to terminal
-void printTerminDivisjon(const DB::Context& ctx) 
+void printTerminDivisjon(DB::Context& ctx) 
 {
+    using std::size_t;
+
     IO::printline("printTerminDivisjon()");
+    IO::printline();
+
+    printDivisjonene(ctx.idrettene);
+
+
+    IO::printline(
+        "---------------------------------\n",
+        "Skriv inn navn på divisjon:");
+    
+    auto name = IO::readName();
+
+    IO::printline("--------------");
+
+    for (size_t i = 1; i <= ctx.idrettene.data->noOfElements(); i++)
+    {
+        auto idrett = (DB::Idrett*)ctx.idrettene.data->removeNo(i);
+        for (const auto& divisjon : idrett->divisjonene)
+        {
+            if (divisjon.navn.find(name) != std::string::npos)
+            {
+                auto terminliste = DB::Terminliste {
+                    divisjon.navn,
+                    divisjon.terminliste
+                };
+                IO::printline(Encode::viewTerminliste(terminliste));
+            }
+        }
+        ctx.idrettene.data->add(idrett);
+    }
 }
-void printResultatKampDivisjon(const DB::Context& ctx) 
+
+void printResultatKampDivisjon(DB::Context& ctx) 
 {
     IO::printline("printResultatKampDivisjon()");
 }
-void printResultatKampIdrett(const DB::Context& ctx) 
+void printResultatKampIdrett(DB::Context& ctx) 
 {
     IO::printline("printResultatKampIdrett()");
 }
-void printTabellDivisjon(const DB::Context& ctx) 
+void printTabellDivisjon(DB::Context& ctx) 
 {
     IO::printline("printTabellDivisjon()");
 }
-void printTabellIdrett(const DB::Context& ctx) 
+void printTabellIdrett(DB::Context& ctx) 
 {
     IO::printline("printTabellIdrett()");
 }
 
 // or print to file
-void writeTerminDivisjon(const DB::Context& ctx) 
+void writeTerminDivisjon(DB::Context& ctx) 
 {
     IO::printline("writeTermin()");
 }
-void writeResultatKampDivisjon(const DB::Context& ctx) 
+void writeResultatKampDivisjon(DB::Context& ctx) 
 {
     IO::printline("writeResultatKampDivisjon()");
 }
-void writeResultatKampIdrett(const DB::Context& ctx) 
+void writeResultatKampIdrett(DB::Context& ctx) 
 {
     IO::printline("writeResultatKampIdrett()");
 }
-void writeTabellDivisjon(const DB::Context& ctx) 
+void writeTabellDivisjon(DB::Context& ctx) 
 {
     IO::printline("writeTabellDivisjon()");
 }
-void writeTabellIdrett(const DB::Context& ctx) 
+void writeTabellIdrett(DB::Context& ctx) 
 {
     IO::printline("writeTabellIdrett()");
 }
@@ -261,7 +293,7 @@ void readResultatliste(DB::Context& ctx)
     IO::printline("readResultatliste()");
 }
 
-void printLagSpillerdata(const DB::Context& ctx) 
+void printLagSpillerdata(DB::Context& ctx) 
 {
     IO::printline("printLagSpillerdata()");
 }
@@ -275,21 +307,21 @@ void removeLagSpiller(DB::Context& ctx)
 }
 
 
-void printTopp10Divisjon(const DB::Context& ctx)
+void printTopp10Divisjon(DB::Context& ctx)
 {
     IO::printline("printToppscorerTopp10Divisjon()");
 }
-void printTopp10Lag(const DB::Context& ctx)
+void printTopp10Lag(DB::Context& ctx)
 {
     IO::printline("printToppscorerTopp10Lag()");
 }
 
 
-void writeTopp10Divisjon(const DB::Context& ctx)
+void writeTopp10Divisjon(DB::Context& ctx)
 {
     IO::printline("writeToppscorerTopp10Divisjon()");
 }
-void writeTopp10Lag(const DB::Context& ctx)
+void writeTopp10Lag(DB::Context& ctx)
 {
     IO::printline("writeToppscorerTopp10Lag()");
 }
@@ -302,6 +334,20 @@ void writeTopp10Lag(const DB::Context& ctx)
 
 // @DEPRECATED jsolsvik 20.03.2018
 
+void printDivisjonene(DB::Idrettene& idrettene)
+{
+    IO::printline("Divisjonene:");
+    // Print list of divisjon
+    for (size_t i = 1; i <= idrettene.data->noOfElements(); i++)
+    {
+        auto idrett = (DB::Idrett*)idrettene.data->removeNo(i);
+        for (const auto& divisjon : idrett->divisjonene)
+        {
+            IO::printline("- ", divisjon.navn);
+        }
+        idrettene.data->add(idrett);
+    }
+}
 
 void printSpiller(const DB::Spiller& spiller)
 {

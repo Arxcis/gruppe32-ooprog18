@@ -234,7 +234,7 @@ class Terminliste
 { 
 public:
     string divisjon;
-    map<string, map<string,string>> data;
+    map<string, map<string,Resultat>> data;
 };
 
 
