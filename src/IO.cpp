@@ -38,6 +38,7 @@ auto readCommand(const CommandMap& validCommands)  -> CommandPair {
     std::string commandString{};
     for(;;) 
     {
+        std::cout << "-> ";
         std::getline(std::cin, commandString);
         if (commandString.size() > 1) {
             printline("commandString string too long");
@@ -64,6 +65,7 @@ auto readEitherCommandNumberName(const CommandMap & validCommands) -> CommandPai
     std::string commandString{};
     for (;;)
     {
+        std::cout << "-> ";
         std::getline(std::cin, commandString);
         
         //TODO put into the ifs
@@ -121,6 +123,8 @@ auto readEitherCommandName(const CommandMap & validCommands) -> CommandPairWithD
     std::string commandString{};
     for (;;)
     {
+        std::cout << "-> ";
+
         std::getline(std::cin, commandString);
 
         if (Valid::isAsciiChar(commandString))
@@ -158,6 +162,8 @@ auto readEitherCommandName(const CommandMap & validCommands) -> CommandPairWithD
         std::string maybeName{};
         for (;;)
         {
+            std::cout << "-> ";
+
             std::getline(std::cin, maybeName);
 
             if (Valid::isName(maybeName)) 
