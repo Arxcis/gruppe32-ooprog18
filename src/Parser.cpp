@@ -151,7 +151,8 @@ auto Decode::dataIdrettene(DB::Idrettene& idrettene, string_view strview) -> Dec
             }   
 
             
-            gen.nextLine(); // ignore terminliste:
+            auto whoareouy = gen.nextLine(); // ignore terminliste:
+            whoareouy = gen.nextLine(); // ignore terminliste:
 
             for (size_t iHjemmelag = 0; iHjemmelag < lageneCount; ++iHjemmelag)
             {

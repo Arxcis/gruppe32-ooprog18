@@ -20,13 +20,17 @@ set_target_properties(gruppe32
     PROPERTIES
     CXX_STANDARD 17
     CXX_STANDARD_REQUIRED ON
-    RUNTIME_OUTPUT_DIRECTORY "${CMAKE_SOURCE_DIR}/bin"
-    LIBRARY_OUTPUT_DIRECTORY "${CMAKE_SOURCE_DIR}/bin"
+    RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}"
+    LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}"
 )
 
 target_include_directories(gruppe32
     PRIVATE "${CMAKE_SOURCE_DIR}/include"
 )
+
+if(WINDOWS)
+file(COPY "${CMAKE_SOURCE_DIR}/data/" DESTINATION "${CMAKE_BINARY_DIR}/data/")
+endif()
 
 # test_valid.cpp build
 add_executable(testgruppe32 "${CMAKE_SOURCE_DIR}/test/test.cpp")
@@ -50,4 +54,8 @@ target_include_directories(testgruppe32
     PRIVATE "${CMAKE_SOURCE_DIR}/include"
     PRIVATE "${CMAKE_SOURCE_DIR}/test"
 )
+
+
+
+
 

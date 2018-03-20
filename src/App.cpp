@@ -324,19 +324,31 @@ void printIdrett(const DB::Idrett& idrett)
 //======================================
 void readIdrettene(DB::Idrettene& idrettene, const std::string filepath)
 {
-    std::ifstream instream(filepath);
-    if (!instream) {
+    std::ifstream infile(filepath);
+    if (!infile) {
         IO::printline("No files at filepath", filepath);
         return;
     }
-    IO::printline("Reading mandatory seed data @", filepath);
+
+
     std::stringstream ss;
-    ss << instream.rdbuf();
-    auto err = Decode::dataIdrettene(idrettene, ss.str());
+    ss << infile.rdbuf();
+    std::string instring = ss.str();
+
+
+    IO::printline("Reading mandatory seed data @", filepath);
+    auto err = Decode::dataIdrettene(idrettene, instring.c_str());
     if (err) {
         IO::printline("Error when encoding idrettene! ", filepath);
         return;
-    } }
+    } 
+
+
+
+
+
+
+}
 
 void readSpillerene(DB::Spillerene& spillerene, const std::string filepath)
 {
