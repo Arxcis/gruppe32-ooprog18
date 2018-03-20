@@ -140,9 +140,9 @@ auto readEitherCommandName(const CommandMap & validCommands) -> CommandPairWithD
         }
         else if (Valid::isName(commandString))
         {
-            auto cmd = validCommands.at(Terminal::CMD_IDRETT_NAVN);
+            auto cmd = validCommands.at(Terminal::CMD_NAME);
             return {
-                Terminal::CMD_IDRETT_NAVN,
+                Terminal::CMD_NAME,
                 cmd,
                 0,
                 commandString

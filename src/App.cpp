@@ -225,9 +225,15 @@ void printTerminDivisjon(DB::Context& ctx)
 
     IO::printline(
         "---------------------------------\n",
-        "Skriv inn navn på divisjon:");
+        "Skriv inn <divisjon> or b for back:");
     
-    auto name = IO::readName();
+
+    auto [cmdkey, command, _, name] = IO::readEitherCommandName({
+        Terminal::commandBackPair,
+        Terminal::commandNamePair
+    });
+    if (cmdkey == Terminal::CMD_BACK)
+        return;
 
     IO::printline("--------------");
 
@@ -249,44 +255,56 @@ void printTerminDivisjon(DB::Context& ctx)
     }
 }
 
+
 void printResultatKampDivisjon(DB::Context& ctx) 
 {
     IO::printline("printResultatKampDivisjon()");
 }
+void writeResultatKampDivisjon(DB::Context& ctx) 
+{
+    IO::printline("writeResultatKampDivisjon()");
+}
+
+
 void printResultatKampIdrett(DB::Context& ctx) 
 {
     IO::printline("printResultatKampIdrett()");
 }
+void writeResultatKampIdrett(DB::Context& ctx) 
+{
+    IO::printline("writeResultatKampIdrett()");
+}
+
+
 void printTabellDivisjon(DB::Context& ctx) 
 {
     IO::printline("printTabellDivisjon()");
 }
+void writeTabellDivisjon(DB::Context& ctx) 
+{
+    IO::printline("writeTabellDivisjon()");
+}
+
+
 void printTabellIdrett(DB::Context& ctx) 
 {
     IO::printline("printTabellIdrett()");
 }
+void writeTabellIdrett(DB::Context& ctx) 
+{
+    IO::printline("writeTabellIdrett()");
+}
+
 
 // or print to file
 void writeTerminDivisjon(DB::Context& ctx) 
 {
     IO::printline("writeTermin()");
 }
-void writeResultatKampDivisjon(DB::Context& ctx) 
-{
-    IO::printline("writeResultatKampDivisjon()");
-}
-void writeResultatKampIdrett(DB::Context& ctx) 
-{
-    IO::printline("writeResultatKampIdrett()");
-}
-void writeTabellDivisjon(DB::Context& ctx) 
-{
-    IO::printline("writeTabellDivisjon()");
-}
-void writeTabellIdrett(DB::Context& ctx) 
-{
-    IO::printline("writeTabellIdrett()");
-}
+
+
+
+
 
 void readResultatliste(DB::Context& ctx) 
 {

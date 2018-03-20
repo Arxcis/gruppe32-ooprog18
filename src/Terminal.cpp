@@ -33,7 +33,7 @@ const Command::Map commandMap
             "Info Idrett(er)",
             {
                 { CMD_IDRETT_ALLE, Command{  string(1,CMD_IDRETT_ALLE), "Skriv Alle Idrettene"} },
-                { CMD_IDRETT_NAVN, Command{  "<navn>",                  "Skriv Idrett med <navn>"} },
+                commandNamePair,
                 commandBackPair,
                 commandQuitPair
             },
@@ -68,7 +68,13 @@ const Command::Map commandMap
         }
     },
 
-    {   CMD_TERMIN, Command{ string(1,CMD_TERMIN), "Skriv terminListe for en gitt divisjon/avdeling til skjerm eller fil", "Termininfo"}},   
+    {   
+        CMD_TERMIN, Command { 
+            string(1,CMD_TERMIN), 
+            "Skriv terminListe for en gitt divisjon/avdeling til skjerm eller fil", 
+            "Termininfo"
+        }
+    },   
     {
         CMD_KAMP, Command{ 
             string(1,CMD_KAMP),  
@@ -189,7 +195,7 @@ for(;;)
                 App::printIdretterAll(ctx);
                 break;
 
-            case CMD_IDRETT_NAVN:
+            case CMD_NAME:
                 App::printIdretterByName(ctx, name);
                 break;
 

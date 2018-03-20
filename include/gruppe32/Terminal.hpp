@@ -14,6 +14,7 @@
 /// <summary> Running you through the menus and accepting commands. </summary>
 namespace gruppe32::Terminal
 {
+using std::string;
 
 enum CommandID : char 
 {
@@ -62,7 +63,8 @@ enum CommandID : char
         CMD_TOPPSCORE_LAG_FIL      = 'Z',
 
     CMD_BACK     = 'B',
-    CMD_QUIT     = 'Q'
+    CMD_QUIT     = 'Q',
+    CMD_NAME     = 'N'
  };
 
 struct Command {
@@ -74,6 +76,10 @@ struct Command {
     std::string title  = "<no title>";
     Map subcmd{};
 };
+
+const Command::Pair commandNamePair = { CMD_NAME, Command{ string(1,CMD_NAME), "A given name" }};     
+const Command::Pair commandBackPair = { CMD_BACK, Command{ string(1,CMD_BACK), "Back to last menu" }};     
+const Command::Pair commandQuitPair = { CMD_QUIT, Command{ string(1,CMD_QUIT), "Quit the application"}};   
 
 
 void run(DB::Context& ctx);
