@@ -62,7 +62,7 @@ auto readCommand(const CommandMap& validCommands)  -> CommandPair {
         }
 
         for(const auto& command : validCommands) {
-            if (std::tolower(command.first) == (commandString[0])) {
+            if (std::toupper(command.first) == std::toupper(commandString[0])) {
                 return command;
             }
         }
@@ -169,123 +169,123 @@ auto readEitherCommandName(const CommandMap & validCommands) -> CommandPairWithD
 }
 
 
-    auto readNumber() -> size_t
+auto readNumber() -> size_t
+{
+    std::string commandString{};
+    for (;;)
     {
-        std::string commandString{};
-        for (;;)
+        std::cout << "Number: ";
+        std::getline(std::cin, commandString);
+        
+        if (Valid::isUint(commandString))
         {
-            std::cout << "Number: ";
-            std::getline(std::cin, commandString);
+            std::stringstream strStream;
+            strStream << commandString;
+            std::size_t number;
+            strStream >> number;
             
-            if (Valid::isUint(commandString))
-            {
-                std::stringstream strStream;
-                strStream << commandString;
-                std::size_t number;
-                strStream >> number;
-                
-                return number;
-            }
-            printline("Not a number.");
+            return number;
         }
-        return 0;
+        printline("Not a number.");
     }
+    return 0;
+}
 
 
-    auto readYear() -> size_t 
+auto readYear() -> size_t 
+{
+    std::string commandString{};
+    for(;;) 
     {
-        std::string commandString{};
-        for(;;) 
-        {
-            std::cout << "Year: ";
-            std::getline(std::cin, commandString);
+        std::cout << "Year: ";
+        std::getline(std::cin, commandString);
 
-            if (Valid::isYear(commandString)) {
-                std::stringstream strStream;
-                strStream << commandString;
-                std::size_t number;
-                strStream >> number;
+        if (Valid::isYear(commandString)) {
+            std::stringstream strStream;
+            strStream << commandString;
+            std::size_t number;
+            strStream >> number;
 
-                return number;
-            }
-            IO::printline("Not a valid year: 1970-2099");
+            return number;
         }
+        IO::printline("Not a valid year: 1970-2099");
     }
+}
 
 
-    auto readMonth() -> size_t 
+auto readMonth() -> size_t 
+{
+    std::string commandString{};
+    for(;;) 
     {
-        std::string commandString{};
-        for(;;) 
-        {
-            std::cout << "Month: ";
-            std::getline(std::cin, commandString);
-       
-            if (Valid::isMonth(commandString)) {
-                std::stringstream strStream;
-                strStream << commandString;
-                std::size_t number;
-                strStream >> number;
+        std::cout << "Month: ";
+        std::getline(std::cin, commandString);
+   
+        if (Valid::isMonth(commandString)) {
+            std::stringstream strStream;
+            strStream << commandString;
+            std::size_t number;
+            strStream >> number;
 
-                return number;
-            }
-            IO::printline("Not a valid month: 01-12");
+            return number;
         }
+        IO::printline("Not a valid month: 01-12");
     }
+}
 
 
-    auto readDay() -> size_t 
+auto readDay() -> size_t 
+{
+    std::string commandString{};
+    for(;;) 
     {
-        std::string commandString{};
-        for(;;) 
-        {
-            std::cout << "Day: ";
-            std::getline(std::cin, commandString);
+        std::cout << "Day: ";
+        std::getline(std::cin, commandString);
 
-            if (Valid::isDay(commandString)) {
-                std::stringstream strStream;
-                strStream << commandString;
-                std::size_t number;
-                strStream >> number;
-                
-                return number;
-            }
-            IO::printline("Not a day: 01-31");
+        if (Valid::isDay(commandString)) {
+            std::stringstream strStream;
+            strStream << commandString;
+            std::size_t number;
+            strStream >> number;
+            
+            return number;
         }
+        IO::printline("Not a day: 01-31");
     }
+}
 
 
-    auto readName() -> std::string 
+auto readName() -> std::string 
+{
+    std::string maybeName{};
+    for (;;)
     {
-        std::string maybeName{};
-        for (;;)
+        std::cout << "Name: ";
+
+        std::getline(std::cin, maybeName);
+
+        if (Valid::isName(maybeName)) 
         {
-            std::cout << "Name: ";
-
-            std::getline(std::cin, maybeName);
-
-            if (Valid::isName(maybeName)) 
-            {
-                return maybeName;
-            }
-            printline("Not valid name!");
+            return maybeName;
         }
+        printline("Not valid name!");
     }
+}
 
-    auto readAdress() -> std::string
+auto readAdress() -> std::string
+{
+    std::string maybeAddress{};
+    for (;;)
     {
-        std::string maybeAddress{};
-        for (;;)
+        std::cout << "Address: ";
+
+        std::getline(std::cin, maybeAddress);
+
+        if (Valid::isAddress(maybeAddress))
         {
-            std::cout << "Address: ";
-
-            std::getline(std::cin, maybeAddress);
-
-            if (Valid::isAddress(maybeAddress))
-            {
-                return maybeAddress;
-            }
-            printline("Not valid address!");
+            return maybeAddress;
         }
+        printline("Not valid address!");
     }
+}
 } // end namespace
