@@ -13,6 +13,13 @@ void printSubMenu(const CommandMap & commands, const std::string & title, const 
     printMenu(commands, parentTitle + " -> " + title);
 }
 
+void newpage() 
+{
+    for(size_t i = 0; i < 40; ++i) {
+        IO::printline();
+    }
+}
+
 void divider(char c, size_t count) 
 {
     for(size_t i = 0; i < count; ++i) {
@@ -272,7 +279,7 @@ auto readName() -> std::string
     }
 }
 
-auto readAdress() -> std::string
+auto readAddress() -> std::string
 {
     std::string maybeAddress{};
     for (;;)
