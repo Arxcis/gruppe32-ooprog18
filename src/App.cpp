@@ -1,9 +1,12 @@
 #include <gruppe32/App.hpp>
 
-#include <gruppe32/Parser.hpp>
-
 namespace gruppe32::App 
 {
+
+//======================================
+// COMMAND FUNCTIONS
+//======================================
+
 
 /**
  * short description. - Doxygen example
@@ -299,7 +302,7 @@ void writeTopp10Lag(const DB::Context& ctx)
 
 // @DEPRECATED jsolsvik 20.03.2018
 
-/*
+
 void printSpiller(const DB::Spiller& spiller)
 {
     IO::printline();
@@ -315,6 +318,60 @@ void printIdrett(const DB::Idrett& idrett)
     IO::printline("   - Tabelltype:", idrett.tabell);
     IO::printline("   - Antall divisjoner:", idrett.divisjonene.size());
 }
-*/
+
+//======================================
+// BACKGROUND FUNCTIONS
+//======================================
+void readIdrettene(DB::Idrettene& idrettene, const std::string filepath)
+{
+    std::ifstream instream(filepath);
+    if (!instream) {
+        IO::printline("No files at filepath", filepath);
+        return;
+    }
+    IO::printline("Reading mandatory seed data @", filepath);
+    std::stringstream ss;
+    ss << instream.rdbuf();
+    auto err = Decode::dataIdrettene(idrettene, ss.str());
+    if (err) {
+        IO::printline("Error when encoding idrettene! ", filepath);
+        return;
+    } }
+
+void readSpillerene(DB::Spillerene& spillerene, const std::string filepath)
+{
+    std::ifstream instream(filepath);
+    if (!instream) {
+        IO::printline("No files at filepath", filepath);
+        return;
+    }
+
+    IO::printline("Reading mandatory seed data @", filepath);
+    std::stringstream ss;
+    ss << instream.rdbuf();
+    auto err = Decode::dataSpillerene(spillerene, ss.str());
+    if (err) {
+        IO::printline("Error when encoding spillerene! ", filepath);
+        return;
+    } 
+}
+
+void writeIdrettene(DB::Idrettene& ctx, const std::string filepath)
+{
+    std::ofstream outstream(filepath);
+    if (!outstream) {
+        IO::printline("No files at filepath", filepath);
+        return;
+    }
+}
+
+void writeSpillerene(DB::Spillerene& ctx, const std::string filepath)
+{
+    std::ofstream outstream(filepath);
+    if (!outstream) {
+        IO::printline("No files at filepath", filepath);
+        return;
+    }
+}
 
 } // end namespace gruppe32::App

@@ -3,25 +3,21 @@ idrettene:
 
 - idrett: Håndball
   tabelltype: 210
-
   divisjoneneCount: 0
   divisjonene:
 
 - idrett: Ishockey
   tabelltype: 3210
-
   divisjoneneCount: 0
   divisjonene:
 
 - idrett: Basketball
   tabelltype: 210
-
   divisjoneneCount: 0
   divisjonene:
 
 - idrett: Fotball
   tabelltype: 310
-
   divisjoneneCount: 2
   divisjonene:
 
@@ -31,7 +27,7 @@ idrettene:
 
     - lag: Brann
       adresse: Bergen, Norway
-      spillereneCount: 2
+      spillereneCount: 3
       spillerene:
       - spiller: 0
       - spiller: 1
