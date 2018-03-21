@@ -597,14 +597,11 @@ auto Encode::dataIdrettene(DB::Idrettene& idrettene) -> string
                 
                     print.lineStringString("dato", resultat.dato);
                     
-                    if (!resultat.spilt) 
+
+                    print.lineStringBool("resultat", resultat.spilt);
+
+                    if (resultat.spilt)
                     {
-                        print.lineStringBool("resultat", false);
-                    }
-                    else 
-                    {
-                        print.lineString("resultat");
-                       
                         print.tabRight();
 
                         print.lineStringBool("overtid", resultat.overtid);

@@ -19,3 +19,4 @@ CppProperties.json
 
 # datafiles
 data/write/
+data/read-write/
