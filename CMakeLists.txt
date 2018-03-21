@@ -1,6 +1,7 @@
 project(gruppe32)
 cmake_minimum_required(VERSION 3.8 FATAL_ERROR)
 
+#set(CMAKE_CXX_COMPILER "g++-7")
 set(CMAKE_BUILD_TYPE Debug)
 
 # Application
@@ -23,6 +24,11 @@ set_target_properties(gruppe32
     RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin/.."
     LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin/.."
 )
+if(!MSVC)
+target_compile_options(gruppe32
+    PRIVATE "-Wno-invalid-source-encoding" # Problem with encoding of norwegian characters cross platform. PRobably something to do with UTF-8 vs UTF-16 on Windows(Visual Studio) vs Linux/Mac.
+)
+endif()
 
 target_include_directories(gruppe32
     PRIVATE "${CMAKE_SOURCE_DIR}/include"

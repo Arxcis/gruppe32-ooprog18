@@ -77,14 +77,14 @@ int main(int argc, char* argv[])
                 IO::printline("    -", "\""+key+"\"");
             }
             IO::printline();
-            exit(-1);
+            return -1;
         }
         ctxSelector = argv[1];
 
         if (ctxMap.find(ctxSelector) == ctxMap.end()) 
         {
             IO::printline(ctxSelector, " option does not exist");
-            exit(-1);
+            return -1;
         }
     }
 

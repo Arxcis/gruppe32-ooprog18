@@ -12,18 +12,21 @@
 #include <gruppe32/Parser.hpp>
 
 /// <summary> Functions which satifised the functional requirements </summary>
-namespace gruppe32::App 
-{
+namespace gruppe32 {
 
+namespace App 
+{
+    using std::string;
+    using std::size_t;
 //
 // COMMAND FUNCTIONS
 //
 void printSpillereAll(DB::Context& ctx);
-void printSpillereByName(DB::Context& ctx, const std::string name);
-void printSpillereByNumber(DB::Context& ctx, const std::size_t number);
+void printSpillereByName(DB::Context& ctx, const string name);
+void printSpillereByNumber(DB::Context& ctx, const size_t number);
 
 void printIdretterAll(DB::Context& ctx);
-void printIdretterByName(DB::Context& ctx, const std::string name);
+void printIdretterByName(DB::Context& ctx, const string name);
 
 void createSpiller(DB::Context& ctx);
 void createIdrett(DB::Context& ctx);
@@ -35,7 +38,7 @@ void deleteDivisjon(DB::Context& ctx);
 
 
 // Print to console
-void printTerminDivisjon(DB::Context& ctx);
+void printTerminliste(DB::Context& ctx);
 void printResultatKampDivisjon(DB::Context& ctx);
 void printResultatKampIdrett(DB::Context& ctx);
 void printTabellDivisjon(DB::Context& ctx);
@@ -68,14 +71,32 @@ void writeTopp10Lag(DB::Context& ctx);
 void printSpiller(const DB::Spiller& spiller);
 void printIdrett(const DB::Idrett& idrett);
 void printDivisjonene(const DB::Idrett& idrett);
+void printIdrettene(DB::Idrettene& idrettene);
 
 //
 // BACKGROUND FUNCTIONS
 //
-void readIdrettene(DB::Idrettene& ctx, const std::string filepath);
-void writeIdrettene(DB::Idrettene& ctx, const std::string filepath);
-void readSpillerene(DB::Spillerene& ctx, const std::string filepath);
-void writeSpillerene(DB::Spillerene& ctx, const std::string filepath);
+void readIdrettene(DB::Idrettene& ctx, const string filepath);
+void writeIdrettene(DB::Idrettene& ctx, const string filepath);
+void readSpillerene(DB::Spillerene& ctx, const string filepath);
+void writeSpillerene(DB::Spillerene& ctx, const string filepath);
 
 
-} // end namespace gruppe32::App
+} // ::App
+
+/// <summary> Doing a search through the data, and returning a vector with the resutls </summary>
+namespace Search 
+{
+    using std::pair;
+    using std::vector;
+    using std::string;
+    using std::size_t;
+
+    using returnDivisjonene = pair<vector<DB::Divisjon>, string>;
+    using returnResultatene = pair<vector<DB::ViewResultat>, string>;
+        //  functions
+    auto divisjonene(DB::Context& ctx, const string& navnIdrett, const string& navnDivisjon) -> Search::returnDivisjonene;
+    auto resultatene(DB::Context& ctx, const vector<DB::Divisjon>& divisjonene, const size_t month, const size_t day) -> Search::returnResultatene;
+} // ::Search
+
+} // ::gruppe32
