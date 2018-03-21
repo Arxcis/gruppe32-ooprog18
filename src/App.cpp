@@ -337,6 +337,7 @@ void App::printResultatKampDivisjon(DB::Context& ctx)
         { Terminal::CMD_DATE_YEAR,   Terminal::Command{ "[Y]ear", "Valid year 1970-2099" }},
         { Terminal::CMD_DATE_MONTH,  Terminal::Command{ "[M]onth", "Valid month 01-12" }},
         { Terminal::CMD_DATE_DAY,    Terminal::Command{ "D[A]g", "Valid day 01-31" }},
+        Terminal::keyCommandFile,
         Terminal::keyCommandBack
     };
 
@@ -370,6 +371,7 @@ void App::printResultatKampDivisjon(DB::Context& ctx)
         {         
             auto[resultatene, statusResultatene] = Search::resultatene(ctx, divisjon, year, month, day); 
             IO::printline(statusResultatene);
+            IO::printline();
             IO::printline(Encode::viewResultateneDivisjon(resultatene, divisjon.navn));
         }
 
@@ -396,6 +398,21 @@ void App::printResultatKampDivisjon(DB::Context& ctx)
             case Terminal::CMD_DATE_DAY:
                 day = IO::readDay();
                 break;
+
+
+            case Terminal::CMD_FILE: {
+                string filepath = IO::readFilepath();
+                std::ofstream outfile("./data/write/"+filepath+".yml");
+
+                if(outfile) 
+                {
+                    for (const auto& divisjon: divisjonene) { 
+                        auto[resultatene, statusResultatene] = Search::resultatene(ctx, divisjon, year, month, day); 
+                        outfile << Encode::viewResultateneDivisjon(resultatene, divisjon.navn);
+                    }
+                }
+            } break;
+
 
             case Terminal::CMD_BACK:   
                 return;

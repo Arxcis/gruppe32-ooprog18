@@ -95,7 +95,7 @@ auto readYear() -> size_t;
 auto readMonth() -> size_t;
 auto readDay() -> size_t ;
 auto readAddress() -> std::string;
-
+auto readFilepath() -> std::string;
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 /// <summary>   Prints a newline </summary>

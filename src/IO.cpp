@@ -295,4 +295,10 @@ auto readAddress() -> std::string
         printline("Not valid address!");
     }
 }
+
+auto readFilepath() -> std::string 
+{
+    return IO::readName();
+}
+
 } // end namespace

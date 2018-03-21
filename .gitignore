@@ -15,3 +15,7 @@ cmake/
 .vs/
 .vscode/
 CppProperties.json
+
+
+# datafiles
+data/write/
