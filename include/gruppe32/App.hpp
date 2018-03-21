@@ -1,4 +1,4 @@
-#pragma once
+    #pragma once
 
 #include <cassert>
 #include <string>
@@ -37,19 +37,9 @@ void deleteIdrett(DB::Context& ctx);
 void deleteDivisjon(DB::Context& ctx);
 
 
-// Print to console
-void printTerminliste(DB::Context& ctx);
-void printResultatKampDivisjon(DB::Context& ctx);
-void printResultatKampIdrett(DB::Context& ctx);
-void printTabellDivisjon(DB::Context& ctx);
-void printTabellIdrett(DB::Context& ctx);
-
-// or Write to file
-void writeTerminDivisjon(DB::Context& ctx);
-void writeResultatKampDivisjon(DB::Context& ctx);
-void writeResultatKampIdrett(DB::Context& ctx);
-void writeTabellDivisjon(DB::Context& ctx);
-void writeTabellIdrett(DB::Context& ctx);
+void terminliste(DB::Context& ctx);
+void resultatene(DB::Context& ctx);
+void tabell(DB::Context& ctx);
 
 void readResultatliste(DB::Context& ctx);
 
@@ -58,12 +48,7 @@ void insertLagSpiller(DB::Context& ctx);
 void removeLagSpiller(DB::Context& ctx);
 
 // Topp 10
-void printTopp10Divisjon(DB::Context& ctx);
-void printTopp10Lag(DB::Context& ctx);
-
-void writeTopp10Divisjon(DB::Context& ctx);
-void writeTopp10Lag(DB::Context& ctx);
-
+void topp10(DB::Context& ctx);
 
 //
 // HELPER FUNCTIONS

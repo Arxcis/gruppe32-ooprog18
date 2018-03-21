@@ -68,6 +68,7 @@ enum CommandID : char
     CMD_COMMIT   = 'F',
     CMD_SEARCH   = 'S',
     CMD_NAME     = 'N',
+    CMD_FILE     = 'F',
     CMD_NAME_DIVISJON = 'D',
     CMD_NAME_IDRETT = 'I',
     CMD_DATE_DAY = 'A',
@@ -92,8 +93,9 @@ const Command::Pair commandBackPair         = { CMD_BACK, Command{ string(1,CMD_
 const Command::Pair commandQuitPair         = { CMD_QUIT, Command{ string(1,CMD_QUIT), "Quit the application"}};   
 
 const Command::Pair keyCommandSearch        = { CMD_SEARCH,         Command{ "[S]earch",     "Search with given data" }};     
-const Command::Pair keyCommandNameIdrett    = { CMD_IDRETT_NAVN,    Command{ "<idrett>",     "A name of an Idrett" }};     
-const Command::Pair keyCommandNameDivisjon  = { CMD_NAME_DIVISJON,  Command{ "<divisjon>",   "A name of a Divisjon" }};
+const Command::Pair keyCommandFile          = { CMD_FILE,           Command{ "[F]ile",     "Write search result to file" }};     
+const Command::Pair keyCommandNameIdrett    = { CMD_IDRETT_NAVN,    Command{ "<idrett>",     "A name of an Idrett"   }};     
+const Command::Pair keyCommandNameDivisjon  = { CMD_NAME_DIVISJON,  Command{ "<divisjon>",   "A name of a Divisjon"  }};
 const Command::Pair keyCommandBack          = { CMD_BACK,           Command{ "[B]ack",       "Back to previous menu" }};     
 
 const Command::Pair keyCommandYear   = { CMD_NAME, Command{ "<year>",     "Example: 2018" }};     

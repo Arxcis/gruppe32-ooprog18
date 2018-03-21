@@ -76,30 +76,14 @@ const Command::Map commandMap
         CMD_KAMP, Command{ 
             string(1,CMD_KAMP),  
             "Skriv (resultatet av) alle Kampene en gitt dato for en hel idrett eller en divisjon/avdeling til skjerm eller fil" , 
-            "Kampinfo",
-            {
-                {CMD_KAMP_IDRETT,       Command{ string(1, CMD_KAMP_IDRETT), "Resultatene for <IDRETT>"}},
-                {CMD_KAMP_IDRETT_FIL,   Command{ string(1, CMD_KAMP_IDRETT_FIL), "Resultatene for <IDRETT> til fil"}},
-                {CMD_KAMP_DIVISJON,     Command{ string(1, CMD_KAMP_DIVISJON), "Resultatene for <DIVISJON>"}},
-                {CMD_KAMP_DIVISJON_FIL, Command{ string(1, CMD_KAMP_DIVISJON_FIL), "Resultatene for <DIVISJON> til fil"}},
-                commandBackPair,
-                commandQuitPair
-            },
+            "Kampinfo"
         }
     },     
     {
         CMD_TABELL, Command{ 
             string(1,CMD_TABELL), 
             "skriv Tabell(er) for en hel idrett eller en divisjon/avdeling til skjerm eller fil",
-            "Tabellinfo",
-            {
-                {CMD_TABELL_IDRETT,       Command{ string(1, CMD_TABELL_IDRETT), "Tabellene for <IDRETT>"}},
-                {CMD_TABELL_IDRETT_FIL,   Command{ string(1, CMD_TABELL_IDRETT_FIL), "Tabellene for <IDRETT> til fil"}},
-                {CMD_TABELL_DIVISJON,     Command{ string(1, CMD_TABELL_DIVISJON), "Tabell for <DIVISJON>"}},
-                {CMD_TABELL_DIVISJON_FIL, Command{ string(1, CMD_TABELL_DIVISJON_FIL), "Tabell for <DIVISJON> til fil"}},
-                commandBackPair,
-                commandQuitPair
-            },
+            "Tabellinfo"
         }
     },   
     {   CMD_RESULTAT, Command{ string(1,CMD_RESULTAT),"Lese Resultatliste inn fra fil", "Leser Resultatliste ..."}}, 
@@ -121,15 +105,7 @@ const Command::Map commandMap
         CMD_TOPPSCORE, Command{ 
             string(1,CMD_TOPPSCORE), 
             "Skriv 10-på-topp liste av toppsCorerne", 
-            "Toppscorere",
-            {
-                {CMD_TOPPSCORE_LAG,          Command{ string(1, CMD_TOPPSCORE_LAG),          "Topp 10 for LAG"}},
-                {CMD_TOPPSCORE_LAG_FIL,      Command{ string(1, CMD_TOPPSCORE_LAG_FIL),      "Topp 10 for LAG til fil"}},
-                {CMD_TOPPSCORE_DIVISJON,     Command{ string(1, CMD_TOPPSCORE_DIVISJON),     "Topp 10 for DIVISJON"}},
-                {CMD_TOPPSCORE_DIVISJON_FIL, Command{ string(1, CMD_TOPPSCORE_DIVISJON_FIL), "Topp 10 for DIVISJON til fil"}},
-                commandBackPair,
-                commandQuitPair
-            },
+            "Toppscorere"
         }
     },  
     commandQuitPair
@@ -276,83 +252,15 @@ for(;;)
     break;
 
     case CMD_TERMIN:
-        App::printTerminliste(ctx);
+        App::terminliste(ctx);
     break;
 
     case CMD_KAMP:
-    cmdID = [&commandMap, &ctx]() -> CommandID {
-        for(;;) 
-        {
-            auto command = commandMap.at(CMD_KAMP);
-            IO::printSubMenu(command.subcmd, command.title);
-            auto [subcmdID, _] = IO::readCommand(commandMap.at(CMD_KAMP).subcmd);
-            
-            switch(subcmdID)
-            {
-            case CMD_KAMP_DIVISJON:
-                App::printResultatKampDivisjon(ctx);
-            break;
-
-            case CMD_KAMP_DIVISJON_FIL:
-                App::writeResultatKampDivisjon(ctx);
-            break;
-
-            case CMD_KAMP_IDRETT:
-                App::printResultatKampIdrett(ctx);
-            break;
-
-            case CMD_KAMP_IDRETT_FIL:
-                App::writeResultatKampIdrett(ctx);
-            break;
-
-            case CMD_BACK:
-            case CMD_QUIT:
-                return subcmdID;
-                break;
-
-            default:
-                assert(false && "Command Should never happen!!");
-            }
-        }
-    }();
+        App::resultatene(ctx);
     break;
 
     case CMD_TABELL:
-    cmdID = [&commandMap, &ctx]() -> CommandID {
-        for(;;) 
-        {
-            auto command = commandMap.at(CMD_TABELL);
-            IO::printSubMenu(command.subcmd, command.title);
-            auto [subcmdID, _] = IO::readCommand(commandMap.at(CMD_TABELL).subcmd);
-            
-            switch(subcmdID)
-            {
-            case CMD_TABELL_DIVISJON:
-                App::printTabellDivisjon(ctx); 
-            break;
-
-            case CMD_TABELL_DIVISJON_FIL:
-                App::writeTabellDivisjon(ctx);
-            break;
-
-            case CMD_TABELL_IDRETT:
-                App::printTabellIdrett(ctx);
-            break;
-
-            case CMD_TABELL_IDRETT_FIL:
-                App::writeTabellIdrett(ctx);
-            break;
-
-            case CMD_BACK:
-            case CMD_QUIT:
-                return subcmdID;
-                break;
-
-            default:
-                assert(false && "Command Should never happen!!");
-            }
-        }
-    }();
+        App::tabell(ctx); 
     break;
 
     case CMD_RESULTAT:
@@ -394,42 +302,7 @@ for(;;)
     break;
 
     case CMD_TOPPSCORE:
-    cmdID = [&commandMap, &ctx](){
-        for(;;) {
-            
-            auto command = commandMap.at(CMD_TOPPSCORE);
-            IO::printSubMenu(command.subcmd, command.title);
-            auto [subcmdID, _] = IO::readCommand(commandMap.at(CMD_TOPPSCORE).subcmd);
-
-            switch(subcmdID)
-            {
-            case CMD_TOPPSCORE_DIVISJON:
-                App::printTopp10Divisjon(ctx);
-            break;
-
-            case CMD_TOPPSCORE_DIVISJON_FIL:
-                App::writeTopp10Divisjon(ctx);
-            break;
-
-            case CMD_TOPPSCORE_LAG:
-                App::printTopp10Lag(ctx);
-            break;
-
-            case CMD_TOPPSCORE_LAG_FIL:
-                App::writeTopp10Lag(ctx);
-            break;
-
-
-            case CMD_BACK:
-            case CMD_QUIT:
-                return subcmdID;
-                break;
-
-            default:
-                assert(false && "Command Should never happen!!");
-            }            
-        }
-    }();
+        App::topp10(ctx);
     break;
 
     case CMD_BACK:

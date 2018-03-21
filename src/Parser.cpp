@@ -670,11 +670,12 @@ auto Encode::dataSpillerene(DB::Spillerene& spillerene) -> string
 }
 
 
-void Encode::viewResultatene(Printer& p, const vector<DB::ViewResultat>& resultatene) 
+auto Encode::viewResultatene(const vector<DB::ViewResultat>& resultatene) -> string
 {
+    Printer p;
+
     p.lineStringUint("resultateneCount", resultatene.size());
     p.lineString("resultatene");
-
 
     for (const auto& resultat: resultatene) 
     {
@@ -693,32 +694,9 @@ void Encode::viewResultatene(Printer& p, const vector<DB::ViewResultat>& resulta
 
         p.tabLeft();
     }
-}
-
-
-auto Encode::viewResultateneDivisjon(const vector<DB::ViewResultat>& resultatene,
-                               const string divisjon) -> string 
-{
-    Printer p;
-
-    p.lineStringString("divisjon", divisjon);
-
-    Encode::viewResultatene(p, resultatene);
 
     return p.getString();
 }
-
-
-auto Encode::viewResultateneIdrett(const vector<DB::ViewResultat>& resultatene,
-                             const string idrett) -> string 
-{
-    Printer p;
-    p.lineStringString("idrett", idrett);
-
-    Encode::viewResultatene(p, resultatene);
-    return p.getString();
-}
-
 
 
 void Encode::viewTabellLagene(Printer& p, const vector<DB::Tabell::Lag>& lagene) 
