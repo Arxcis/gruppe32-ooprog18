@@ -254,6 +254,89 @@ void App::createDivisjon(DB::Context& ctx)
 void App::deleteSpiller(DB::Context& ctx) 
 {
     IO::printline("deleteSpiller()");
+
+    const auto CMD_VELG = Terminal::CommandID('V');
+
+    auto validCommands = IO::CommandMap{
+        { CMD_VELG, Terminal::Command{ string(1, CMD_VELG), "Velg spiller..." } },
+        Terminal::commandBackPair
+    };
+    std::size_t nummer = -1;
+    for (;;)
+    {
+        auto spiller = (DB::Spiller*)ctx.spillerene.data->remove(nummer);
+        if (spiller)
+        {
+            if (validCommands.find(Terminal::CMD_COMMIT) == validCommands.end())
+            {
+                validCommands.insert(validCommands.begin(), Terminal::commandCommitPair);
+            }
+            IO::printMenu(validCommands, "HOME -> Fjern -> Spiller - " + spiller->name);
+            IO::printline("Spiller som skal fjernes:");
+            IO::printline("Navn:", spiller->name);
+            IO::printline("Adresse:", spiller->address);
+            IO::printline("Nummer:", spiller->guid);
+            IO::divider('_', 40);
+            ctx.spillerene.data->add(spiller);
+        }
+        else 
+        {
+            IO::printMenu(validCommands, "HOME -> Fjern -> Spiller - INGEN" );
+            IO::printline("Spiller som skal fjernes:");
+            IO::printline("Navn:");
+            IO::printline("Adresse:");
+            IO::printline("Nummer:");
+            IO::divider('_', 40);
+        }
+        auto[cmdKey, cmd] = IO::readCommand(validCommands);
+        switch (cmdKey)
+        {
+        case CMD_VELG:
+        {
+            if(ctx.spillerene.data->noOfElements() <= 0)
+            {
+                IO::printline("Ingen spillere å velge, spillerlisten er tom!");
+                break;
+            }
+            for (;;)
+            {
+                std::size_t _nr = IO::readNumber();
+                if (ctx.spillerene.data->inList(_nr))
+                {
+                    nummer = _nr;
+                    break;
+                }
+                else
+                {
+                    IO::printline("Ingen spiller med nr:", _nr);
+                }
+            }
+            break;
+        }
+        case Terminal::CMD_COMMIT:
+        {
+            if (auto spiller = (DB::Spiller*)ctx.spillerene.data->remove(nummer); spiller)
+            {
+                IO::printline("Spiller", spiller->name, "Fjernet");
+                delete spiller;
+            }
+            else 
+            {
+                IO::printline("Something bad happened!!! Spiller should not be null at this point!!!!");
+                assert(false);
+            }
+
+            return;
+        }
+        case Terminal::CMD_BACK:
+            IO::printline("Avbryter...");
+            IO::printline("Ingen spiller fjernet.");
+            return;
+        default:
+            IO::printline("Not a valid command!");
+            break;
+        }
+    }
 }
 
 
@@ -612,6 +695,57 @@ void App::writeSpillerene(DB::Spillerene& ctx, const std::string filepath)
 using std::vector;
 using std::string;
 using std::pair;
+
+auto Search::spillerene(DB::Context& ctx, const size_t spillerNummer) -> Search::returnSpillerene
+{
+    vector<DB::Spiller> result{};
+    string statusmsg = "";
+    //IO::printline("Searching for spiller...");
+    //
+    //DB::Spiller* spiller = (DB::Spiller*) ctx.spillerene.data->remove(spillerNummer);
+
+    //// Error 1
+    //if (!spiller) {
+    //    statusmsg = "Spiller " + navnSpiller + " not found";
+    //    return Search::returnSpillerene{ result, statusmsg };
+    //}
+    //// Error 2
+    //if (idrett->divisjonene.size() == 0) {
+    //    statusmsg = "navnSpiller " + navnIdrett + " has no divisjoner";
+
+    //    ctx.idrettene.data->add(idrett);   // because why no
+    //    return Search::returnDivisjonene{ result, statusmsg };
+    //}
+
+    //// Error 3
+    //if (navnDivisjon.empty()) {
+    //    statusmsg = "No divisjon specified";
+
+    //    ctx.idrettene.data->add(idrett);   // because why no
+    //    return Search::returnDivisjonene{ result, statusmsg };
+    //}
+
+    //for (const auto& divisjon : idrett->divisjonene)
+    //{
+    //    // Success
+    //    if (divisjon.navn.find(navnDivisjon) != std::string::npos)
+    //    {
+    //        result.push_back(divisjon);
+    //    }
+    //}
+    //// Error 4
+    //if (result.empty()) {
+    //    statusmsg = "Idrett " + navnIdrett + " has no divisjon matching " + navnDivisjon;
+
+    //    ctx.idrettene.data->add(idrett);   // because why no
+    //    return Search::returnDivisjonene{ result, statusmsg };
+    //}
+
+    //statusmsg = "Found " + std::to_string(result.size()) + " divisjoner";
+    //ctx.idrettene.data->add(idrett);   // because why no    
+    return Search::returnSpillerene{ result, statusmsg };
+}
+
 
 auto Search::divisjonene(DB::Context& ctx, const string& navnIdrett, const string& navnDivisjon) 
     -> Search::returnDivisjonene

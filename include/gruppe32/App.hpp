@@ -93,9 +93,15 @@ using std::vector;
 using std::string;
 using std::size_t;
 
+using returnSpillerene = pair<vector<DB::Spiller>, string>;
 using returnDivisjonene = pair<vector<DB::Divisjon>, string>;
 using returnResultatene = pair<vector<DB::ViewResultat>, string>;
     //  functions
+    
+auto spillerene(
+    DB::Context& ctx,
+    const size_t spillerNummer) -> Search::returnSpillerene;
+
 auto divisjonene(
     DB::Context& ctx,
     const string& navnIdrett, 
