@@ -67,6 +67,7 @@ enum CommandID : char
     CMD_QUIT     = 'Q',
     CMD_COMMIT   = 'F',
     CMD_SEARCH   = 'S',
+    CMD_PRINT   = 'P',
     CMD_NAME     = 'N',
     CMD_FILE     = 'F',
     CMD_NAME_DIVISJON = 'D',
@@ -74,7 +75,7 @@ enum CommandID : char
     CMD_DATE_DAY = 'A',
     CMD_DATE_MONTH = 'M',
     CMD_DATE_YEAR = 'Y',
-
+    CMD_OPTIONS = 'O'
  };
 
 struct Command {
@@ -94,6 +95,8 @@ const Command::Pair commandQuitPair         = { CMD_QUIT, Command{ string(1,CMD_
 
 const Command::Pair keyCommandSearch        = { CMD_SEARCH,         Command{ "[S]earch",     "Search with given data" }};     
 const Command::Pair keyCommandFile          = { CMD_FILE,           Command{ "[F]ile",     "Write search result to file" }};     
+const Command::Pair keyCommandOptions       = { CMD_OPTIONS,      Command{ "[O]ptions",    "What are my options?" }};     
+const Command::Pair keyCommandPrint      = { CMD_PRINT,      Command{ "[P]rint",    "Print search result" }};     
 const Command::Pair keyCommandNameIdrett    = { CMD_IDRETT_NAVN,    Command{ "<idrett>",     "A name of an Idrett"   }};     
 const Command::Pair keyCommandNameDivisjon  = { CMD_NAME_DIVISJON,  Command{ "<divisjon>",   "A name of a Divisjon"  }};
 const Command::Pair keyCommandBack          = { CMD_BACK,           Command{ "[B]ack",       "Back to previous menu" }};     

@@ -437,12 +437,14 @@ void App::resultatene(DB::Context& ctx)
         { Terminal::CMD_DATE_YEAR,   Terminal::Command{   "[Y]ear", "Valid year 1970-2099" }},
         { Terminal::CMD_DATE_MONTH,  Terminal::Command{   "[M]onth", "Valid month 01-12" }},
         { Terminal::CMD_DATE_DAY,    Terminal::Command{   "D[A]g", "Valid day 01-31" }},
+        Terminal::keyCommandOptions,
         Terminal::keyCommandFile,
         Terminal::keyCommandBack
     };
 
     string navnIdrett   = "";
     string navnDivisjon = "";
+    string options = "";
     size_t year  = 0;
     size_t month = 0;
     size_t day   = 0;
@@ -452,8 +454,7 @@ void App::resultatene(DB::Context& ctx)
         // Display menu
         IO::newpage();
         IO::printline();
-        IO::printline(Encode::viewIdretteneCompact(ctx.idrettene, true));
-        IO::printMenu(validCommands, "HOME -> Resultatene for idrett, divisjon og dato");
+        IO::printMenu(validCommands, "HOME -> Resultatene -> Idrett | Idrett & Divisjon");
         IO::printline("-- Input --");
         IO::printline("Idrett  : ",  navnIdrett);
         IO::printline("Divisjon: ",  navnDivisjon);
@@ -461,6 +462,9 @@ void App::resultatene(DB::Context& ctx)
         IO::printline("Month   : ",  month);
         IO::printline("Day     : ",  day);
         IO::divider('_', 80);
+
+        IO::printline(options);
+        options = "";
 
         // Search for divisjoner and resultater
         auto[divisjonene, statusDivisjonene] = Search::divisjonene(ctx, navnIdrett, navnDivisjon);
@@ -479,6 +483,7 @@ void App::resultatene(DB::Context& ctx)
         {
             case Terminal::CMD_NAME_IDRETT: 
                 navnIdrett = IO::readName();
+                navnDivisjon = "";
                 break;
 
             case Terminal::CMD_NAME_DIVISJON: 
@@ -497,6 +502,9 @@ void App::resultatene(DB::Context& ctx)
                 day = IO::readDay();
                 break;
 
+            case Terminal::CMD_OPTIONS:
+                options = Encode::viewIdretteneCompact(ctx.idrettene, true);
+                break;
 
             case Terminal::CMD_FILE: {
                 string filepath = IO::readFilepath();
@@ -507,7 +515,6 @@ void App::resultatene(DB::Context& ctx)
                     for (const auto& divisjon: divisjonene) { 
                         auto[resultatene, statusResultatene] = Search::resultatene(ctx, divisjon, year, month, day); 
                         outfile << Encode::viewResultatene(resultatene);
-
                     }
                     outfile.close();
 
@@ -531,7 +538,98 @@ void App::resultatene(DB::Context& ctx)
 
 void App::tabell(DB::Context& ctx)
 {
-    IO::printline("tabellDivisjon()");
+    const auto validCommands = IO::CommandMap {
+        { Terminal::CMD_NAME_IDRETT,   Terminal::Command{ "[I]drett",  "Input name of an Idrett" }},    
+        { Terminal::CMD_NAME_DIVISJON, Terminal::Command{ "[D]ivisjon", "Input name of a Divisjon" }},
+        Terminal::keyCommandPrint,
+        Terminal::keyCommandOptions,
+        Terminal::keyCommandFile,
+        Terminal::keyCommandBack
+    };
+
+    string navnIdrett   = "";
+    string navnDivisjon = "";
+    string options = "";
+    auto tabelltype = DB::Idrett::TabellType(0);
+
+    for (;;) 
+    {
+        // Display menu
+        IO::newpage();
+        IO::printline();
+        IO::printMenu(validCommands, "HOME -> Tabell -> Idrett | Idrettt & Divisjon");
+        IO::printline("-- Input --");
+        IO::printline("Idrett  : ",  navnIdrett);
+        IO::printline("Divisjon: ",  navnDivisjon);
+        IO::divider('_', 80);
+
+        IO::printline(options);
+        options = "";
+        // Search for divisjoner and resultater
+        auto[divisjonene, statusDivisjonene] = Search::divisjonene(ctx, navnIdrett, navnDivisjon);
+        IO::printline(statusDivisjonene);  
+        
+        // Get tabelltype if we had a search hit
+        if (divisjonene.size() > 0) 
+        {
+            auto idrett = (Idrett* ) ctx.idrettene.data->remove(navnIdrett);
+            tabelltype = idrett->tabell;
+            ctx.idrettene.data->add(idrett);
+        }
+        DB::Tabell tabellene;
+        // Search each divisjon for resultatene
+        for (const auto& divisjon: divisjonene)
+        {       
+
+            DB::Tabell tabell;
+            // Compute stats
+            for (const auto& [hjemmelag, bortelagene]: divisjon.terminliste) {
+                if (tabell.lagene.find(hjemmelag) != tabell.lagene.end())
+                    tabell.lagene[hjemmelag] = DB::Tabell::Lag{ hjemmelag };
+
+                for(const auto& [bortelag, resultat]: bortelagene) {
+                    if (tabell.lagene.find(bortelag) != tabell.lagene.end())
+                        tabell.lagene[bortelag] = DB::Tabell::Lag{ bortelag };
+
+                    // 1. 
+                }
+            }
+        }
+
+        // User Input
+        auto [cmdkey, _] = IO::readCommand(validCommands);
+        switch(cmdkey) 
+        {
+            case Terminal::CMD_NAME_IDRETT: 
+                navnIdrett = IO::readName();
+                navnDivisjon = "";
+                break;
+
+            case Terminal::CMD_NAME_DIVISJON: 
+                navnDivisjon = IO::readName();
+                break;
+
+            case Terminal::CMD_PRINT:
+
+                break;
+
+            case Terminal::CMD_OPTIONS:
+                options = Encode::viewIdretteneCompact(ctx.idrettene, true);
+                break;
+
+            case Terminal::CMD_FILE: {
+            } break;
+
+            case Terminal::CMD_BACK:   
+                return;
+
+            default:
+                break;            
+        }
+    }
+
+
+
 }
 
 

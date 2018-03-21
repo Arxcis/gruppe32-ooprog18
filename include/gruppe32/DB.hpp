@@ -195,6 +195,7 @@ public:
 using std::string;
 using std::size_t;
 using std::vector;
+using std::map;
 ///
 /// <summary> Used for exporting a representation of the current table of a given Divisjon.
 ///           Can be exported to console or file. 
@@ -206,7 +207,6 @@ public:
     struct Lag 
     {
         string navn;
-        size_t plassering;
         size_t poeng;
         size_t hjemmeScoringer;
         size_t hjemmeBaklengs;
@@ -215,11 +215,12 @@ public:
         size_t seier;
         size_t uavgjort;
         size_t tap;
+        size_t plassering;
     };
 
     string idrett;
-    string divisjon;    
-    vector<Lag> lagene;
+    string divisjon;
+    map<string, Lag> lagene;
 };
 
 
