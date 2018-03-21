@@ -332,16 +332,19 @@ void App::printTerminliste(DB::Context& ctx)
 void App::printResultatKampDivisjon(DB::Context& ctx) 
 {
     const auto validCommands = IO::CommandMap {
-        { Terminal::CMD_NAME_IDRETT,  Terminal::Command{   "[I]drett",  "Input name of an Idrett" }},    
-        { Terminal::CMD_NAME_DIVISJON,  Terminal::Command{ "[D]ivisjon", "Input name of a Divisjon" }},
+        { Terminal::CMD_NAME_IDRETT,   Terminal::Command{   "[I]drett",  "Input name of an Idrett" }},    
+        { Terminal::CMD_NAME_DIVISJON, Terminal::Command{ "[D]ivisjon", "Input name of a Divisjon" }},
+        { Terminal::CMD_DATE_YEAR,   Terminal::Command{ "[Y]ear", "Valid year 1970-2099" }},
+        { Terminal::CMD_DATE_MONTH,  Terminal::Command{ "[M]onth", "Valid month 01-12" }},
+        { Terminal::CMD_DATE_DAY,    Terminal::Command{ "D[A]g", "Valid day 01-31" }},
         Terminal::keyCommandBack
     };
 
     string navnIdrett   = "";
     string navnDivisjon = "";
+    size_t year  = 0;
     size_t month = 0;
     size_t day   = 0;
-    size_t year  = 0;
 
     for (;;) 
     {
@@ -349,26 +352,25 @@ void App::printResultatKampDivisjon(DB::Context& ctx)
         IO::newpage();
         IO::printline();
         IO::printline(Encode::viewIdretteneCompact(ctx.idrettene, true));
-        IO::printMenu(validCommands, "HOME -> Terminliste");
-        IO::printline("-- Input");
-        IO::printline("Idrett:",    navnIdrett);
-        IO::printline("Divisjon:",  navnDivisjon);
-        IO::printline("Month:",     year);
-        IO::printline("Month:",     month);
-        IO::printline("Day:",       day);
+        IO::printMenu(validCommands, "HOME -> Resultatene for idrett, divisjon og dato");
+        IO::printline("-- Input --");
+        IO::printline("Idrett  : ",  navnIdrett);
+        IO::printline("Divisjon: ",  navnDivisjon);
+        IO::printline("Year    : ",  year);
+        IO::printline("Month   : ",  month);
+        IO::printline("Day     : ",  day);
         IO::divider('_', 80);
 
         // Search for divisjoner and resultater
         auto[divisjonene, statusDivisjonene] = Search::divisjonene(ctx, navnIdrett, navnDivisjon);
         IO::printline(statusDivisjonene);  
 
-        auto[resulatene, statusResultatene] = Search::resultatene(ctx, divisjonene, month, day); 
-        IO::printline(statusResultatene);        
-
-        // Display resultater
-        IO::printline();
-        for (const auto& res : resulatene) {
-
+        // Search each divisjon for resultatene
+        for (const auto& divisjon: divisjonene) 
+        {         
+            auto[resultatene, statusResultatene] = Search::resultatene(ctx, divisjon, year, month, day); 
+            IO::printline(statusResultatene);
+            IO::printline(Encode::viewResultateneDivisjon(resultatene, divisjon.navn));
         }
 
         // User Input
@@ -381,6 +383,10 @@ void App::printResultatKampDivisjon(DB::Context& ctx)
 
             case Terminal::CMD_NAME_DIVISJON: 
                 navnDivisjon = IO::readName();
+                break;
+
+            case Terminal::CMD_DATE_YEAR:
+                year = IO::readYear();
                 break;
 
             case Terminal::CMD_DATE_MONTH:
@@ -612,6 +618,7 @@ auto Search::divisjonene(DB::Context& ctx, const string& navnIdrett, const strin
 {
     vector<DB::Divisjon> result{};
     string statusmsg = "";
+    IO::printline("Searching for divisjoner....");
     DB::Idrett* idrett = (DB::Idrett* ) ctx.idrettene.data->remove(navnIdrett.c_str());
 
     // Error 1
@@ -656,9 +663,55 @@ auto Search::divisjonene(DB::Context& ctx, const string& navnIdrett, const strin
     return Search::returnDivisjonene{result, statusmsg};
 }
 
-auto Search::resultatene(DB::Context& ctx, const std::vector<DB::Divisjon>& divisjonene, const std::size_t month, const std::size_t day) 
+auto Search::resultatene(
+    DB::Context& ctx, 
+    const DB::Divisjon& divisjon, 
+    const size_t year, 
+    const size_t month, 
+    const size_t day) 
     -> Search::returnResultatene 
 {
+    string statusmsg = "";
+    std::stringstream ss;
 
-}
-} // end namespace gruppe32::App
+    // Encode date
+    ss << year << "-";
+
+    if (month < 10) ss << "0" + std::to_string(month) << "-";
+    else ss << month << "-";
+
+    if (day < 10) ss << "0"+std::to_string(day);
+    else ss << day;
+
+    string encodedDato = ss.str();
+
+    IO::printline("Searching for resultater...");
+    vector<DB::ViewResultat> resultatene;
+
+    for (const auto [hjemmelag, bortelagene] : divisjon.terminliste) // map 
+    {
+        for (const auto [bortelag, resultat] : bortelagene)    // map
+        {
+            if (resultat.dato == encodedDato) 
+            {
+                resultatene.push_back(DB::ViewResultat {
+                    divisjon.navn,
+                    hjemmelag,
+                    bortelag,
+                    encodedDato,
+                    resultat.hjemmeScorerene.size(),
+                    resultat.borteScorerene.size()
+                });
+            }
+        }
+    }
+    // Error 4
+    if (resultatene.empty()) { 
+        statusmsg = "Dato " + encodedDato + " has no resultats.";
+        return Search::returnResultatene {resultatene, statusmsg};
+    }
+
+    statusmsg = "Found " + std::to_string(resultatene.size()) + " resultats on " + encodedDato;
+    return Search::returnResultatene {resultatene, statusmsg};
+} // ::Search
+} // ::gruppe32
