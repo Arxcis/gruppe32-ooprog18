@@ -276,7 +276,7 @@ for(;;)
     break;
 
     case CMD_TERMIN:
-        App::printTerminDivisjon(ctx);
+        App::printTerminliste(ctx);
     break;
 
     case CMD_KAMP:
