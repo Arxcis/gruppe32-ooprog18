@@ -269,7 +269,7 @@ void App::deleteDivisjon(DB::Context& ctx)
 }
 
 
-void App::printTerminliste(DB::Context& ctx) 
+void App::terminliste(DB::Context& ctx) 
 {
     using std::size_t;
     using std::string;
@@ -278,6 +278,7 @@ void App::printTerminliste(DB::Context& ctx)
     const auto validCommands = IO::CommandMap {
         { Terminal::CMD_NAME_IDRETT,  Terminal::Command{   "[I]drett",  "Input name of an Idrett" }},    
         { Terminal::CMD_NAME_DIVISJON,  Terminal::Command{ "[D]ivisjon", "Input name of a Divisjon" }},
+        Terminal::keyCommandFile,
         Terminal::keyCommandBack
     };
 
@@ -302,8 +303,8 @@ void App::printTerminliste(DB::Context& ctx)
         // Display terminlister
         IO::printline(statusmsg);        
         IO::printline();
-        for (const auto& div : divisjonene) {
-            auto terminliste = DB::Terminliste { div.navn, div.terminliste };
+        for (const auto& divisjon : divisjonene) {
+            auto terminliste = DB::Terminliste { divisjon.navn, divisjon.terminliste };
             IO::printline(Encode::viewTerminliste(terminliste));
         }
 
@@ -322,21 +323,37 @@ void App::printTerminliste(DB::Context& ctx)
             case Terminal::CMD_BACK:   
                 return;
 
+            case Terminal::CMD_FILE: {
+                string filepath = IO::readFilepath();
+                std::ofstream outfile("./data/write/"+filepath+".yml");
+                if (outfile) 
+                {
+                    for (const auto& divisjon: divisjonene) { 
+                        auto terminliste = DB::Terminliste {  divisjon.navn,  divisjon.terminliste };
+                        outfile << Encode::viewTerminliste(terminliste);
+                    }
+                    outfile.close();
+
+                    IO::printlineNoSpace("\nTerminlistene written to file: ", filepath, ".yml");
+                    IO::printline("Press any key to continue...");
+                    std::cin.get();
+                }
+            } break;
+
             default:
                 break;
         }
     }
 }
 
-
-void App::printResultatKampDivisjon(DB::Context& ctx) 
+void App::resultatene(DB::Context& ctx)
 {
     const auto validCommands = IO::CommandMap {
-        { Terminal::CMD_NAME_IDRETT,   Terminal::Command{   "[I]drett",  "Input name of an Idrett" }},    
+        { Terminal::CMD_NAME_IDRETT,   Terminal::Command{ "[I]drett",  "Input name of an Idrett" }},    
         { Terminal::CMD_NAME_DIVISJON, Terminal::Command{ "[D]ivisjon", "Input name of a Divisjon" }},
-        { Terminal::CMD_DATE_YEAR,   Terminal::Command{ "[Y]ear", "Valid year 1970-2099" }},
-        { Terminal::CMD_DATE_MONTH,  Terminal::Command{ "[M]onth", "Valid month 01-12" }},
-        { Terminal::CMD_DATE_DAY,    Terminal::Command{ "D[A]g", "Valid day 01-31" }},
+        { Terminal::CMD_DATE_YEAR,   Terminal::Command{   "[Y]ear", "Valid year 1970-2099" }},
+        { Terminal::CMD_DATE_MONTH,  Terminal::Command{   "[M]onth", "Valid month 01-12" }},
+        { Terminal::CMD_DATE_DAY,    Terminal::Command{   "D[A]g", "Valid day 01-31" }},
         Terminal::keyCommandFile,
         Terminal::keyCommandBack
     };
@@ -365,14 +382,12 @@ void App::printResultatKampDivisjon(DB::Context& ctx)
         // Search for divisjoner and resultater
         auto[divisjonene, statusDivisjonene] = Search::divisjonene(ctx, navnIdrett, navnDivisjon);
         IO::printline(statusDivisjonene);  
-
+        
         // Search each divisjon for resultatene
-        for (const auto& divisjon: divisjonene) 
+        for (const auto& divisjon: divisjonene)
         {         
             auto[resultatene, statusResultatene] = Search::resultatene(ctx, divisjon, year, month, day); 
-            IO::printline(statusResultatene);
-            IO::printline();
-            IO::printline(Encode::viewResultateneDivisjon(resultatene, divisjon.navn));
+            IO::printline(Encode::viewResultatene(resultatene));
         }
 
         // User Input
@@ -408,8 +423,14 @@ void App::printResultatKampDivisjon(DB::Context& ctx)
                 {
                     for (const auto& divisjon: divisjonene) { 
                         auto[resultatene, statusResultatene] = Search::resultatene(ctx, divisjon, year, month, day); 
-                        outfile << Encode::viewResultateneDivisjon(resultatene, divisjon.navn);
+                        outfile << Encode::viewResultatene(resultatene);
+
                     }
+                    outfile.close();
+
+                    IO::printlineNoSpace("\nResultatene written to file: ", filepath, ".yml");
+                    IO::printline("Press any key to continue...");
+                    std::cin.get();
                 }
             } break;
 
@@ -424,51 +445,11 @@ void App::printResultatKampDivisjon(DB::Context& ctx)
 }
 
 
-void App::writeResultatKampDivisjon(DB::Context& ctx) 
+
+void App::tabell(DB::Context& ctx)
 {
-    IO::printline("writeResultatKampDivisjon()");
+    IO::printline("tabellDivisjon()");
 }
-
-
-void App::printResultatKampIdrett(DB::Context& ctx) 
-{
-    IO::printline("printResultatKampIdrett()");
-}
-void App::writeResultatKampIdrett(DB::Context& ctx) 
-{
-    IO::printline("writeResultatKampIdrett()");
-}
-
-
-void App::printTabellDivisjon(DB::Context& ctx) 
-{
-    IO::printline("printTabellDivisjon()");
-}
-
-void App::writeTabellDivisjon(DB::Context& ctx) 
-{
-    IO::printline("writeTabellDivisjon()");
-}
-
-
-void App::printTabellIdrett(DB::Context& ctx) 
-{
-    IO::printline("printTabellIdrett()");
-}
-void App::writeTabellIdrett(DB::Context& ctx) 
-{
-    IO::printline("writeTabellIdrett()");
-}
-
-
-// or print to file
-void App::writeTerminDivisjon(DB::Context& ctx) 
-{
-    IO::printline("writeTermin()");
-}
-
-
-
 
 
 void App::readResultatliste(DB::Context& ctx) 
@@ -490,25 +471,10 @@ void App::removeLagSpiller(DB::Context& ctx)
 }
 
 
-void App::printTopp10Divisjon(DB::Context& ctx)
+void App::topp10(DB::Context& ctx)
 {
-    IO::printline("printToppscorerTopp10Divisjon()");
+    IO::printline("topp10Divisjon()");
 }
-void App::printTopp10Lag(DB::Context& ctx)
-{
-    IO::printline("printToppscorerTopp10Lag()");
-}
-
-
-void App::writeTopp10Divisjon(DB::Context& ctx)
-{
-    IO::printline("writeToppscorerTopp10Divisjon()");
-}
-void App::writeTopp10Lag(DB::Context& ctx)
-{
-    IO::printline("writeToppscorerTopp10Lag()");
-}
-
 
 
 //======================================
@@ -635,7 +601,7 @@ auto Search::divisjonene(DB::Context& ctx, const string& navnIdrett, const strin
 {
     vector<DB::Divisjon> result{};
     string statusmsg = "";
-    IO::printline("Searching for divisjoner....");
+
     DB::Idrett* idrett = (DB::Idrett* ) ctx.idrettene.data->remove(navnIdrett.c_str());
 
     // Error 1
@@ -651,17 +617,22 @@ auto Search::divisjonene(DB::Context& ctx, const string& navnIdrett, const strin
         return Search::returnDivisjonene{result, statusmsg};
     }
 
-    // Error 3
-    if (navnDivisjon.empty()) {
-        statusmsg = "No divisjon specified";
+    // Success 1 
+    if (navnDivisjon.empty()) 
+    {
+        for (const auto& divisjon : idrett->divisjonene)
+        {
+            result.push_back(divisjon);
+        }
 
-        ctx.idrettene.data->add(idrett);   // because why no
+        ctx.idrettene.data->add(idrett);   // because why no    
+        statusmsg = "Found " + std::to_string(result.size()) + " divisjoner";
         return Search::returnDivisjonene{result, statusmsg};
     }
 
     for (const auto& divisjon : idrett->divisjonene)
     {
-        // Success
+        // Success 2
         if (divisjon.navn.find(navnDivisjon) != std::string::npos)
         {
             result.push_back(divisjon);
@@ -702,7 +673,6 @@ auto Search::resultatene(
 
     string encodedDato = ss.str();
 
-    IO::printline("Searching for resultater...");
     vector<DB::ViewResultat> resultatene;
 
     for (const auto [hjemmelag, bortelagene] : divisjon.terminliste) // map 

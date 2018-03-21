@@ -136,24 +136,12 @@ auto viewIdretteneCompact(DB::Idrettene& idrettene, bool divisjon=false, bool la
 
 
 /// <summary> Helper function for encodeResultateneDivisjon and encodeResultateneIdrett </summary>
-void viewResultatene(Printer& p, const vector<DB::ViewResultat>& resultatene);
-
-/// <summary> Encoding ResultateneWithKeys for a given divisjon to a viewable format. </summary>
-/// <returns> string - example found in format-view-resultatene-divisjon.yml </returns>
-auto viewResultateneDivisjon(const vector<DB::ViewResultat>& resultatene,
-                               const string divisjon) -> string;
-
-/// <summary> Encode ResultateneWithKeys for a given idrett to a viewable format. </summary>
-/// <returns> string - example found in format-view-resultatene-idrett.yml </returns>
-auto viewResultateneIdrett(const vector<DB::ViewResultat>& resultatene,
-                           const string idrett) -> string;
-
+auto viewResultatene(const vector<DB::ViewResultat>& resultatene) -> string;
 
 
 /// <summary> Encode a collection of spillere to a viewable format. </summary>
 /// <returns> string - example found in format-view-spillerene.yml </returns>
 auto viewSpillerene(DB::Spillerene& spiller) -> string;
-
 
 
 
