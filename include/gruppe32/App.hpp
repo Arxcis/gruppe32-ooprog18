@@ -87,16 +87,26 @@ void writeSpillerene(DB::Spillerene& ctx, const string filepath);
 /// <summary> Doing a search through the data, and returning a vector with the resutls </summary>
 namespace Search 
 {
-    using std::pair;
-    using std::vector;
-    using std::string;
-    using std::size_t;
 
-    using returnDivisjonene = pair<vector<DB::Divisjon>, string>;
-    using returnResultatene = pair<vector<DB::ViewResultat>, string>;
-        //  functions
-    auto divisjonene(DB::Context& ctx, const string& navnIdrett, const string& navnDivisjon) -> Search::returnDivisjonene;
-    auto resultatene(DB::Context& ctx, const vector<DB::Divisjon>& divisjonene, const size_t month, const size_t day) -> Search::returnResultatene;
+using std::pair;
+using std::vector;
+using std::string;
+using std::size_t;
+
+using returnDivisjonene = pair<vector<DB::Divisjon>, string>;
+using returnResultatene = pair<vector<DB::ViewResultat>, string>;
+    //  functions
+auto divisjonene(
+    DB::Context& ctx,
+    const string& navnIdrett, 
+    const string& navnDivisjon) -> Search::returnDivisjonene;
+
+auto resultatene(
+    DB::Context& ctx, 
+    const DB::Divisjon& divisjonene, 
+    const size_t year, 
+    const size_t month, 
+    const size_t day) -> Search::returnResultatene;
 } // ::Search
 
 } // ::gruppe32
