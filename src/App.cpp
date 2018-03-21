@@ -89,50 +89,151 @@ void printIdretterByName( DB::Context& ctx, const std::string name)
 void createSpiller(DB::Context& ctx) 
 {
 
-    const auto validCommands = IO::CommandMap{
+    auto validCommands = IO::CommandMap{
         { Terminal::CMD_SPILLER_NAVN, Terminal::Command{ string(1, Terminal::CMD_SPILLER_NAVN), "Sett navn" } },
-        { Terminal::CMD_SPILLER_ADRESSE, Terminal::Command{ string(1, Terminal::CMD_SPILLER_ADRESSE), "Sett adresse..." } },
-        Terminal::commandCommitPair,
+        { Terminal::CMD_SPILLER_ADRESSE, Terminal::Command{ string(1, Terminal::CMD_SPILLER_ADRESSE), "Sett adresse" } },
         Terminal::commandBackPair
     };
-    auto nySpiller = new DB::Spiller{ 0, "", "" };
+    std::string spillerNavn = "";
+    std::string spillerAdresse = "";
     for (;;)
     {
-        IO::printMenu(validCommands, "HOME -> Lag ny -> Spiller");
-        IO::printline("Navn:",      nySpiller->name);
-        IO::printline("Adresse:",   nySpiller->address);
-        IO::divider('_', 40);
-        auto[cmdKey, cmd] = IO::readCommand(validCommands);
-            switch (cmdKey)
+        { //VALIDATE
+            if (Valid::isName(spillerNavn) && Valid::isAddress(spillerAdresse))
             {
-            case Terminal::CMD_SPILLER_NAVN:
-                nySpiller->name = IO::readName();
-                break;
-            case Terminal::CMD_SPILLER_ADRESSE:
-                nySpiller->address = IO::readAdress();
-                break;
-
-            case Terminal::CMD_COMMIT:
-                //TODO -> VALIDER SPILLER
-                IO::printline("Legger til ", nySpiller->name);
-                //TODO assign guid
-                IO::printline(nySpiller->name, "lagt til med nr:", nySpiller->guid);
-                //ctx.spillerene.data->add(nySpiller);
-                return;
-            case Terminal::CMD_BACK:
-                IO::printline("Avbryter...");
-                IO::printline("Ingen ny spiller lagt til.");
-                delete nySpiller;
-                return;
-            default:
-                IO::printline("Not a valid command!");
-                break;
+                if (validCommands.find(Terminal::CMD_COMMIT) == validCommands.end())
+                {
+                    validCommands.insert(validCommands.begin(), Terminal::commandCommitPair);
+                }
             }
+        }
+        IO::printMenu(validCommands, "HOME -> Lag ny -> Spiller" + Valid::isName(spillerNavn) ? "- "+spillerNavn:"");
+        IO::printline("Navn:",      spillerNavn);
+        IO::printline("Adresse:",   spillerAdresse);
+        IO::divider('_', 40);
+        
+        auto[cmdKey, cmd] = IO::readCommand(validCommands);
+        switch (cmdKey)
+        {
+        case Terminal::CMD_SPILLER_NAVN:
+            spillerNavn = IO::readName();
+            break;
+        case Terminal::CMD_SPILLER_ADRESSE:
+            spillerAdresse = IO::readAdress();
+            break;
+        case Terminal::CMD_COMMIT:
+        {
+            auto nySpiller = new DB::Spiller(++ctx.spillerene.autoIncrementer, "", "");
+            IO::printline("Legger til ", nySpiller->name, "...");
+            ctx.spillerene.data->add(nySpiller);
+            IO::printline(nySpiller->name, "lagt til med nr:", nySpiller->guid);
+            return;
+        }
+        case Terminal::CMD_BACK:
+            IO::printline("Avbryter...");
+            IO::printline("Ingen ny spiller lagt til.");
+            return;
+        default:
+            IO::printline("Not a valid command!");
+            break;
+        }
     }
     
 }
 void createIdrett(DB::Context& ctx) 
 {
+    //Local usages 
+    // 
+    const auto SEIER_2_UAVGJORT_1_TAP_0           = Terminal::CMD_TABELL_IDRETT_FIL;
+    const auto SEIER_3_UAVGJORT_1_TAP_0           = Terminal::CMD_TABELL_DIVISJON;
+    const auto SEIER_3_OVERTID_2_UAVGJORT_1_TAP_0 = Terminal::CMD_TABELL_DIVISJON_FIL;
+    
+    auto validCommands = IO::CommandMap{
+        { Terminal::CMD_IDRETT_NAVN, Terminal::Command{ string(1, Terminal::CMD_IDRETT_NAVN), "Sett navn" } },
+        { Terminal::CMD_TABELL, 
+            Terminal::Command{ 
+                string(1, Terminal::CMD_TABELL), "Sett tabelltype", "TabellType",
+                {
+                { SEIER_2_UAVGJORT_1_TAP_0, Terminal::Command{string(1, SEIER_2_UAVGJORT_1_TAP_0), Encode::viewTabelltype(DB::Idrett::SEIER_2_UAVGJORT_1_TAP_0) } },
+                { SEIER_3_UAVGJORT_1_TAP_0, Terminal::Command{ string(1, SEIER_3_UAVGJORT_1_TAP_0), Encode::viewTabelltype(DB::Idrett::SEIER_3_UAVGJORT_1_TAP_0) } },
+                { SEIER_3_OVERTID_2_UAVGJORT_1_TAP_0, Terminal::Command{ string(1, SEIER_3_OVERTID_2_UAVGJORT_1_TAP_0), Encode::viewTabelltype(DB::Idrett::SEIER_3_OVERTID_2_UAVGJORT_1_TAP_0) } }
+                }
+            }
+        },
+        Terminal::commandBackPair
+    };
+    //auto nyIdrett = new DB::Idrett{ "", DB::Idrett::SEIER_2_UAVGJORT_1_TAP_0 };
+    std::string idrettNavn = "";
+    DB::Idrett::TabellType tabellType = DB::Idrett::SEIER_2_UAVGJORT_1_TAP_0;
+    for (;;)
+    {
+        if (Valid::isName(idrettNavn))//VALIDATE
+        {
+            if (validCommands.find(Terminal::CMD_COMMIT) == validCommands.end())
+            {
+                validCommands.insert(validCommands.begin(), Terminal::commandCommitPair);
+            }
+        }
+        IO::printMenu(validCommands, "HOME -> Lag ny -> Idrett " + (Valid::isName(idrettNavn) ? "- " + idrettNavn : ""));
+        IO::printline("Navn:",       idrettNavn);
+        IO::printline("Tabelltype:", Encode::viewTabelltype(tabellType));
+        IO::divider('_', 40);
+
+        auto[cmdKey, cmd] = IO::readCommand(validCommands);
+        switch (cmdKey)
+        {
+        case Terminal::CMD_IDRETT_NAVN:
+        {
+            std::string _name = IO::readName();
+            for ( ;ctx.idrettene.data->inList(_name.c_str()); _name = IO::readName())
+            {
+                IO::printline("Idretten", _name, "finnes allerede!");
+            }
+            idrettNavn = _name;
+            break;
+        }
+        case Terminal::CMD_TABELL:
+            for (;;)
+            {
+                IO::printSubMenu(cmd.subcmd, cmd.title, "HOME -> Lag ny -> Idrett " + (Valid::isName(idrettNavn) ? "- " + idrettNavn : ""));
+                auto[subCmdKey, _] = IO::readCommand(cmd.subcmd);
+                switch (subCmdKey)
+                {
+                case SEIER_2_UAVGJORT_1_TAP_0:
+                    tabellType = DB::Idrett::SEIER_2_UAVGJORT_1_TAP_0;
+                    break;
+                case SEIER_3_UAVGJORT_1_TAP_0:
+                    tabellType = DB::Idrett::SEIER_3_UAVGJORT_1_TAP_0;
+                    break;
+                case SEIER_3_OVERTID_2_UAVGJORT_1_TAP_0:
+                    tabellType = DB::Idrett::SEIER_3_OVERTID_2_UAVGJORT_1_TAP_0;
+                    break;
+                default:
+                    IO::printline("Not a valid tabelltype!");
+                    break;
+                }
+                break;
+            }
+            break;
+        case Terminal::CMD_COMMIT:
+        {
+            auto nyIdrett = new DB::Idrett(idrettNavn, tabellType);
+            IO::printline("Legger til ", nyIdrett->name, "...");
+            ctx.idrettene.count++;
+            ctx.idrettene.data->add(nyIdrett);
+            IO::printline(nyIdrett->name, "lagt til!");
+            IO::printline();
+            return;
+        }
+        case Terminal::CMD_BACK:
+            IO::printline("Avbryter...");
+            IO::printline("Ingen ny idrett lagt til.");
+            return;
+        default:
+            IO::printline("Not a valid command!");
+            break;
+        }
+    }
     IO::printline("createIdrett()");
 }
 void createDivisjon(DB::Context& ctx) 

@@ -870,7 +870,7 @@ auto Encode::viewSpillerene(DB::Spillerene& spillerene) -> string
 
     for (size_t i = 1; i <= spillerene.data->noOfElements(); ++i) 
     {
-        auto spiller = (DB::Spiller* ) spillerene.data->removeNo(i);
+        auto spiller = (DB::Spiller* ) spillerene.data->removeNo(i); //TODO - remove elements in order to print out in order
 
         p.lineEmpty();
         p.lineDashStringString("spiller", spiller->name);

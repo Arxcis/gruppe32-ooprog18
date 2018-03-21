@@ -110,7 +110,7 @@ public:
     vector<Divisjon> divisjonene;
 
     Idrett(std::string _name, TabellType _tabell)
-        :listtool::TextElement(_name.c_str()),
+        : TextElement(_name.c_str()),
         name(_name),
         tabell(_tabell)
         {}
