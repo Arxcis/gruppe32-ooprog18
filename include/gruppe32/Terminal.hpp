@@ -69,7 +69,10 @@ enum CommandID : char
     CMD_SEARCH   = 'S',
     CMD_NAME     = 'N',
     CMD_NAME_DIVISJON = 'D',
-    CMD_NAME_IDRETT = 'I'
+    CMD_NAME_IDRETT = 'I',
+    CMD_DATE_DAY = 'A',
+    CMD_DATE_MONTH = 'M',
+    CMD_DATE_YEAR = 'Y',
 
  };
 

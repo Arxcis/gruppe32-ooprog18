@@ -78,5 +78,11 @@ void writeIdrettene(DB::Idrettene& ctx, const std::string filepath);
 void readSpillerene(DB::Spillerene& ctx, const std::string filepath);
 void writeSpillerene(DB::Spillerene& ctx, const std::string filepath);
 
+using searchReturnDivisjonene = std::pair<std::vector<DB::Divisjon>, std::string>;
+using searchReturnResultatene = std::pair<std::vector<DB::ViewResultat>, std::string>;
+    // Search functions
+auto searchDivisjonene(DB::Context& ctx, const std::string& navnIdrett, const std::string& navnDivisjon) -> searchReturnDivisjonene;
+auto searchResultatene(DB::Context& ctx, const std::vector<DB::Divisjon>& divisjonene, const std::size_t month, const std::size_t day) -> searchReturnResultatene;
+
 
 } // end namespace gruppe32::App

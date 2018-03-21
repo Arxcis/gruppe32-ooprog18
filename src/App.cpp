@@ -159,26 +159,24 @@ void printTerminDivisjon(DB::Context& ctx)
 {
     using std::size_t;
     using std::string;
+    using std::pair;
 
-    const auto validCommands = IO::CommandMap{
+    const auto validCommands = IO::CommandMap {
         { Terminal::CMD_NAME_IDRETT,  Terminal::Command{   "[I]drett",  "Input name of an Idrett" }},    
         { Terminal::CMD_NAME_DIVISJON,  Terminal::Command{ "[D]ivisjon", "Input name of a Divisjon" }},
-        Terminal::keyCommandSearch,
         Terminal::keyCommandBack
     };
 
-    string result       = "";
     string navnIdrett   = "";
     string navnDivisjon = "";
-    string errormsg     = "";
-    // 0. Skriv ut idretter
 
     for (;;) 
-    {      
-        // ----- MENU
+    {   
+        // Search for divisjoner
+        auto[divisjonene, statusmsg] = searchDivisjonene(ctx, navnIdrett, navnDivisjon);
+        
+        // Display menu
         IO::newpage();
-        IO::printline(errormsg); errormsg = "";
-
         IO::printline();
         IO::printline(Encode::viewIdretteneCompact(ctx.idrettene, true));
         IO::printMenu(validCommands, "HOME -> Terminliste");
@@ -186,11 +184,16 @@ void printTerminDivisjon(DB::Context& ctx)
         IO::printline("Idrett:",    navnIdrett);
         IO::printline("Divisjon:",  navnDivisjon);
         IO::divider('_', 80);
-        
-        IO::printline(result); result = "";
-        // ----- MENU
 
+        // Display terminlister
+        IO::printline(statusmsg);        
+        IO::printline();
+        for (const auto& div : divisjonene) {
+            auto terminliste = DB::Terminliste { div.navn, div.terminliste };
+            IO::printline(Encode::viewTerminliste(terminliste));
+        }
 
+        // User Input
         auto [cmdkey, _] = IO::readCommand(validCommands);
         switch(cmdkey) 
         {
@@ -202,49 +205,10 @@ void printTerminDivisjon(DB::Context& ctx)
                 navnDivisjon = IO::readName();
                 break;
 
-            case Terminal::CMD_SEARCH: 
-            {
-                auto idrett = (DB::Idrett* ) ctx.idrettene.data->remove(navnIdrett.c_str());
-                ctx.idrettene.data->add(idrett);    
-                if (!idrett) 
-                {
-                    errormsg = navnIdrett +" not found";
-                    navnIdrett = "";
-                    navnDivisjon = "";
-                    break;
-                }
-                if (idrett->divisjonene.size() == 0) 
-                {
-                    errormsg = navnIdrett + " has no divisjoner";
-                    navnDivisjon = "";
-                    navnIdrett = "";
-                    break;
-                }
-                for (const auto& divisjon : idrett->divisjonene)
-                {
-                    if (divisjon.navn.find(navnDivisjon) != std::string::npos)
-                    {
-                        auto terminliste = DB::Terminliste 
-                        {
-                            divisjon.navn,
-                            divisjon.terminliste
-                        };
-                        result = Encode::viewTerminliste(terminliste);
-                        break;
-                    }
-                }
-                if (result.empty()) { 
-                    errormsg = navnIdrett + "has no divisjon named" + navnDivisjon;
-                    navnDivisjon = "";
-                }
-                break;
-            } 
-
             case Terminal::CMD_BACK:   
                 return;
 
             default:
-                errormsg = "Not a valid command!";
                 break;
             
         }
@@ -254,71 +218,71 @@ void printTerminDivisjon(DB::Context& ctx)
 
 void printResultatKampDivisjon(DB::Context& ctx) 
 {
-   // 0. Skriv ut idretter
-    IO::printline();
-    IO::divider('_', 80);    
-    IO::printline();
-    IO::printline(Encode::viewIdrettene(ctx.idrettene));
-    IO::divider('_', 80);
+    const auto validCommands = IO::CommandMap {
+        { Terminal::CMD_NAME_IDRETT,  Terminal::Command{   "[I]drett",  "Input name of an Idrett" }},    
+        { Terminal::CMD_NAME_DIVISJON,  Terminal::Command{ "[D]ivisjon", "Input name of a Divisjon" }},
+        Terminal::keyCommandBack
+    };
+
+    string navnIdrett   = "";
+    string navnDivisjon = "";
+    size_t month = 0;
+    size_t day   = 0;
+    size_t year  = 0;
+
     for (;;) 
     {
-        // 1. Setup possible commands
-        auto commandMap = Terminal::Command::Map {
-            Terminal::keyCommandNameIdrett,
-            Terminal::keyCommandBack
-        };
-        // 2. Print menu
-        IO::printMenu(commandMap, "HOME -> Resultater Divisjon -> Velg en Idrett");
-
-        // 3. Read command
-        auto [cmdkey, command, _, idrettName] = IO::readEitherCommandName(commandMap);
-        if (cmdkey == Terminal::CMD_BACK)
-            return;
-
-
-        // 4. Try to find idrett
-        auto idrett = (DB::Idrett*)ctx.idrettene.data->remove(idrettName.c_str());
-        if (!idrett) {
-            IO::printline("Idrett not found");
-            continue;
-        }
-        if (idrett->divisjonene.size() == 0) {
-            ctx.idrettene.data->add(idrett);
-            IO::printline(idrett->name, "has no divisjoner");
-            continue;
-        }
-
-        // 5. Print out possible divisjoner to help the user pick
+        // Display menu
+        IO::newpage();
         IO::printline();
-        IO::printline();
-        IO::printline();
+        IO::printline(Encode::viewIdretteneCompact(ctx.idrettene, true));
+        IO::printMenu(validCommands, "HOME -> Terminliste");
+        IO::printline("-- Input");
+        IO::printline("Idrett:",    navnIdrett);
+        IO::printline("Divisjon:",  navnDivisjon);
+        IO::printline("Month:",     year);
+        IO::printline("Month:",     month);
+        IO::printline("Day:",       day);
         IO::divider('_', 80);
-        printDivisjonene((*idrett));
-        IO::divider('_', 80);
-            
-        // 6. Setup possible commands for read divisjon
-        commandMap = Terminal::Command::Map {
-            Terminal::keyCommandNameDivisjon,
-            Terminal::keyCommandBack
-        };
-        // 7. Print menu
-        IO::printMenu(commandMap, "HOME -> Resultater Divisjon -> Velg Divisjon");
 
-        // 8. Read divisjon
-        auto [cmdkey2, command2, _2, divisjonName] = IO::readEitherCommandName(commandMap);
-        if (cmdkey2 == Terminal::CMD_BACK) {
-            ctx.idrettene.data->add(idrett);
-            return;
+        // Search for divisjoner and resultater
+        auto[divisjonene, statusDivisjonene] = searchDivisjonene(ctx, navnIdrett, navnDivisjon);
+        IO::printline(statusDivisjonene);        
+        auto[resulatene, statusResultatene] = searchResultatene(ctx, divisjonene, month, day); 
+        IO::printline(statusResultatene);        
+
+        // Display resultater
+        IO::printline();
+        for (const auto& res : resulatene) {
+
         }
-            
-        // 9. Read year
-        IO::printline("Årstall: 1970-2099");
-        size_t year = IO::readYear();
-        IO::printline("Måned:   01-12");
-        size_t month = IO::readMonth();
-        IO::printline("Dag:     01-31");
-        size_t day = IO::readDay();
-        ctx.idrettene.data->add(idrett);
+
+        // User Input
+        auto [cmdkey, _] = IO::readCommand(validCommands);
+        switch(cmdkey) 
+        {
+            case Terminal::CMD_NAME_IDRETT: 
+                navnIdrett = IO::readName();
+                break;
+
+            case Terminal::CMD_NAME_DIVISJON: 
+                navnDivisjon = IO::readName();
+                break;
+
+            case Terminal::CMD_DATE_MONTH:
+                month = IO::readMonth();
+                break;
+
+            case Terminal::CMD_DATE_DAY:
+                day = IO::readDay();
+                break;
+
+            case Terminal::CMD_BACK:   
+                return;
+
+            default:
+                break;            
+        }
     }
 }
 
@@ -521,4 +485,65 @@ void writeSpillerene(DB::Spillerene& ctx, const std::string filepath)
     outstream << outstring; 
 }
 
+
+
+//======================================
+// SEARCH FUNCTIONS
+//======================================
+using std::vector;
+using std::string;
+using std::pair;
+
+auto searchDivisjonene(DB::Context& ctx, const string& navnIdrett, const string& navnDivisjon) -> searchReturnDivisjonene
+{
+    vector<DB::Divisjon> result{};
+    string statusmsg = "";
+    DB::Idrett* idrett = (DB::Idrett* ) ctx.idrettene.data->remove(navnIdrett.c_str());
+
+    // Error 1
+    if (!idrett) {
+        statusmsg = "Idrett " + navnIdrett + " not found";
+        return searchReturnDivisjonene{result, statusmsg};
+    }
+    // Error 2
+    if (idrett->divisjonene.size() == 0) {
+        statusmsg = "Idrett " + navnIdrett + " has no divisjoner";
+        
+        ctx.idrettene.data->add(idrett);   // because why no
+        return searchReturnDivisjonene{result, statusmsg};
+    }
+
+    // Error 3
+    if (navnDivisjon.empty()) {
+        statusmsg = "No divisjon specified";
+
+        ctx.idrettene.data->add(idrett);   // because why no
+        return searchReturnDivisjonene{result, statusmsg};
+    }
+
+    for (const auto& divisjon : idrett->divisjonene)
+    {
+        // Success
+        if (divisjon.navn.find(navnDivisjon) != std::string::npos)
+        {
+            result.push_back(divisjon);
+        }
+    }
+    // Error 4
+    if (result.empty()) { 
+        statusmsg = "Idrett " + navnIdrett + " has no divisjon matching " + navnDivisjon;
+
+        ctx.idrettene.data->add(idrett);   // because why no
+        return searchReturnDivisjonene{result, statusmsg};
+    }
+
+    statusmsg = "Found " + std::to_string(result.size()) + " divisjoner";
+    ctx.idrettene.data->add(idrett);   // because why no    
+    return searchReturnDivisjonene{result, statusmsg};
+}
+
+auto searchResultatene(DB::Context& ctx, const std::vector<DB::Divisjon>& divisjonene, const std::size_t month, const std::size_t day) -> searchReturnResultatene 
+{
+
+}
 } // end namespace gruppe32::App

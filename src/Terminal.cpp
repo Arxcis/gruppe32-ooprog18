@@ -103,7 +103,7 @@ const Command::Map commandMap
         }
     },   
     {   CMD_RESULTAT, Command{ string(1,CMD_RESULTAT),"Lese Resultatliste inn fra fil", "Leser Resultatliste ..."}}, 
-    {   CMD_LAG,     Command{ string(1,CMD_LAG), "Data om alle spillerne på et lag", "Laginfo"}},      
+    {   CMD_LAG,      Command{ string(1,CMD_LAG), "Data om alle spillerne på et lag", "Laginfo"}},      
     {   
         CMD_ENDRE, Command{ 
             string(1,CMD_ENDRE), 
