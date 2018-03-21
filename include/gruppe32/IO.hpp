@@ -95,6 +95,7 @@ auto readYear() -> size_t;
 auto readMonth() -> size_t;
 auto readDay() -> size_t ;
 auto readAddress() -> std::string;
+auto readNumber()->size_t;
 
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
