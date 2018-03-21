@@ -17,13 +17,15 @@ using std::string;
 using std::pair;
 using std::string_view;
 
+/// <summary> Translates files into internal datastructure </summary>
 class Parser 
 {
 public:
     string_view strview;
     int startofline =  0;
     int endofline = 9999999;
-    const string whitelistedCharacters = "abcdefghijklmnopqrstuvwxyzæøåABCDEFGHIJKLMNOPQRSTUVWXYZÆØÅ-";
+    int linecount = 0;
+    const string whitelistedCharacters = "0123456789abcdefghijklmnopqrstuvwxyzæøåABCDEFGHIJKLMNOPQRSTUVWXYZÆØÅ-:";
     
     auto nextLine() -> string;
     auto nextStringString() -> pair<string,string>;
@@ -69,6 +71,7 @@ using std::string;
 using std::stringstream;
 using std::size_t;
 
+/// <summary> Translates internal datastructure to file format </summary>
 class Printer 
 {
 public:

@@ -14,33 +14,56 @@ auto Parser::nextLine() -> std::string
     endofline   = strview.find('\n', startofline);
     startofline = strview.find_first_of(whitelistedCharacters, startofline);
 
-    // Eat spaces
     if (startofline == std::string::npos) {
-        assert(false && "No whitelisted characters found after last line!!");
+        std::cout << "\nPARSER ERROR ---->>> (startofline == std::string::npos)\n\n"
+                  << "Line: " << linecount;
+        assert(false && "No whitelisted characters found after new-line character!! Line:");
     }
     if (endofline == std::string::npos) {
-        assert(false && "No end of line character found after the last line!!");
+        std::cout << "\nPARSER ERROR ---->>> (endofline == std::string::npos)\n\n"
+                  << "Line: " << linecount;
+        assert(false && "No end of file (new-line) character found! Line:");
     }
 
-
+    linecount++;
+    // Skip empty lines in between and eat whitespace
     while (endofline-startofline <= 0) {
 
         startofline = endofline+1;
         endofline   = strview.find('\n', startofline);
         startofline = strview.find_first_of(whitelistedCharacters, startofline);
 
-        // Eat spaces
         if (startofline == std::string::npos) {
-            assert(false && "No whitelisted characters found after last line!!");
+            std::cout << "\nPARSER ERROR ---->>> (startofline == std::string::npos)\n\n"
+                      << "Line: " << linecount;
+            assert(false && "No whitelisted characters found after new-line character!! Line:");
         }
         if (endofline == std::string::npos) {
-            assert(false && "No end of line character found after the last line!!");
+            std::cout << "PARSER ERROR ---->>> (endofline == std::string::npos)"
+                      << "Line: " << linecount;
+            assert(false && "No end of file (new-line) character found! Line:");
         }
+        linecount++;
     }
 
     auto line = std::string { 
         strview.substr(startofline, endofline-startofline)
     };        
+    auto lastCharacter = (endofline-startofline)-1;
+    auto lastValidCharacter = line.find_last_of(whitelistedCharacters);
+    if (lastValidCharacter != lastCharacter) {
+
+        std::cout << "\nPARSER ERROR ---->>> (lastValidCharacter != lastCharacter)\n\n"
+                  << "Line: "                          << linecount << '\n'
+                  << "Linetext: "                      << line << '\n'
+                  << "index lastValidCharacter: "      << lastValidCharacter <<'\n'
+                  << "index lastCharacter: "           << lastCharacter << '\n'
+                  << "line[lastValidCharacter]: "      << line[lastValidCharacter] <<'\n'
+                  << "line[lastCharacter]: "           << line[lastCharacter] << '\n'
+                  << "int(line[lastValidCharacter]): " << int(line[lastValidCharacter]) <<'\n'
+                  << "int(line[lastCharacter]): "      << int(line[lastCharacter]) << '\n';
+        assert(false && "Empty space not allowed after the last character on a line!! Line:");
+    }
 
 /*   std::cout << std::setw(40) << std::left << line
               << " | start: "  << startofline
@@ -445,36 +468,45 @@ auto Encode::viewIdretteneCompact(DB::Idrettene& idrettene, bool divisjon, bool 
 {
     Printer print;
     auto idretteneCount = idrettene.data->noOfElements();
-    print.lineString(    "idrettene");
+            
+            print.lineString(    "idrettene");
+
     for (auto iIdrett = 1; iIdrett <= idretteneCount; ++iIdrett)
     {
         auto idrett = (DB::Idrett*)(idrettene.data->removeNo(iIdrett));
     
-                            print.lineDashStringString("idrett", idrett->name);
+            print.lineDashString(idrett->name);
 
-        if (divisjon) 
+        if (divisjon && idrett->divisjonene.size()) 
         { // bool divisjon
             print.tabRight();
+
+            print.lineString(    "divisjonene");
+
             for (const auto& divisjon: idrett->divisjonene) 
             {
 
-                                print.lineDashStringString("divisjon", divisjon.navn);
+            print.lineDashString(divisjon.navn);
 
-                if (lag) 
+                if (lag && divisjon.lagene.size()) 
                 { // bool divisjon
                     print.tabRight();
+            print.lineString(    "lagene");
+
                     for(const auto& lag: divisjon.lagene) 
                     {
 
-                                    print.lineDashStringString("lag", lag.navn);
+            print.lineDashString(lag.navn);
 
-                        if (spiller) 
+                        if (spiller && lag.spillerene.size()) 
                         { // bool spiller
+            print.lineString(    "spillerene");
+
                             print.tabRight();
                             for (const auto& spiller: lag.spillerene) 
                             {
         
-                                        print.lineDashStringUint("spiller", spiller);
+            print.lineDashString(std::to_string(spiller));
 
                             }
                             print.tabLeft();
