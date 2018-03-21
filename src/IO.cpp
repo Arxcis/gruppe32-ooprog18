@@ -33,8 +33,8 @@ void divider(char c, size_t count)
 
 void printMenu(const CommandMap & commands, const std::string & title)
 {
+    //newpage();
     const std::size_t columnSymbolWidth = 6;
-    printline();
 
     divider('*', 80);
     printline("** ", title);
@@ -299,6 +299,12 @@ auto readAddress() -> std::string
 auto readFilepath() -> std::string 
 {
     return IO::readName();
+}
+
+void waitForAnyKey()
+{
+    IO::printline("Press any key to continue...");
+    std::cin.get();
 }
 
 } // end namespace

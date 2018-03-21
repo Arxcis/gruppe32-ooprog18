@@ -37,8 +37,8 @@ target_include_directories(gruppe32
 if(MSVC)
 configure_file("${CMAKE_SOURCE_DIR}/data/read/seed-idrettene.yml" "${CMAKE_BINARY_DIR}/data/read/seed-idrettene.yml" COPYONLY)
 configure_file("${CMAKE_SOURCE_DIR}/data/read/seed-spillerene.yml" "${CMAKE_BINARY_DIR}/data/read/seed-spillerene.yml" COPYONLY)
-configure_file("${CMAKE_SOURCE_DIR}/data/read-write/idrettene.yml" "${CMAKE_BINARY_DIR}/data/read-write/idrettene.yml" COPYONLY)
-configure_file("${CMAKE_SOURCE_DIR}/data/read-write/spillerene.yml" "${CMAKE_BINARY_DIR}/data/read-write/spillerene.yml" COPYONLY)
+#configure_file("${CMAKE_SOURCE_DIR}/data/read-write/idrettene.yml" "${CMAKE_BINARY_DIR}/data/read-write/idrettene.yml" COPYONLY)
+#configure_file("${CMAKE_SOURCE_DIR}/data/read-write/spillerene.yml" "${CMAKE_BINARY_DIR}/data/read-write/spillerene.yml" COPYONLY)
 endif()
 
 #[[# test_valid.cpp build
