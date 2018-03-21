@@ -17,7 +17,7 @@ using std::string;
 using std::pair;
 using std::string_view;
 
-class KeyValueGenerator 
+class Parser 
 {
 public:
     string_view strview;
@@ -69,7 +69,7 @@ using std::string;
 using std::stringstream;
 using std::size_t;
 
-class LinePrinter 
+class Printer 
 {
 public:
     string outString = "";
@@ -133,7 +133,7 @@ auto viewIdretteneCompact(DB::Idrettene& idrettene, bool divisjon=false, bool la
 
 
 /// <summary> Helper function for encodeResultateneDivisjon and encodeResultateneIdrett </summary>
-void viewResultatene(LinePrinter& p, const vector<DB::ViewResultat>& resultatene);
+void viewResultatene(Printer& p, const vector<DB::ViewResultat>& resultatene);
 
 /// <summary> Encoding ResultateneWithKeys for a given divisjon to a viewable format. </summary>
 /// <returns> string - example found in format-view-resultatene-divisjon.yml </returns>
@@ -155,7 +155,7 @@ auto viewSpillerene(DB::Spillerene& spiller) -> string;
 
 
 /// <summary> Helper function for encodeTabellDivisjon and encodeTabelleneIdrett </summary>
-void viewTabellLagene(LinePrinter& p, const vector<DB::Tabell::Lag>& lagene);
+void viewTabellLagene(Printer& p, const vector<DB::Tabell::Lag>& lagene);
 
 /// <summary> Encode a Tabell for a given Divisjon to a viewable format. </summary>
 /// <returns> string - example found in format-view-tabell-divisjon.yml </returns>
@@ -169,7 +169,7 @@ auto viewTabelleneIdrett(const vector<DB::Tabell>& tabellene,
 
 
 /// <summary> Helper function for encodeToppscorereneDivisjon and encodeToppscorereneLag </summary>
-void viewToppscorerene(LinePrinter& p, const vector<DB::Toppscorer>& toppscorerene);
+void viewToppscorerene(Printer& p, const vector<DB::Toppscorer>& toppscorerene);
 
 /// <summary> Encode a collection of Toppscorere for a given divisjon to a viewable format.  </summary>
 /// <returns> string - example found in format-view-toppscorerene-divisjon.yml </returns>

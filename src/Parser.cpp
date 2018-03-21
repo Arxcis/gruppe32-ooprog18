@@ -9,7 +9,7 @@
 namespace gruppe32 
 {
 
-auto KeyValueGenerator::nextLine() -> std::string
+auto Parser::nextLine() -> std::string
 {
     endofline   = strview.find('\n', startofline);
     startofline = strview.find_first_of(whitelistedCharacters, startofline);
@@ -52,7 +52,7 @@ auto KeyValueGenerator::nextLine() -> std::string
     return line;
 };
 
-auto KeyValueGenerator::nextStringString() -> pair<string,string>
+auto Parser::nextStringString() -> pair<string,string>
 {
     auto line = nextLine();
 
@@ -78,13 +78,13 @@ auto KeyValueGenerator::nextStringString() -> pair<string,string>
 };
 
 
-auto KeyValueGenerator::nextStringUint() -> pair<string, size_t>
+auto Parser::nextStringUint() -> pair<string, size_t>
 {
     auto[key, valueString] = nextStringString();
     return pair<string, size_t>{key, std::stoi(valueString)};
 };
 
-auto KeyValueGenerator::nextStringBool() -> pair<string,bool>
+auto Parser::nextStringBool() -> pair<string,bool>
 {
     auto[key, valueString] = nextStringString();
     bool trueFalse;
@@ -103,7 +103,7 @@ auto KeyValueGenerator::nextStringBool() -> pair<string,bool>
 
 auto Decode::dataIdrettene(DB::Idrettene& idrettene, string_view strview) -> Decode::Error 
 {
-    auto gen = KeyValueGenerator{strview, 0};
+    auto gen = Parser{strview, 0};
 
     auto[idretteneCountkey, idretteneCount] = gen.nextStringUint();
 
@@ -220,7 +220,7 @@ auto Decode::dataIdrettene(DB::Idrettene& idrettene, string_view strview) -> Dec
 auto Decode::dataSpillerene(DB::Spillerene& spillerene, string_view strview) -> Decode::Error
 {
  
-    auto gen = KeyValueGenerator{strview};
+    auto gen = Parser{strview};
 
     auto[autoIncrementerKey, autoIncrementer] = gen.nextStringUint();
     auto[spillereneCountKey, spillereneCount] = gen.nextStringUint();
@@ -248,7 +248,7 @@ auto Decode::dataSpillerene(DB::Spillerene& spillerene, string_view strview) -> 
 
 auto Decode::inputResultatene(vector<DB::InputResultat>& resultatene, string_view strview) -> Decode::Error
 {
-    auto gen = KeyValueGenerator{strview};
+    auto gen = Parser{strview};
 
     auto[resultateneCountKey, resultateneCount] = gen.nextStringUint();
 
@@ -303,7 +303,7 @@ auto Decode::inputResultatene(vector<DB::InputResultat>& resultatene, string_vie
 
 auto Decode::inputDivisjon(DB::Divisjon& divisjon, string_view strview) -> Decode::Error
 {
-    auto gen = KeyValueGenerator{strview};
+    auto gen = Parser{strview};
 
     auto[divisjonkey, divisjonName] = gen.nextStringString();
     auto[lageneCountkey, lageneCount] = gen.nextStringUint();
@@ -358,26 +358,26 @@ auto Decode::inputDivisjon(DB::Divisjon& divisjon, string_view strview) -> Decod
 
 
 
-void LinePrinter::lineEmpty()
+void Printer::lineEmpty()
 {
     outString += "\n";
 }
 
-void LinePrinter::lineIndent() 
+void Printer::lineIndent() 
 {
     for (size_t i = 0; i < indent; ++i) {
         outString += "  ";
     }  
 }
 
-void LinePrinter::lineString(const string key)
+void Printer::lineString(const string key)
 {
     lineIndent();
     outString += key;
     outString += ":\n";
 }
 
-void LinePrinter::lineStringString(const string key, const string value)
+void Printer::lineStringString(const string key, const string value)
 {
     lineIndent();
     outString += key;
@@ -386,20 +386,20 @@ void LinePrinter::lineStringString(const string key, const string value)
     outString += "\n";
 }
 
-void LinePrinter::lineStringUint(const string key, const size_t value)
+void Printer::lineStringUint(const string key, const size_t value)
 {
     stringstream ss;
     ss << value;
     lineStringString(key, ss.str());
 }
 
-void LinePrinter::lineStringBool(const string key, const bool value)
+void Printer::lineStringBool(const string key, const bool value)
 {
     string valueBool = (value? "true":"false");
     lineStringString(key, valueBool);
 }
 
-void LinePrinter::lineDashString(const string key)
+void Printer::lineDashString(const string key)
 {
     lineIndent();
     outString += "- ";
@@ -407,7 +407,7 @@ void LinePrinter::lineDashString(const string key)
     outString += ":\n";
 }
 
-void LinePrinter::lineDashStringString(const string key, const string value)
+void Printer::lineDashStringString(const string key, const string value)
 {
     lineIndent();
     outString += "- ";
@@ -417,7 +417,7 @@ void LinePrinter::lineDashStringString(const string key, const string value)
     outString += "\n";
 }
 
-void LinePrinter::lineDashStringUint(const string key, const size_t value) 
+void Printer::lineDashStringUint(const string key, const size_t value) 
 {
     stringstream ss;
     ss << value;
@@ -425,25 +425,25 @@ void LinePrinter::lineDashStringUint(const string key, const size_t value)
 }
 
 
-void LinePrinter::tabRight() 
+void Printer::tabRight() 
 {
     indent += 1;
 }
 
-void LinePrinter::tabLeft() 
+void Printer::tabLeft() 
 {
     if (indent > 0) indent -= 1;
 }
 
 
-auto LinePrinter::getString() -> string {
+auto Printer::getString() -> string {
     return outString;
 }
 
 
 auto Encode::viewIdretteneCompact(DB::Idrettene& idrettene, bool divisjon, bool lag, bool spiller) -> string 
 {
-    LinePrinter print;
+    Printer print;
     auto idretteneCount = idrettene.data->noOfElements();
     print.lineString(    "idrettene");
     for (auto iIdrett = 1; iIdrett <= idretteneCount; ++iIdrett)
@@ -496,7 +496,7 @@ auto Encode::dataIdrettene(DB::Idrettene& idrettene) -> string
 {
  //  // IO::printline("\n\n------ DEBUG encodeIdrettene ------\n\n");
 
-    LinePrinter print;
+    Printer print;
     auto idretteneCount = idrettene.data->noOfElements();
 
     print.lineStringUint("idretteneCount", idretteneCount);
@@ -610,7 +610,7 @@ auto Encode::dataIdrettene(DB::Idrettene& idrettene) -> string
 auto Encode::dataSpillerene(DB::Spillerene& spillerene) -> string 
 {
 
-    LinePrinter print;
+    Printer print;
     size_t spillereneCount = spillerene.data->noOfElements();
 
     print.lineStringUint("autoIncrementer", spillerene.autoIncrementer);
@@ -638,7 +638,7 @@ auto Encode::dataSpillerene(DB::Spillerene& spillerene) -> string
 }
 
 
-void Encode::viewResultatene(LinePrinter& p, const vector<DB::ViewResultat>& resultatene) 
+void Encode::viewResultatene(Printer& p, const vector<DB::ViewResultat>& resultatene) 
 {
     p.lineStringUint("resultateneCount", resultatene.size());
     p.lineString("resultatene");
@@ -667,7 +667,7 @@ void Encode::viewResultatene(LinePrinter& p, const vector<DB::ViewResultat>& res
 auto Encode::viewResultateneDivisjon(const vector<DB::ViewResultat>& resultatene,
                                const string divisjon) -> string 
 {
-    LinePrinter p;
+    Printer p;
 
     p.lineStringString("divisjon", divisjon);
 
@@ -680,7 +680,7 @@ auto Encode::viewResultateneDivisjon(const vector<DB::ViewResultat>& resultatene
 auto Encode::viewResultateneIdrett(const vector<DB::ViewResultat>& resultatene,
                              const string idrett) -> string 
 {
-    LinePrinter p;
+    Printer p;
     p.lineStringString("idrett", idrett);
 
     Encode::viewResultatene(p, resultatene);
@@ -689,7 +689,7 @@ auto Encode::viewResultateneIdrett(const vector<DB::ViewResultat>& resultatene,
 
 
 
-void Encode::viewTabellLagene(LinePrinter& p, const vector<DB::Tabell::Lag>& lagene) 
+void Encode::viewTabellLagene(Printer& p, const vector<DB::Tabell::Lag>& lagene) 
 {
     p.lineStringUint("tabellLageneCount", lagene.size());
     p.lineString("tabellLagene");
@@ -718,7 +718,7 @@ void Encode::viewTabellLagene(LinePrinter& p, const vector<DB::Tabell::Lag>& lag
 
 auto Encode::viewTabellDivisjon(const DB::Tabell& tabell) -> string 
 {
-    LinePrinter p;
+    Printer p;
 
     p.lineStringString("tabell", tabell.divisjon);
 
@@ -731,7 +731,7 @@ auto Encode::viewTabellDivisjon(const DB::Tabell& tabell) -> string
 auto Encode::viewTabelleneIdrett(const vector<DB::Tabell>& tabellene,
                                  const string idrett) -> string 
 {
-    LinePrinter p;
+    Printer p;
 
     p.lineStringString("idrett", idrett);
 
@@ -757,7 +757,7 @@ auto Encode::viewTabelleneIdrett(const vector<DB::Tabell>& tabellene,
 auto Encode::viewTerminliste(const DB::Terminliste& terminliste) -> string 
 {
 
-    LinePrinter p;
+    Printer p;
 
     p.lineStringString("divisjon", terminliste.divisjon);
     p.lineStringUint("lageneCount", terminliste.data.size());
@@ -789,7 +789,7 @@ auto Encode::viewTerminliste(const DB::Terminliste& terminliste) -> string
 }
 
 
-void Encode::viewToppscorerene(LinePrinter& p, const vector<DB::Toppscorer>& toppscorerene) 
+void Encode::viewToppscorerene(Printer& p, const vector<DB::Toppscorer>& toppscorerene) 
 {
     p.lineStringUint("toppscorereneCount", toppscorerene.size());
     p.lineString("toppscorerene");
@@ -811,7 +811,7 @@ void Encode::viewToppscorerene(LinePrinter& p, const vector<DB::Toppscorer>& top
 auto Encode::viewToppscorereneDivisjon(const vector<DB::Toppscorer>& toppscorerene,
                                        const string divisjon) -> string 
 {
-    LinePrinter p;
+    Printer p;
     p.lineStringString("divisjon", divisjon);
     Encode::viewToppscorerene(p, toppscorerene);
     return p.getString();
@@ -821,7 +821,7 @@ auto Encode::viewToppscorereneDivisjon(const vector<DB::Toppscorer>& toppscorere
 auto Encode::viewToppscorereneLag(const vector<DB::Toppscorer>& toppscorerene,
                             const string lag) -> string 
 {
-    LinePrinter p;
+    Printer p;
     p.lineStringString("lag", lag);
     Encode::viewToppscorerene(p, toppscorerene);
     return p.getString();
@@ -847,7 +847,7 @@ auto Encode::viewTabelltype(DB::Idrett::TabellType tabellType) -> string
 
 auto Encode::viewIdrett(const DB::Idrett& idrett) -> string 
 {
-    LinePrinter p;
+    Printer p;
 
     p.lineStringString("idrett", idrett.name);
     
@@ -888,7 +888,7 @@ auto Encode::viewIdrett(const DB::Idrett& idrett) -> string
 auto Encode::viewIdrettene(DB::Idrettene& idrettene) -> string 
 {
 
-    LinePrinter p;
+    Printer p;
 
     p.lineStringUint("idretteneCount", idrettene.data->noOfElements());
     p.lineString(    "idrettene");
@@ -914,7 +914,7 @@ auto Encode::viewIdrettene(DB::Idrettene& idrettene) -> string
 
 auto Encode::viewSpillerene(DB::Spillerene& spillerene) -> string 
 {
-    LinePrinter p;
+    Printer p;
 
     p.lineStringUint("spillereneCount", spillerene.data->noOfElements());
     p.lineString(    "spillerene");
