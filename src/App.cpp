@@ -256,15 +256,20 @@ void App::deleteSpiller(DB::Context& ctx)
     IO::printline("deleteSpiller()");
 
     const auto CMD_VELG = Terminal::CommandID('V');
+    const auto CMD_SEARCH = Terminal::CommandID('S');
 
     auto validCommands = IO::CommandMap{
         { CMD_VELG, Terminal::Command{ string(1, CMD_VELG), "Velg spiller..." } },
+        { CMD_SEARCH, Terminal::Command{ string(1, CMD_SEARCH), "Søk spiller med navn..." } },
         Terminal::commandBackPair
     };
     std::size_t nummer = -1;
+    std::string searchString = "";
+    std::string feedback = "";
     for (;;)
     {
         auto spiller = (DB::Spiller*)ctx.spillerene.data->remove(nummer);
+        IO::newpage();
         if (spiller)
         {
             if (validCommands.find(Terminal::CMD_COMMIT) == validCommands.end())
@@ -282,17 +287,26 @@ void App::deleteSpiller(DB::Context& ctx)
         else 
         {
             IO::printMenu(validCommands, "HOME -> Fjern -> Spiller - INGEN" );
-            IO::printline("Spiller som skal fjernes:");
-            IO::printline("Navn:");
-            IO::printline("Adresse:");
-            IO::printline("Nummer:");
-            IO::divider('_', 40);
+        }
+        if (!searchString.empty())
+        {
+            printSpillereByName(ctx, searchString);
+        }
+        if (!feedback.empty())
+        {
+            IO::printline(feedback);
         }
         auto[cmdKey, cmd] = IO::readCommand(validCommands);
         switch (cmdKey)
         {
+        case CMD_SEARCH:
+        {
+            searchString = IO::readName();
+            break;
+        }
         case CMD_VELG:
         {
+            searchString = "";
             if(ctx.spillerene.data->noOfElements() <= 0)
             {
                 IO::printline("Ingen spillere å velge, spillerlisten er tom!");
@@ -317,8 +331,9 @@ void App::deleteSpiller(DB::Context& ctx)
         {
             if (auto spiller = (DB::Spiller*)ctx.spillerene.data->remove(nummer); spiller)
             {
-                IO::printline("Spiller", spiller->name, "Fjernet");
+                IO::printlineNoSpace("Spiller \"", spiller->name, "\" fjernet");
                 delete spiller;
+                IO::waitForAnyKey();
             }
             else 
             {
@@ -342,7 +357,141 @@ void App::deleteSpiller(DB::Context& ctx)
 
 void App::deleteIdrett(DB::Context& ctx) 
 {
-    IO::printline("deleteIdrett()");
+    const auto CMD_VELG = Terminal::CommandID('V');
+    const auto CMD_SEARCH = Terminal::CommandID('S');
+    const auto CMD_BACK = Terminal::CommandID('B');
+    const auto CMD_REMOVE = Terminal::CommandID('F');
+
+    const auto CMD_YES = Terminal::CommandID('Y');
+    const auto CMD_NO = Terminal::CommandID('N');
+
+    const auto removeCommand = IO::CommandPair{ 
+        CMD_REMOVE, 
+        Terminal::Command{ 
+            "[F]jern", "Fjern den valgte idretten", "Bekreft", 
+            {
+                { CMD_NO,  Terminal::Command{"[N]ei", "Ikke fjern"}},
+                { CMD_YES, Terminal::Command{"[Y]es", "Fjern"}}
+            }
+        }
+    };
+
+    auto commandMap = IO::CommandMap{
+        { CMD_VELG,   Terminal::Command{"[V]elg", "Velg idretten som skal fjernes"} },
+        { CMD_SEARCH, Terminal::Command{"[S]øk", "Søk på idretter etter navn"} },
+        Terminal::keyCommandBack
+    };
+    std::string valgtIdrettStr = "";
+    std::string searchString = "";
+    std::string feedback = "";
+    for (;;)
+    {
+        IO::newpage();
+        
+        
+        if (auto idrett = (DB::Idrett*)ctx.idrettene.data->remove(valgtIdrettStr.c_str()); idrett)
+        {
+            if (commandMap.find(Terminal::CMD_COMMIT) == commandMap.end())
+            {
+                commandMap.insert(commandMap.begin(), removeCommand);
+            }
+            IO::printSubMenu(commandMap, "Idrett - " + idrett->name, "HOME -> Fjern");
+            IO::printline("Idrett som skal fjernes:");
+            IO::printline("Navn:", idrett->name);
+            IO::printline("Tabelltype:", Encode::viewTabelltype(idrett->tabell));
+            IO::printline("Divisjoner:", idrett->divisjonene.size());
+            IO::divider('_', 40);
+
+            ctx.idrettene.data->add(idrett);
+        } 
+        else
+        {
+            IO::printSubMenu(commandMap, "Idrett - INGEN", "HOME -> Fjern");
+        }
+        if (!searchString.empty())
+        {
+            IO::printlineNoSpace("Idrett med navn \"", searchString, "\" etterspurt");
+            std::size_t count = ctx.idrettene.data->noOfElements();
+            if (count == 0)
+            {
+                IO::printline("Ingen idretter i systemet!");
+                break;
+            }
+            for (std::size_t i = 1; i <= count; i++) // Loop listen over idretter
+            {
+                auto current = (DB::Idrett*)ctx.idrettene.data->removeNo(i);
+                if (current->name.find(searchString) != std::string::npos)
+                {
+                    IO::printline();
+                    IO::printline("Navn:", current->name);
+                    IO::printline("Tabelltype:", Encode::viewTabelltype(current->tabell));
+                    IO::printline("Divisjoner:", current->divisjonene.size());
+                }
+                ctx.idrettene.data->add(current);
+            }
+        }
+        if (!feedback.empty())
+        {
+            IO::printline(feedback);
+        }
+        auto[cmdKey, cmd] = IO::readCommand(commandMap);
+        switch (cmdKey)
+        {
+        case CMD_VELG:
+        {
+            feedback = "";
+            searchString = "";
+            if (ctx.idrettene.data->noOfElements() <= 0)
+            {
+                feedback = "Ingen idretter å velge, idrettlisten er tom!";
+                break;
+            }
+            std::string idrett = IO::readName();
+            if (ctx.idrettene.data->inList(idrett.c_str()))
+            {
+                valgtIdrettStr = idrett;
+            }
+            else
+            {
+                feedback = "Ingen idrett \"" + idrett + "\" finnes i systemet...";
+            }
+            break;
+        }
+        case CMD_SEARCH:
+            searchString = IO::readName();
+            break;
+        case CMD_REMOVE:
+        {
+            if (auto valgtIdrett = (DB::Idrett*)ctx.idrettene.data->remove(valgtIdrettStr.c_str()); valgtIdrett)
+            {
+                IO::printMenu(cmd.subcmd, "Er du sikker på at du vil fjerne " + valgtIdrett->name);
+                auto[subCmdKey, _] = IO::readCommand(cmd.subcmd);
+                switch (subCmdKey)
+                {
+                case CMD_NO:
+                    ctx.idrettene.data->add(valgtIdrett); //putt idretten tilbake, den skal ikke fjærnes alikevel!
+                    break;
+                case CMD_YES:
+                    IO::printline("Fjerner", valgtIdrett->name);
+                    delete valgtIdrett;
+                    IO::waitForAnyKey();
+                    break;
+                default:
+                    IO::printline("It's a simple YES/NO answer!!! please answer Y/N!");
+                    break;
+                }
+            }
+            break;
+        }
+        case CMD_BACK:
+            IO::printline("Avbryter...");
+            IO::printline("Ingen idrett fjernet.");
+            return;
+        default:
+            IO::printline("Not a valid command!");
+            break;
+        }
+    }
 }
 
 
@@ -418,8 +567,7 @@ void App::terminliste(DB::Context& ctx)
                     outfile.close();
 
                     IO::printlineNoSpace("\nTerminlistene written to file: ", filepath, ".yml");
-                    IO::printline("Press any key to continue...");
-                    std::cin.get();
+                    IO::waitForAnyKey();
                 }
             } break;
 
@@ -512,8 +660,7 @@ void App::resultatene(DB::Context& ctx)
                     outfile.close();
 
                     IO::printlineNoSpace("\nResultatene written to file: ", filepath, ".yml");
-                    IO::printline("Press any key to continue...");
-                    std::cin.get();
+                    IO::waitForAnyKey();
                 }
             } break;
 
