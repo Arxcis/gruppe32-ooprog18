@@ -20,10 +20,31 @@ namespace gruppe32::Terminal
 }
 
 
-
 /// <summary> Input and Ouput functions </summary>
 namespace gruppe32::IO  
 {
+
+
+struct CMD 
+{
+    char id;
+    char txtshort[16];
+    char txthelp[64];
+};
+
+constexpr CMD cmdSearch       { 'S', "[S]earch",   "Search with given data"      }; 
+constexpr CMD cmdFile         { 'F', "[F]ile",     "Write search result to file" };     
+constexpr CMD cmdOptions      { 'O', "[O]ptions",  "What are my options?"  };     
+constexpr CMD cmdPrint        { 'P', "[P]rint",    "Print search result"   };     
+constexpr CMD cmdBack         { 'B', "[B]ack",     "Back to previous menu" };     
+constexpr CMD cmdNameIdrett   { 'I', "[I]drett",   "Type name of Idrett"   };
+constexpr CMD cmdNameDivisjon { 'D', "[D]ivisjon", "Type name of Divisjon" };
+constexpr CMD cmdYear         { 'Y', "[Y]ear",     "Valid year 1970-2099" };
+constexpr CMD cmdMonth        { 'M', "[M]onth",    "Valid month 01-12" };
+constexpr CMD cmdDay          { 'A', "D[A]y",      "Valid day 01-31" };
+
+
+
 
 /// <summary>   The command map. </summary>
 using CommandMap = std::map<Terminal::CommandID, Terminal::Command>;
@@ -64,12 +85,17 @@ void newpage();
 void printMenu(const CommandMap& commands, 
                const std::string& title = "HOME");
 
+void printMenu(const std::vector<CMD>& commands, 
+               const std::string& title = "HOME");
+
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 /// <summary>   Read a command and check if it's viable to use based on the command map. </summary>
 /// <param name="validCommands">    The valid commands. </param>
 /// <returns>   The validated command the user requested. </returns>
 ////////////////////////////////////////////////////////////////////////////////////////////////////
+
 auto readCommand(const CommandMap& validCommands) -> CommandPair;
+auto readCommand(const std::vector<IO::CMD>& validCommands) -> char;
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 /// <summary>   Read either a command, a number or a name, 

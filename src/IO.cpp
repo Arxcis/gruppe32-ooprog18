@@ -308,3 +308,57 @@ void waitForAnyKey()
 }
 
 } // end namespace
+
+namespace gruppe32 
+{
+
+void IO::printMenu(const std::vector<IO::CMD> & commands, const std::string & title)
+{
+    //newpage();
+    const std::size_t columnSymbolWidth = 16;
+
+    IO::divider('*', 80);
+    IO::printline("** ", title);
+    IO::divider('*',80);
+
+    for (const auto[id, textshort, textlong] : commands) {
+        std::cout << "*   "
+            << std::setw(columnSymbolWidth)
+            << std::left
+            << textshort
+            << " - "
+            << textlong << '\n';
+    }
+    IO::divider('*', 80);
+}
+
+
+auto IO::readCommand(const std::vector<IO::CMD>& validCommands)  -> char 
+{
+    std::string commandString{};
+    for(;;) 
+    {
+        std::cout << "-> ";
+        std::getline(std::cin, commandString);
+        if (commandString.size() > 1) {
+            printline("commandString string too long");
+            continue;
+        }
+
+        if (commandString.size() < 1) {
+            printline("Please type something");
+            continue;
+        }
+
+        for(const auto [id, textshort, _] : validCommands) {
+            if (std::toupper(id) == std::toupper(commandString[0])) {
+ 
+                IO::printline(textshort);
+                return id;
+            }
+        }
+        printline("Command not valid");
+    }
+}
+
+}
