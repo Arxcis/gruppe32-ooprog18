@@ -719,7 +719,7 @@ void App::tabell(DB::Context& ctx)
         // Get tabelltype if we had a search hit
         if (divisjonene.size() > 0) 
         {
-            auto idrett = (Idrett* ) ctx.idrettene.data->remove(navnIdrett);
+            auto idrett = (DB::Idrett* ) ctx.idrettene.data->remove(navnIdrett.c_str());
             tabelltype = idrett->tabell;
             ctx.idrettene.data->add(idrett);
         }

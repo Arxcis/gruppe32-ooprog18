@@ -696,8 +696,9 @@ auto Encode::viewResultatene(const vector<DB::ViewResultat>& resultatene) -> str
 }
 
 
-void Encode::viewTabellLagene(Printer& p, const vector<DB::Tabell::Lag>& lagene) 
+auto Encode::viewTabell(const vector<DB::Tabell::Lag>& lagene) -> string
 {
+    Printer p;
     p.lineStringUint("tabellLageneCount", lagene.size());
     p.lineString("tabellLagene");
 
@@ -720,44 +721,7 @@ void Encode::viewTabellLagene(Printer& p, const vector<DB::Tabell::Lag>& lagene)
       
         p.tabLeft();
     }
-}
-
-
-auto Encode::viewTabellDivisjon(const DB::Tabell& tabell) -> string 
-{
-    Printer p;
-
-    p.lineStringString("tabell", tabell.divisjon);
-
-    Encode::viewTabellLagene(p, tabell.lagene);
-
-    return p.getString();
-}
-
-
-auto Encode::viewTabelleneIdrett(const vector<DB::Tabell>& tabellene,
-                                 const string idrett) -> string 
-{
-    Printer p;
-
-    p.lineStringString("idrett", idrett);
-
-    p.lineStringUint("tabelleneCount", tabellene.size());
-    p.lineString(    "tabellene");
-
-    for (const auto& tabell: tabellene) 
-    {
-        p.lineEmpty();
-        p.lineDashStringString("tabell", tabell.divisjon);
-        
-        p.tabRight();
-      
-        Encode::viewTabellLagene(p, tabell.lagene);
-       
-        p.tabLeft();
-    }
-
-    return p.getString();
+    p.getString();
 }
 
 
