@@ -661,7 +661,6 @@ void App::deleteDivisjon(DB::Context& ctx)
 
 void App::terminliste(DB::Context& ctx) 
 {
-
     using namespace Terminal;
 
     using std::size_t;
@@ -672,9 +671,9 @@ void App::terminliste(DB::Context& ctx)
     const auto validCommands = std::vector<IO::CMD> {
         IO::cmdNameIdrett,
         IO::cmdNameDivisjon,
-        IO::cmdOptions,
         IO::cmdPrint,
         IO::cmdFile,
+        IO::cmdOptions,
         IO::cmdBack
     };
 
@@ -682,33 +681,29 @@ void App::terminliste(DB::Context& ctx)
     // 2. Menu state
     string navnIdrett   = "";
     string navnDivisjon = "";
-    string result = "";
-
+    string options      = "";
+    std::vector<DB::Terminliste> terminlistene;
 
     for (;;) 
     {   
-
-        // 3. Fetch divisjoner and terminlister 
+        // 3. Fetch divisjoner and terminlister
+        terminlistene.clear(); 
         auto[divisjonene, statusmsg] = Search::divisjonene(ctx, navnIdrett, navnDivisjon);
         for (const auto& divisjon : divisjonene) {
-            auto terminliste = DB::Terminliste { divisjon.navn, divisjon.terminliste };
-            result += Encode::viewTerminliste(terminliste);
+            terminlistene.push_back(DB::Terminliste { divisjon.navn, divisjon.terminliste });
         }
 
 
         // 4. Display menu
         IO::newpage();
         IO::printline();
-        IO::printline(Encode::viewIdretteneCompact(ctx.idrettene, true));
         IO::printMenu(validCommands, "HOME -> Terminliste -> Idrett | Idrett & Divisjon");
-        IO::printline("-------- Input --------");
+        IO::printline("------------------------------------ Input -------------------------------------");
         IO::printline("Idrett:",    navnIdrett);
         IO::printline("Divisjon:",  navnDivisjon);
         IO::divider('-', 80);
-        IO::printline(statusmsg);
-        IO::printline(result); result = "";
-
-
+        IO::printline(Search::makeStatus(terminlistene,statusmsg));
+        IO::printline(options); options = "";
 
         // 5. User Input
         auto cmdid = IO::readCommand(validCommands);
@@ -716,17 +711,27 @@ void App::terminliste(DB::Context& ctx)
         {
             case IO::cmdNameIdrett.id:
                 navnIdrett = IO::readName();
+                navnDivisjon = "";
+
                 break;
 
             case IO::cmdNameDivisjon.id:
                 navnDivisjon = IO::readName();
                 break;
 
-            case IO::cmdOptions.id:   
+            case IO::cmdOptions.id:
+                options = Encode::viewIdretteneCompact(ctx.idrettene, true);
                 break;
 
-            case IO::cmdPrint.id:   
-                break;
+            case IO::cmdPrint.id: 
+            {
+                std::string result = "";
+                for (const auto& terminliste: terminlistene) {
+                    result += Encode::viewTerminliste(terminliste);
+                }
+                IO::printline(result);
+                IO::waitForAnyKey();
+            } break;
 
             case IO::cmdFile.id: {
                 string filepath = IO::readFilepath();
@@ -760,14 +765,14 @@ void App::resultatene(DB::Context& ctx)
     
     // 1. Declare valid commands
     const auto menu = std::vector<IO::CMD> {
-        IO::cmdPrint,
         IO::cmdNameIdrett,
         IO::cmdNameDivisjon,
         IO::cmdYear,
         IO::cmdMonth,
         IO::cmdDay,
-        IO::cmdOptions,
+        IO::cmdPrint,
         IO::cmdFile,
+        IO::cmdOptions,
         IO::cmdBack
     };
 
@@ -775,7 +780,6 @@ void App::resultatene(DB::Context& ctx)
     string navnIdrett   = "";
     string navnDivisjon = "";
     string options      = "";
-    string result       = "";
     size_t year  = 0;
     size_t month = 0;
     size_t day   = 0;
@@ -810,7 +814,6 @@ void App::resultatene(DB::Context& ctx)
         IO::divider('-', 80);
         IO::printline(Search::makeStatus(resultatene, statusDivisjonene));  
         IO::printline(options); options = "";
-        IO::printline(result); result = "";
 
 
         // 5. User Input
@@ -842,12 +845,17 @@ void App::resultatene(DB::Context& ctx)
                 options = Encode::viewIdretteneCompact(ctx.idrettene, true);
                 break;
 
-            case IO::cmdPrint.id:   
+            case IO::cmdPrint.id: 
+            {
+                std::string result = "";
                 for (const auto& divisjon: divisjonene) { 
                     auto[resultatene, statusResultatene] = Search::resultatene(ctx, divisjon, year, month, day); 
                     result += (Encode::viewResultatene(resultatene));
                 }
-                break;
+
+                IO::printline(result);
+                IO::waitForAnyKey();
+            } break;
 
             case IO::cmdFile.id: {
                 string filepath = IO::readFilepath();
@@ -898,7 +906,6 @@ void App::tabell(DB::Context& ctx)
     string navnIdrett   = "";
     string navnDivisjon = "";
     string options      = "";
-    string result       = "";
     DB::Idrett::TabellType tabelltype;
 
     for (;;) 
@@ -923,14 +930,13 @@ void App::tabell(DB::Context& ctx)
         IO::newpage();
         IO::printline();
         IO::printMenu(validCommands, "HOME -> Tabell -> Idrett | Idrettt & Divisjon");
-        IO::printline("-------- Input --------");
+        IO::printline("------------------------------------ Input -------------------------------------");
         IO::printline("Idrett  : ",  navnIdrett);
         IO::printline("Divisjon: ",  navnDivisjon);
         IO::divider('-', 80);
         IO::printline(statusDivisjonene);  
         IO::printline(options); options = "";
-        IO::printline(result); result = "";
-        
+
         // Get tabelltype if we had a search hit
         if (divisjonene.size() > 0) 
         {
@@ -953,8 +959,8 @@ void App::tabell(DB::Context& ctx)
                 break;
 
             case IO::cmdPrint.id:
-                result = Encode::viewTabellene(tabellene);
-                navnDivisjon = navnIdrett = "";
+                IO::printline(Encode::viewTabellene(tabellene));
+                IO::waitForAnyKey();                
                 break;
 
             case IO::cmdOptions.id:
