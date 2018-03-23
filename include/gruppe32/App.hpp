@@ -73,10 +73,11 @@ void writeSpillerene(DB::Spillerene& ctx, const string filepath);
 namespace Search 
 {
 
-using std::pair;
 using std::vector;
 using std::string;
 using std::size_t;
+using std::tuple;
+using std::pair;
 
 using returnSpillerene = pair<vector<DB::Spiller>, string>;
 using returnDivisjonene = pair<vector<DB::Divisjon>, string>;
@@ -84,6 +85,16 @@ using returnDivisjoneneMedIdrettNavn = pair<vector<pair<DB::Divisjon, string>>, 
 using returnResultatene = pair<vector<DB::ViewResultat>, string>;
     //  functions
     
+template<typename T >// RESULT DATA, RESULT STRING, STATUS STRING
+using filterResult = tuple<vector<pair<T, vector<string>>>, string, string>;
+
+auto filterLag(
+    DB::Context & ctx,
+    const string & navnIdrett,
+    const string & navnDivisjon,
+    const string & navnLag)
+    ->filterResult<DB::Lag>;
+
 auto findAndPrintIdrettDivisjon(
     DB::Context& ctx,
     const string& navnIdrett,

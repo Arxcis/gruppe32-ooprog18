@@ -514,7 +514,7 @@ void App::deleteDivisjon(DB::Context& ctx)
 
     const auto removeCommand = IO::CommandPair{
         CMD_REMOVE, Terminal::Command{
-        "[F]jern", "Fjern den valgte idretten", "Bekreft",
+        "[F]jern", "Fjern den valgte divisjonen", "Bekreft",
             {
                 { CMD_NO,  Terminal::Command{ "[N]ei", "Ikke fjern" } },
                 { CMD_YES, Terminal::Command{ "[Y]es", "Fjern" } }
@@ -845,6 +845,105 @@ void App::readResultatliste(DB::Context& ctx)
 void App::printLagSpillerdata(DB::Context& ctx) 
 {
     IO::printline("printLagSpillerdata()");
+
+    using std::size_t;
+    using std::string;
+    using std::pair;
+
+    const auto CMD_VELG_IDRETT =    Terminal::CommandID('I');
+    const auto CMD_VELG_DIVISJON =  Terminal::CommandID('D');
+    const auto CMD_VELG_LAG =       Terminal::CommandID('L');
+    const auto CMD_BACK =   Terminal::CommandID('B');
+    const auto CMD_VIS = Terminal::CommandID('V');
+
+    const auto displayCommand = IO::CommandPair{
+        CMD_VIS, Terminal::Command{ "[V]is", "Vis alle spillere i det valgte laget" }
+    };
+
+    auto menu = IO::CommandMap{
+        { CMD_BACK,           Terminal::Command{ "[B]ack", "Gå tilbake" } },
+        { CMD_VELG_IDRETT,    Terminal::Command{ "[I]drett",   "Filtrer Idrett" } },
+        { CMD_VELG_DIVISJON,  Terminal::Command{ "[D]ivisjon", "Filtrer Divisjon" } },
+        { CMD_VELG_LAG,       Terminal::Command{ "[L]ag",      "Filtrer Lag" } }
+    };
+
+    string searchNavnIdrett   = "";
+    string searchNavnDivisjon = "";
+    string searchNavnLag      = "";
+    string selectedLag = "INGEN";
+
+    for (;;)
+    {
+        IO::newpage();
+        const auto[resultatene, resultStr, status] = Search::filterLag(ctx, searchNavnIdrett, searchNavnDivisjon, searchNavnLag);
+       
+        if (resultatene.size() == 1)
+        {
+            selectedLag = resultatene[0].first.navn;
+            if (menu.find(CMD_VIS) == menu.end())
+            {
+                menu.insert(menu.begin(), displayCommand);
+            }
+        }
+        else
+        {
+            selectedLag = "INGEN";
+            if (menu.find(CMD_VIS) != menu.end())
+            {
+                menu.erase(CMD_VIS);
+            }
+        }
+
+        IO::printSubMenu(menu, "Print Spillere på Lag - " + selectedLag);
+        IO::printline("------------------------------------ FILTRE ------------------------------------");
+        IO::printline("Idrett:      ", "[", searchNavnIdrett,   "]");
+        IO::printline("Divisjon:    ", "[", searchNavnDivisjon, "]");
+        IO::printline("Lag:         ", "[", searchNavnLag,      "]");
+        IO::divider('-', 80);
+        IO::printline(resultStr);
+        IO::divider('-', 80);
+        IO::printline("Laget som er valgt:");
+        IO::printline(status);
+        IO::divider('-', 80);
+
+        const auto[cmdID, _] = IO::readCommand(menu);
+
+        switch (cmdID)
+        {
+        case CMD_VELG_IDRETT:
+            searchNavnIdrett = IO::toUpper(IO::readName("Idrett"));
+            break;
+
+        case CMD_VELG_DIVISJON:
+            searchNavnDivisjon = IO::toUpper(IO::readName("Divisjon"));
+            break;
+
+        case CMD_VELG_LAG:
+            searchNavnLag = IO::toUpper(IO::readName("Lag"));
+            break;
+
+        case CMD_BACK:
+            return;
+
+        case CMD_VIS:
+        {
+            DB::Spillerene lagSpillerene(0);
+            for (const auto& spillerID : resultatene[0].first.spillerene)
+            {
+                const auto spiller = (DB::Spiller*)ctx.spillerene.data->remove(spillerID);
+                
+                lagSpillerene.data->add(new DB::Spiller(*spiller));
+                ctx.spillerene.data->add(spiller);
+            }
+            IO::printline("Spillerene på laget: ", resultatene[0].first.navn);
+            IO::printline(Encode::viewSpillerene(lagSpillerene));
+            IO::waitForAnyKey();
+            break;
+        }
+        default:
+            break;
+        }
+    }
 }
 void App::insertLagSpiller(DB::Context& ctx)
 {
@@ -977,7 +1076,60 @@ void App::writeSpillerene(DB::Spillerene& ctx, const std::string filepath)
 //======================================
 using std::vector;
 using std::string;
+using std::size_t;
 using std::pair;
+
+auto Search::filterLag(
+    DB::Context& ctx,
+    const string& navnIdrett,
+    const string& navnDivisjon,
+    const string& navnLag
+) ->filterResult<DB::Lag>
+{   
+    vector<pair<DB::Lag, vector<string>>> result{};
+    string resultTreeString = "";
+    string statusMsg = "";
+
+    const size_t count = ctx.idrettene.data->noOfElements();
+    for (size_t i = 1; i <= count; i++)
+    {
+        const auto idrett = (DB::Idrett*)ctx.idrettene.data->removeNo(i);
+        resultTreeString += "|-" + idrett->name + "\n";
+        for (const auto& divisjon : idrett->divisjonene)
+        {
+            resultTreeString += "  |-" + divisjon.navn + "\n";
+            for (const auto& lag : divisjon.lagene)
+            {
+                if ((navnIdrett.empty() || (IO::toUpper(idrett->name).find(navnIdrett) != string::npos)) &&
+                    (navnDivisjon.empty() || (IO::toUpper(divisjon.navn).find(navnDivisjon) != string::npos)) &&
+                    (navnLag.empty() || (IO::toUpper(lag.navn).find(navnLag) != string::npos)))
+                {
+                    resultTreeString += "    |=>[ " + IO::toUpper(lag.navn) + " ]\n";
+                    result.push_back(std::pair<DB::Lag,vector<string>>{ lag, {idrett->name, divisjon.navn, lag.navn} });
+                }
+                else 
+                {
+                    resultTreeString += "    |-" + lag.navn + "\n";
+                }
+            }
+        }
+        ctx.idrettene.data->add(idrett);
+    }
+    if (result.size() > 1)
+    {
+        statusMsg = "Filteret er tvetydig, venligst pressiser...";
+    }
+    else if (result.size() == 1)
+    {
+        statusMsg = "Idretten: " + result[0].second[0] + ", Divisjonen: " + result[0].second[1] + ", Laget: " + result[0].second[2];
+    }
+    else
+    {
+        statusMsg = "Ingen lag i filteret, venligst ompresiser";
+    }
+    
+    return { result, resultTreeString, statusMsg };
+}
 
 auto Search::findAndPrintIdrettDivisjon(DB::Context & ctx, const string & navnIdrett, const string & navnDivisjon) -> Search::returnDivisjoneneMedIdrettNavn
 {
