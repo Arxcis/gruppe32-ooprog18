@@ -41,7 +41,7 @@ constexpr CMD cmdTermin      {'L', "Termin[L]iste", "Skriv terminliste til skjer
 constexpr CMD cmdResultat    {'K', "Resultat[K]amp", "Skriv resultater til skjerm eller fil"};
 constexpr CMD cmdTabell      {'T', "[T]abell",   "Skriv tabeller til skjerm eller fil"};
 constexpr CMD cmdLesresultat {'R', "[R]esultat", "Les resultater fra fil"};
-constexpr CMD cmdLag         {'D', "Lag[D]ata", "Data om spillerene på et lag"};
+constexpr CMD cmdLag         {'D', "Lag[D]ata", "Skriv data om spillerene på et lag"};
 constexpr CMD cmdLagEndre    {'E', "Lag[E]ndre", "Endre data om spillerene på et lag"};
 constexpr CMD cmdQuit         { 'Q', "[Q]uit", "Quit application" };    
 

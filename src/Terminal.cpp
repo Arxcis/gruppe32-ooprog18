@@ -120,14 +120,14 @@ const Command::Map commandMap
 const auto menu = std::vector<IO::CMD> {
     cmdSpiller,
     cmdIdrett,
-    cmdNy,
-    cmdFjern,
     cmdTermin,
     cmdResultat,
     cmdTabell,
-    cmdLesresultat,
     cmdLag,
+    cmdNy,
+    cmdFjern,
     cmdLagEndre,
+    cmdLesresultat,
     cmdQuit
 };
 
