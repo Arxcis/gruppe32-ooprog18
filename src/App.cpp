@@ -379,11 +379,12 @@ void App::deleteIdrett(DB::Context& ctx)
     auto commandMap = IO::CommandMap{
         { CMD_VELG,   Terminal::Command{"[V]elg", "Velg idretten som skal fjernes"} },
         { CMD_SEARCH, Terminal::Command{"[S]øk", "Søk på idretter etter navn"} },
-        Terminal::keyCommandBack
+        { CMD_BACK, Terminal::Command{ "[B]ack", "Gå tilbake" } }
     };
     std::string valgtIdrettStr = "";
     std::string searchString = "";
     std::string feedback = "";
+
     for (;;)
     {
         IO::newpage();
@@ -397,9 +398,7 @@ void App::deleteIdrett(DB::Context& ctx)
             }
             IO::printSubMenu(commandMap, "Idrett - " + idrett->name, "HOME -> Fjern");
             IO::printline("Idrett som skal fjernes:");
-            IO::printline("Navn:", idrett->name);
-            IO::printline("Tabelltype:", Encode::viewTabelltype(idrett->tabell));
-            IO::printline("Divisjoner:", idrett->divisjonene.size());
+            App::printIdrett(*idrett);
             IO::divider('_', 40);
 
             ctx.idrettene.data->add(idrett);
@@ -433,13 +432,13 @@ void App::deleteIdrett(DB::Context& ctx)
         if (!feedback.empty())
         {
             IO::printline(feedback);
+            feedback = "";
         }
         auto[cmdKey, cmd] = IO::readCommand(commandMap);
         switch (cmdKey)
         {
         case CMD_VELG:
         {
-            feedback = "";
             searchString = "";
             if (ctx.idrettene.data->noOfElements() <= 0)
             {
@@ -498,6 +497,162 @@ void App::deleteIdrett(DB::Context& ctx)
 void App::deleteDivisjon(DB::Context& ctx) 
 {
     IO::printline("deleteDivisjon()");
+    using std::size_t;
+    using std::string;
+    using std::pair;
+
+    const auto CMD_VELG          = Terminal::CommandID('V');
+    const auto CMD_VELG_IDRETT   = Terminal::CommandID('I');
+    const auto CMD_VELG_DIVISJON = Terminal::CommandID('D');
+
+    const auto CMD_BACK   = Terminal::CommandID('B');
+
+    const auto CMD_REMOVE = Terminal::CommandID('F');
+
+    const auto CMD_YES = Terminal::CommandID('Y');
+    const auto CMD_NO  = Terminal::CommandID('N');
+
+    const auto removeCommand = IO::CommandPair{
+        CMD_REMOVE, Terminal::Command{
+        "[F]jern", "Fjern den valgte idretten", "Bekreft",
+            {
+                { CMD_NO,  Terminal::Command{ "[N]ei", "Ikke fjern" } },
+                { CMD_YES, Terminal::Command{ "[Y]es", "Fjern" } }
+            }
+        }
+    };
+
+    auto menu = IO::CommandMap{
+        { CMD_BACK,           Terminal::Command{ "[B]ack", "Gå tilbake" } },
+        { CMD_VELG_IDRETT,    Terminal::Command{ "[I]drett",   "Input name of an Idrett" } },
+        { CMD_VELG_DIVISJON,  Terminal::Command{ "[D]ivisjon", "Input name of a Divisjon" } },
+    };
+
+    string searchNavnIdrett = "";
+    string searchNavnDivisjon = "";
+    string selectedDivisjon = "INGEN";
+    for (;;)
+    {
+        //Logic
+        auto[divisjonene, result] = Search::findAndPrintIdrettDivisjon(ctx, searchNavnIdrett, searchNavnDivisjon);
+        if (divisjonene.size() == 1)
+        {
+            if (menu.find(CMD_REMOVE) == menu.end())
+            {
+                menu.insert(menu.begin(), removeCommand);
+            }
+            selectedDivisjon = divisjonene[0].first.navn;
+        }
+        else
+        {
+            if (menu.find(CMD_REMOVE) != menu.end())
+            {
+                menu.erase(CMD_REMOVE);
+            }
+            selectedDivisjon = "INGEN";
+        }
+        
+
+        IO::newpage();
+        // Display menu
+        IO::printSubMenu(menu, "Divisjon - " + selectedDivisjon, "HOME -> Fjern");
+        IO::printline("Utvalget med filteret: Idrett [",searchNavnIdrett,"], Divisjon [", searchNavnDivisjon, "]");
+        if(!result.empty())
+        {
+            IO::printline(result);
+        }
+        IO::divider('-', 40);
+        IO::printline("Divisjon som skal fjernes:");
+        if (divisjonene.size() > 1)
+        {
+            IO::printline("Utvalget er tvetydig, venligst pressiser!");
+        }
+        else if (divisjonene.size() == 1)
+        {
+            IO::printlineNoSpace("\"", selectedDivisjon, "\" i idretten \"", divisjonene[0].second, "\"");
+        }
+        else
+        {
+            IO::printline("Ingen divisjoner som resultat av filteret");
+        }
+        IO::divider('-', 40);
+        
+
+        auto[cmdKey, cmd] = IO::readCommand(menu);
+        switch (cmdKey)
+        {
+        case CMD_VELG_DIVISJON:
+        {
+            searchNavnDivisjon = IO::readName("Divisjon");
+            break;
+        }
+        case CMD_VELG_IDRETT:
+        {
+            searchNavnIdrett = IO::readName("Idrett");
+            searchNavnDivisjon = "";
+            break;
+        }
+        case CMD_REMOVE:
+        {
+            std::string valgtDivisjon = divisjonene[0].first.navn;
+            if (auto valgtIdrett = (DB::Idrett*)ctx.idrettene.data->remove(divisjonene[0].second.c_str()); valgtIdrett)
+            {
+
+               /* valgtIdrett->divisjonene.erase(
+                    std::remove_if(
+                        valgtIdrett->divisjonene.begin(),
+                        valgtIdrett->divisjonene.end(),
+                        [valgtDivisjon](const DB::Divisjon& div) {return div.navn.compare(valgtDivisjon) == 0;}
+                    )
+                );*/
+
+
+                IO::printMenu(cmd.subcmd, "Er du sikker på at du vil fjerne " + valgtDivisjon);
+                auto[subCmdKey, _] = IO::readCommand(cmd.subcmd);
+                switch (subCmdKey)
+                {
+                case CMD_NO:
+                    IO::printline("Avbryter...");
+                    IO::printline("Ingen divisjon fjernes");
+                    IO::waitForAnyKey();
+                    ctx.idrettene.data->add(valgtIdrett); //putt idretten tilbake!
+                    return;
+                case CMD_YES:
+                    IO::printline("Fjerner", valgtDivisjon, "...");
+
+                    //TODO make sure this logic is correct
+                    valgtIdrett->divisjonene.erase(
+                        std::remove_if(
+                            valgtIdrett->divisjonene.begin(),
+                            valgtIdrett->divisjonene.end(),
+                            [valgtDivisjon](DB::Divisjon div) {return div.navn == valgtDivisjon;}
+                        ), valgtIdrett->divisjonene.end()
+                    );
+
+                    IO::waitForAnyKey();
+                    ctx.idrettene.data->add(valgtIdrett); //putt idretten tilbake!
+                    return;
+                default:
+                    IO::printline("It's a simple YES/NO answer!!! please answer Y/N!");
+                    break;
+                }
+                ctx.idrettene.data->add(valgtIdrett); //putt idretten tilbake!
+            }
+            else 
+            {
+                assert(false); //OH Fuk !! 
+            }
+            break;
+        }
+
+        case CMD_BACK:
+            return;
+        default:
+            IO::printline("Not a valid command!");
+            break;
+        }
+
+    }
 }
 
 
@@ -665,7 +820,7 @@ void App::resultatene(DB::Context& ctx)
             } break;
 
 
-            case Terminal::CMD_BACK:   
+            case Terminal::CMD_BACK:  
                 return;
 
             default:
@@ -740,7 +895,6 @@ void App::printIdrettene(DB::Idrettene& idrettene)
 
 void App::printSpiller(const DB::Spiller& spiller)
 {
-    IO::printline();
     IO::printline("  ", spiller.name);
     IO::printline("   - Nummer:", spiller.guid);
     IO::printline("   - Adresse:", spiller.address);
@@ -748,9 +902,8 @@ void App::printSpiller(const DB::Spiller& spiller)
 
 void App::printIdrett(const DB::Idrett& idrett)
 {
-    IO::printline();
     IO::printline("  ", idrett.name);
-    IO::printline("   - Tabelltype:", idrett.tabell);
+    IO::printline("   - Tabelltype:", Encode::viewTabelltype(idrett.tabell));
     IO::printline("   - Antall divisjoner:", idrett.divisjonene.size());
 }
 
@@ -826,58 +979,60 @@ using std::vector;
 using std::string;
 using std::pair;
 
-auto Search::spillerene(DB::Context& ctx, const size_t spillerNummer) -> Search::returnSpillerene
+auto Search::findAndPrintIdrettDivisjon(DB::Context & ctx, const string & navnIdrett, const string & navnDivisjon) -> Search::returnDivisjoneneMedIdrettNavn
 {
-    vector<DB::Spiller> result{};
-    string statusmsg = "";
-    //IO::printline("Searching for spiller...");
-    //
-    //DB::Spiller* spiller = (DB::Spiller*) ctx.spillerene.data->remove(spillerNummer);
-
-    //// Error 1
-    //if (!spiller) {
-    //    statusmsg = "Spiller " + navnSpiller + " not found";
-    //    return Search::returnSpillerene{ result, statusmsg };
-    //}
-    //// Error 2
-    //if (idrett->divisjonene.size() == 0) {
-    //    statusmsg = "navnSpiller " + navnIdrett + " has no divisjoner";
-
-    //    ctx.idrettene.data->add(idrett);   // because why no
-    //    return Search::returnDivisjonene{ result, statusmsg };
-    //}
-
-    //// Error 3
-    //if (navnDivisjon.empty()) {
-    //    statusmsg = "No divisjon specified";
-
-    //    ctx.idrettene.data->add(idrett);   // because why no
-    //    return Search::returnDivisjonene{ result, statusmsg };
-    //}
-
-    //for (const auto& divisjon : idrett->divisjonene)
-    //{
-    //    // Success
-    //    if (divisjon.navn.find(navnDivisjon) != std::string::npos)
-    //    {
-    //        result.push_back(divisjon);
-    //    }
-    //}
-    //// Error 4
-    //if (result.empty()) {
-    //    statusmsg = "Idrett " + navnIdrett + " has no divisjon matching " + navnDivisjon;
-
-    //    ctx.idrettene.data->add(idrett);   // because why no
-    //    return Search::returnDivisjonene{ result, statusmsg };
-    //}
-
-    //statusmsg = "Found " + std::to_string(result.size()) + " divisjoner";
-    //ctx.idrettene.data->add(idrett);   // because why no    
-    return Search::returnSpillerene{ result, statusmsg };
+    vector<pair<DB::Divisjon, string>> result{};
+    string printout = "";
+        const std::size_t count = ctx.idrettene.data->noOfElements();
+        for (std::size_t i = 1; i <= count; i++)
+        {
+            const auto idrett = (DB::Idrett*)ctx.idrettene.data->removeNo(i);
+            if (navnIdrett.empty())
+            {
+                printout += "  " + idrett->name + "\n";
+                for (const auto& div : idrett->divisjonene)
+                {
+                    auto divPair = pair<DB::Divisjon, string>{ div, idrett->name };
+                    if (navnDivisjon.empty())
+                    {
+                        printout += "  - " + div.navn + "\n";
+                        result.push_back(divPair);
+                    }
+                    else if (div.navn.find(navnDivisjon) != std::string::npos)
+                    {
+                        printout += "  - " + div.navn + "\n";
+                        result.push_back(divPair);
+                    }
+                }
+            }
+            else if (idrett->name.find(navnIdrett) != std::string::npos)
+            {
+                printout += "  " + idrett->name + "\n";
+                for (const auto& div : idrett->divisjonene)
+                {
+                    auto divPair = pair<DB::Divisjon, string>{ div, idrett->name };
+                    if (navnDivisjon.empty())
+                    {
+                        printout += "  - " + div.navn + "\n";
+                        result.push_back(divPair);
+                    }
+                    else if (div.navn.find(navnDivisjon) != std::string::npos)
+                    {
+                        printout += "  - " + div.navn + "\n";
+                        result.push_back(divPair);
+                    }
+                }
+            }
+            ctx.idrettene.data->add(idrett);
+        }
+        if (result.size() == 0)
+        {
+            printout = "Ingen divisjoner funnet!";
+        }
+    return Search::returnDivisjoneneMedIdrettNavn{ result, printout };
 }
 
-
-auto Search::divisjonene(DB::Context& ctx, const string& navnIdrett, const string& navnDivisjon) 
+auto Search::divisjonene(DB::Context& ctx, const string& navnIdrett, const string& navnDivisjon)
     -> Search::returnDivisjonene
 {
     vector<DB::Divisjon> result{};

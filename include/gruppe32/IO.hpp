@@ -90,13 +90,13 @@ auto readEitherCommandName(const CommandMap& validCommands) -> CommandPairWithDa
 auto readEitherCommandNumber(const CommandMap & validCommands) -> CommandPairWithData;
 
 
-auto readName() -> std::string;
+auto readName(std::string fieldName = "Name") -> std::string;
 auto readYear() -> size_t;
 auto readMonth() -> size_t;
 auto readDay() -> size_t ;
 auto readAddress() -> std::string;
-auto readNumber()->size_t;
-auto readFilepath() -> std::string;
+auto readNumber(std::string fieldName = "Number")->size_t;
+auto readFilepath(std::string fieldName = "File") -> std::string;
 
 void waitForAnyKey();
 
