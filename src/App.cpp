@@ -12,6 +12,9 @@ void App::printSpillereAll(DB::Context& ctx)
     IO::printline(ctx.spillerene.data->noOfElements());
     IO::printline();
     IO::printline(Encode::viewSpillerene(ctx.spillerene));
+
+
+    IO::waitForAnyKey();
 }
 
 
@@ -35,6 +38,9 @@ void App::printSpillereByName(DB::Context& ctx, const std::string name)
 
     IO::printline();
     IO::printline(Encode::viewSpillerene(viewSpillerene));
+
+    IO::waitForAnyKey();
+
 }
 
 
@@ -57,6 +63,9 @@ void App::printSpillereByNumber(DB::Context& ctx, const std::size_t number)
 
     IO::printline();
     IO::printline(Encode::viewSpillerene(viewSpillerene));
+
+    IO::waitForAnyKey();
+
 }
 
 
@@ -64,6 +73,8 @@ void App::printIdretterAll(DB::Context& ctx)
 {
     IO::printline();
     IO::printline(Encode::viewIdrettene(ctx.idrettene));
+
+    IO::waitForAnyKey();
 }
 
 
@@ -89,6 +100,8 @@ void App::printIdretterByName( DB::Context& ctx, const std::string name)
         }
         ctx.idrettene.data->add(current);
     }
+
+    IO::waitForAnyKey();
 }
 
 
