@@ -697,7 +697,7 @@ void App::terminliste(DB::Context& ctx)
         // 4. Display menu
         IO::newpage();
         IO::printline();
-        IO::printMenu(validCommands, "HOME -> Terminliste -> Idrett | Idrett & Divisjon");
+        IO::printMenu(validCommands, "HOME -> Terminliste");
         IO::printline("------------------------------------ Input -------------------------------------");
         IO::printline("Idrett:",    navnIdrett);
         IO::printline("Divisjon:",  navnDivisjon);
@@ -733,21 +733,24 @@ void App::terminliste(DB::Context& ctx)
                 IO::waitForAnyKey();
             } break;
 
-            case IO::cmdFile.id: {
+            case IO::cmdFile.id: 
+            {
                 string filepath = IO::readFilepath();
                 std::ofstream outfile("./data/write/"+filepath+".yml");
-                if (outfile) 
-                {
-                    for (const auto& divisjon: divisjonene) { 
-                        auto terminliste = DB::Terminliste {  divisjon.navn,  divisjon.terminliste };
-                        outfile << Encode::viewTerminliste(terminliste);
-                    }
-                    outfile.close();
-
-                    IO::printlineNoSpace("\nTerminlistene written to file: ", filepath, ".yml");
+                if(!outfile) 
+                {   
+                    IO::printline("Error when writing to file (!outfile)");
                     IO::waitForAnyKey();
+                    break;
                 }
-                navnDivisjon = navnIdrett = "";
+                for (const auto& divisjon: divisjonene) { 
+                    auto terminliste = DB::Terminliste {  divisjon.navn,  divisjon.terminliste };
+                    outfile << Encode::viewTerminliste(terminliste);
+                }
+                outfile.close();
+
+                IO::printlineNoSpace("\nTerminlistene written to file: ", filepath, ".yml");
+                IO::waitForAnyKey();
             } break;
 
             case IO::cmdBack.id:
@@ -804,7 +807,7 @@ void App::resultatene(DB::Context& ctx)
         // 4. Display menu
         IO::newpage();
         IO::printline();
-        IO::printMenu(menu, "HOME -> Resultatene -> Idrett | Idrett & Divisjon");
+        IO::printMenu(menu, "HOME -> Resultatene");
         IO::printline("------------------------------------ Input -------------------------------------");
         IO::printline("Idrett  : ",  navnIdrett);
         IO::printline("Divisjon: ",  navnDivisjon);
@@ -857,22 +860,25 @@ void App::resultatene(DB::Context& ctx)
                 IO::waitForAnyKey();
             } break;
 
-            case IO::cmdFile.id: {
+            case IO::cmdFile.id: 
+            {
                 string filepath = IO::readFilepath();
                 std::ofstream outfile("./data/write/"+filepath+".yml");
 
-                if(outfile) 
-                {
-                    for (const auto& divisjon: divisjonene) { 
-                        auto[resultatene, statusResultatene] = Search::resultatene(ctx, divisjon, year, month, day); 
-                        outfile << Encode::viewResultatene(resultatene);
-                    }
-                    outfile.close();
-
-                    IO::printlineNoSpace("\nResultatene written to file: ", filepath, ".yml");
+                if(!outfile) 
+                {   
+                    IO::printline("Error when writing to file (!outfile)");
                     IO::waitForAnyKey();
+                    break;
                 }
-                navnDivisjon = navnIdrett = "";
+                for (const auto& divisjon: divisjonene) { 
+                    auto[resultatene, statusResultatene] = Search::resultatene(ctx, divisjon, year, month, day); 
+                    outfile << Encode::viewResultatene(resultatene);
+                }
+                outfile.close();
+
+                IO::printlineNoSpace("\nResultatene written to file: ", filepath, ".yml");
+                IO::waitForAnyKey();
 
             } break;
 
@@ -907,42 +913,32 @@ void App::tabell(DB::Context& ctx)
     string navnDivisjon = "";
     string options      = "";
     DB::Idrett::TabellType tabelltype;
+    std::vector<DB::Tabell> tabellene;
 
     for (;;) 
     {
         // 3. Compute tabellene if we had a search hit
         auto[divisjonene, statusDivisjonene] = Search::divisjonene(ctx, navnIdrett, navnDivisjon);
 
-        std::vector<DB::Tabell> tabellene;
-        if (divisjonene.size() > 0) 
-        {
-            auto idrett = (DB::Idrett*) ctx.idrettene.data->remove(navnIdrett.c_str());
-            auto tabelltype = idrett->tabell;
-            ctx.idrettene.data->add(idrett);
-
-            for (const auto& divisjon: divisjonene)
-                tabellene.push_back(App::computeTabell(divisjon, tabelltype));
-        }
-
-
-
         // 4. Display menu
         IO::newpage();
         IO::printline();
-        IO::printMenu(validCommands, "HOME -> Tabell -> Idrett | Idrettt & Divisjon");
+        IO::printMenu(validCommands, "HOME -> Tabellene");
         IO::printline("------------------------------------ Input -------------------------------------");
         IO::printline("Idrett  : ",  navnIdrett);
         IO::printline("Divisjon: ",  navnDivisjon);
         IO::divider('-', 80);
-        IO::printline(statusDivisjonene);  
+        IO::printline(Search::makeStatus(tabellene, statusDivisjonene));  
         IO::printline(options); options = "";
 
-        // Get tabelltype if we had a search hit
-        if (divisjonene.size() > 0) 
-        {
-            auto idrett = (DB::Idrett* ) ctx.idrettene.data->remove(navnIdrett.c_str());
-            tabelltype = idrett->tabell;
+        auto idrett = (DB::Idrett*) ctx.idrettene.data->remove(navnIdrett.c_str());
+        if (idrett) {
+            auto tabelltype = idrett->tabell;
             ctx.idrettene.data->add(idrett);
+
+            tabellene.clear();
+            for (const auto& divisjon: divisjonene)
+                tabellene.push_back(App::computeTabell(divisjon, tabelltype));
         }
 
         // 5. User Input
@@ -959,6 +955,7 @@ void App::tabell(DB::Context& ctx)
                 break;
 
             case IO::cmdPrint.id:
+
                 IO::printline(Encode::viewTabellene(tabellene));
                 IO::waitForAnyKey();                
                 break;
@@ -967,23 +964,25 @@ void App::tabell(DB::Context& ctx)
                 options = Encode::viewIdretteneCompact(ctx.idrettene, true);
                 break;
 
-            case IO::cmdFile.id: {
-
-                string filepath = IO::readFilepath();
+            case IO::cmdFile.id: 
+            {
+                std::string filepath = IO::readFilepath();
                 std::ofstream outfile("./data/write/"+filepath+".yml");
 
-                if(outfile) 
-                {
-                    auto _result = Encode::viewTabellene(tabellene);
-                    IO::printline(_result);
-                    outfile << _result;
-                    outfile.close();
-
-                    IO::printline();
-                    IO::printlineNoSpace("\nTabellene written to file: ", filepath, ".yml");
+                if(!outfile) 
+                {   
+                    IO::printline("Error when writing to file (!outfile)");
                     IO::waitForAnyKey();
+                    break;
                 }
-                navnDivisjon = navnIdrett = "";
+                auto _result = Encode::viewTabellene(tabellene);
+                IO::printline(_result);
+                outfile << _result;
+                outfile.close();
+
+                IO::printline();
+                IO::printlineNoSpace("\nTabellene written to file: ", filepath, ".yml");
+                IO::waitForAnyKey();
             } break;
 
             case IO::cmdBack.id:   

@@ -732,7 +732,7 @@ auto Encode::viewTabellene(const std::vector<DB::Tabell>& tabellene) -> string
         }
         p.tabLeft();
     }
-    p.getString();
+    return p.getString();
 }
 
 
