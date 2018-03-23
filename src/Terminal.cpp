@@ -114,6 +114,7 @@ const Command::Map commandMap
 // Main menu
 for(;;) 
 {   
+    IO::newpage();
     IO::printMenu(commandMap);
     auto [cmdID, _] = IO::readCommand(commandMap);
 
@@ -121,8 +122,10 @@ for(;;)
     {
     case CMD_SPILLER:
     cmdID = [&commandMap, &ctx]() -> CommandID {
-        for(;;) 
+        for(;;)
         {
+            IO::newpage();
+
             auto command = commandMap.at(CMD_SPILLER);
             IO::printSubMenu(command.subcmd, command.title);
             auto [subcmdID, _, nr, name] = IO::readEitherCommandNumberName(command.subcmd);
@@ -158,6 +161,8 @@ for(;;)
     cmdID = [&commandMap, &ctx]() -> CommandID {
         for(;;) 
         {   
+            IO::newpage();
+
             auto command = commandMap.at(CMD_IDRETT);
             IO::printSubMenu(command.subcmd, command.title);
             auto[subcmdID, _cmd, _nr, name] = IO::readEitherCommandName(command.subcmd);
@@ -188,6 +193,7 @@ for(;;)
     cmdID = [&commandMap, &ctx]() -> CommandID {
         for(;;) 
         {
+            IO::newpage();
             auto command = commandMap.at(CMD_NY);
             IO::printSubMenu(command.subcmd, command.title);
             auto [subcmdID, _] = IO::readCommand(commandMap.at(CMD_NY).subcmd);
@@ -222,6 +228,8 @@ for(;;)
     cmdID = [&commandMap, &ctx]() -> CommandID {
         for(;;) 
         {   
+            IO::newpage();
+
             auto command = commandMap.at(CMD_FJERN);
             IO::printSubMenu(command.subcmd, command.title);
             auto [subcmdID, _] = IO::readCommand(command.subcmd);
@@ -273,8 +281,10 @@ for(;;)
 
     case CMD_ENDRE:
     cmdID = [&commandMap, &ctx](){
-        for(;;) {
+        for(;;) 
+        {
 
+            IO::newpage();
             auto command = commandMap.at(CMD_ENDRE);
             IO::printSubMenu(command.subcmd, command.title);
             auto [subcmdID, _] = IO::readCommand(commandMap.at(CMD_ENDRE).subcmd);
