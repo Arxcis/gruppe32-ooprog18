@@ -88,23 +88,17 @@ struct Command {
     Map subcmd{};
 };
 
-const Command::Pair commandNamePair         = { CMD_NAME, Command{ "<name>", "A name" }};     
-const Command::Pair commandCommitPair       = { CMD_COMMIT, Command{ string(1,CMD_COMMIT), "Fullført!" } };
-const Command::Pair commandBackPair         = { CMD_BACK, Command{ string(1,CMD_BACK), "Back to last menu" }};     
-const Command::Pair commandQuitPair         = { CMD_QUIT, Command{ string(1,CMD_QUIT), "Quit the application"}};   
+static const Command::Pair commandCommitPair       = { CMD_COMMIT, Command{ string(1,CMD_COMMIT), "Fullført!" } };
+static const Command::Pair commandBackPair         = { CMD_BACK, Command{ string(1,CMD_BACK), "Back to last menu" }};     
+static const Command::Pair commandQuitPair         = { CMD_QUIT, Command{ string(1,CMD_QUIT), "Quit the application"}};   
 
-const Command::Pair keyCommandSearch        = { CMD_SEARCH,         Command{ "[S]earch",     "Search with given data" }};     
-const Command::Pair keyCommandFile          = { CMD_FILE,           Command{ "[F]ile",     "Write search result to file" }};     
-const Command::Pair keyCommandOptions       = { CMD_OPTIONS,      Command{ "[O]ptions",    "What are my options?" }};     
-const Command::Pair keyCommandPrint      = { CMD_PRINT,      Command{ "[P]rint",    "Print search result" }};     
-const Command::Pair keyCommandNameIdrett    = { CMD_IDRETT_NAVN,    Command{ "<idrett>",     "A name of an Idrett"   }};     
-const Command::Pair keyCommandNameDivisjon  = { CMD_NAME_DIVISJON,  Command{ "<divisjon>",   "A name of a Divisjon"  }};
-const Command::Pair keyCommandBack          = { CMD_BACK,           Command{ "[B]ack",       "Back to previous menu" }};     
-
-const Command::Pair keyCommandYear   = { CMD_NAME, Command{ "<year>",     "Example: 2018" }};     
-const Command::Pair keyCommandMonth  = { CMD_NAME, Command{ "<month>",   "Example: 07"   }};     
-const Command::Pair keyCommandDay    = { CMD_NAME, Command{ "<day>",     "Example: 21" }};     
-
+static const Command::Pair keyCommandSearch        = { CMD_SEARCH,         Command{ "[S]earch",     "Search with given data" }};     
+static const Command::Pair keyCommandFile          = { CMD_FILE,           Command{ "[F]ile",     "Write search result to file" }};     
+static const Command::Pair keyCommandOptions       = { CMD_OPTIONS,      Command{ "[O]ptions",    "What are my options?" }};     
+static const Command::Pair keyCommandPrint         = { CMD_PRINT,      Command{ "[P]rint",    "Print search result" }};     
+static const Command::Pair keyCommandBack          = { CMD_BACK,           Command{ "[B]ack",       "Back to previous menu" }};     
+static const Command::Pair keyCommandNameIdrett    = { CommandID('I'),  Command{ "[I]drett",  "Type name of Idrett" }};
+static const Command::Pair keyCommandNameDivisjon  = { CommandID('D'),  Command{ "[D]ivisjon", "Type name of Divisjon" }};
 
 void run(DB::Context& ctx);
 

@@ -206,20 +206,19 @@ class Tabell
 public:
     struct Lag 
     {
-        string navn;
-        size_t poeng;
-        size_t hjemmeScoringer;
-        size_t hjemmeBaklengs;
-        size_t borteScoringer;
-        size_t borteBaklengs;
-        size_t seier;
-        size_t uavgjort;
-        size_t tap;
-        size_t plassering;
+        string navn = "";
+        size_t poeng = 0;
+        size_t hjemmeScoringer = 0;
+        size_t hjemmeBaklengs = 0;
+        size_t borteScoringer = 0;
+        size_t borteBaklengs = 0;
+        size_t seier = 0;
+        size_t uavgjort = 0;
+        size_t tap = 0;
     };
 
-    string idrett;
-    string divisjon;
+    string idrett = "";
+    string divisjon = "";
     map<string, Lag> lagene;
 };
 

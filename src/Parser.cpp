@@ -1,4 +1,4 @@
-#include <gruppe32/Parser.hpp>
+ #include <gruppe32/Parser.hpp>
 
 #include <string>
 #include <iomanip>
@@ -696,67 +696,44 @@ auto Encode::viewResultatene(const vector<DB::ViewResultat>& resultatene) -> str
 }
 
 
-void Encode::viewTabellLagene(Printer& p, const vector<DB::Tabell::Lag>& lagene) 
-{
-    p.lineStringUint("tabellLageneCount", lagene.size());
-    p.lineString("tabellLagene");
-
-    for (const auto& lag: lagene) 
-    {
-        p.lineEmpty();
-        p.lineDashStringString("lag", lag.navn);
-       
-        p.tabRight();
-    
-        p.lineStringUint("plassering", lag.plassering);
-        p.lineStringUint("poeng", lag.poeng);
-        p.lineStringUint("hjemmeScoringer", lag.hjemmeScoringer);
-        p.lineStringUint("hjemmeBaklengs", lag.hjemmeBaklengs);
-        p.lineStringUint("borteScoringer", lag.borteScoringer);
-        p.lineStringUint("borteBaklengs", lag.borteBaklengs);
-        p.lineStringUint("seier", lag.seier);
-        p.lineStringUint("uavgjort", lag.uavgjort);
-        p.lineStringUint("tap", lag.tap);
-      
-        p.tabLeft();
-    }
-}
-
-
-auto Encode::viewTabellDivisjon(const DB::Tabell& tabell) -> string 
-{
-    Printer p;
-
-    p.lineStringString("tabell", tabell.divisjon);
-
-    Encode::viewTabellLagene(p, tabell.lagene);
-
-    return p.getString();
-}
-
-
-auto Encode::viewTabelleneIdrett(const vector<DB::Tabell>& tabellene,
-                                 const string idrett) -> string 
+auto Encode::viewTabellene(const vector<DB::Tabell>& tabellene, string idrett) -> string
 {
     Printer p;
 
     p.lineStringString("idrett", idrett);
-
-    p.lineStringUint("tabelleneCount", tabellene.size());
-    p.lineString(    "tabellene");
+    p.lineStringUint(  "tabelleneCount", tabellene.size());
+    p.lineString(      "tabellene");
 
     for (const auto& tabell: tabellene) 
     {
         p.lineEmpty();
-        p.lineDashStringString("tabell", tabell.divisjon);
+        p.lineDashStringString("tabell",tabell.divisjon);
         
         p.tabRight();
-      
-        Encode::viewTabellLagene(p, tabell.lagene);
-       
-        p.tabLeft();
-    }
+        
+        p.lineStringUint("tabellLageneCount", tabell.lagene.size());
+        p.lineString("tabellLagene");
 
+        for (const auto[lagkey, lag]: tabell.lagene) 
+        {
+            p.lineEmpty();
+            p.lineDashStringString("lag", lag.navn);
+           
+            p.tabRight();
+        
+            p.lineStringUint("poeng", lag.poeng);
+            p.lineStringUint("hjemmeScoringer", lag.hjemmeScoringer);
+            p.lineStringUint("hjemmeBaklengs", lag.hjemmeBaklengs);
+            p.lineStringUint("borteScoringer", lag.borteScoringer);
+            p.lineStringUint("borteBaklengs", lag.borteBaklengs);
+            p.lineStringUint("seier", lag.seier);
+            p.lineStringUint("uavgjort", lag.uavgjort);
+            p.lineStringUint("tap", lag.tap);
+          
+            p.tabLeft();
+        }
+        p.tabLeft();    
+    }
     return p.getString();
 }
 
@@ -832,6 +809,22 @@ auto Encode::viewToppscorereneLag(const vector<DB::Toppscorer>& toppscorerene,
     p.lineStringString("lag", lag);
     Encode::viewToppscorerene(p, toppscorerene);
     return p.getString();
+}
+
+
+auto Encode::dataDato(const size_t year, const size_t month, const size_t day) -> string
+{
+    std::stringstream ss;
+
+    ss << year << "-";
+
+    if (month < 10) ss << "0" + std::to_string(month) << "-";
+    else ss << month << "-";
+
+    if (day < 10) ss << "0"+std::to_string(day);
+    else ss << day;
+
+    return ss.str();
 }
 
 

@@ -30,7 +30,7 @@ const Command::Map commandMap
             "Info Idrett(er)",
             {
                 { CMD_IDRETT_ALLE, Command{  string(1,CMD_IDRETT_ALLE), "Skriv Alle Idrettene"} },
-                commandNamePair,
+                { CMD_IDRETT_NAVN, Command{ "<navn>", "Søk med navn på idrett"} },
                 commandBackPair,
                 commandQuitPair
             },

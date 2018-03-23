@@ -3,7 +3,6 @@ tabellLageneCount: 2
 tabellLagene:
 
 - lag: Brann
-  plassering: 1
   poeng: 16
   hjemmeScoringer: 18
   hjemmeBaklengs: 2
@@ -14,7 +13,6 @@ tabellLagene:
   tap: 2
 
 - lag: Rosenborg
-  plassering: 2
   poeng: 7
   hjemmeScoringer: 7
   hjemmeBaklengs: 12

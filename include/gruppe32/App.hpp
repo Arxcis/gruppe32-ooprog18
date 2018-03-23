@@ -40,6 +40,9 @@ void deleteDivisjon(DB::Context& ctx);
 void terminliste(DB::Context& ctx);
 void resultatene(DB::Context& ctx);
 void tabell(DB::Context& ctx);
+auto computeTabell(
+    const DB::Divisjon& divisjon,
+    const DB::Idrett::TabellType tabelltype)->DB::Tabell;
 
 void readResultatliste(DB::Context& ctx);
 
