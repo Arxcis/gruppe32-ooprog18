@@ -103,6 +103,20 @@ auto resultatene(
     const size_t year, 
     const size_t month, 
     const size_t day) -> Search::returnResultatene;
+
+
+template<class Container>
+auto makeStatus(Container container, const std::string info) -> std::string
+{
+    return "Search -> " + std::to_string(container.size()) + " hits                  ("+ info + ")";
+}
+template<class Container>
+auto makeStatus(Container container) -> std::string
+{
+    return "Search -> " + std::to_string(container.size()) + " hits";
+}
+
+
 } // ::Search
 
 } // ::gruppe32

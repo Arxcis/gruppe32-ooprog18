@@ -759,13 +759,14 @@ void App::resultatene(DB::Context& ctx)
     using namespace Terminal;
     
     // 1. Declare valid commands
-    const auto validCommands = std::vector<IO::CMD> {
+    const auto menu = std::vector<IO::CMD> {
+        IO::cmdPrint,
         IO::cmdNameIdrett,
         IO::cmdNameDivisjon,
         IO::cmdYear,
         IO::cmdMonth,
         IO::cmdDay,
-        IO::cmdOptions,  
+        IO::cmdOptions,
         IO::cmdFile,
         IO::cmdBack
     };
@@ -773,41 +774,47 @@ void App::resultatene(DB::Context& ctx)
     // 2. Menu state
     string navnIdrett   = "";
     string navnDivisjon = "";
-    string options = "";
+    string options      = "";
+    string result       = "";
     size_t year  = 0;
     size_t month = 0;
     size_t day   = 0;
 
+    std::vector<DB::ViewResultat> resultatene;
 
     for (;;) 
     {
         // 3. Search for divisjoner and resultater
+        resultatene.clear();
         auto[divisjonene, statusDivisjonene] = Search::divisjonene(ctx, navnIdrett, navnDivisjon);
         for (const auto& divisjon: divisjonene)
         {         
-            auto[resultatene, statusResultatene] = Search::resultatene(ctx, divisjon, year, month, day); 
-            IO::printline(Encode::viewResultatene(resultatene));
+            auto[_resultatene, statusResultatene] = Search::resultatene(ctx, divisjon, year, month, day); 
+            for(const auto result: _resultatene) 
+            {
+                resultatene.push_back(result);  
+            } 
         }
 
 
         // 4. Display menu
         IO::newpage();
         IO::printline();
-        IO::printMenu(validCommands, "HOME -> Resultatene -> Idrett | Idrett & Divisjon");
-        IO::printline("-------- Input --------");
+        IO::printMenu(menu, "HOME -> Resultatene -> Idrett | Idrett & Divisjon");
+        IO::printline("------------------------------------ Input -------------------------------------");
         IO::printline("Idrett  : ",  navnIdrett);
         IO::printline("Divisjon: ",  navnDivisjon);
         IO::printline("Year    : ",  year);
         IO::printline("Month   : ",  month);
         IO::printline("Day     : ",  day);
         IO::divider('-', 80);
-        IO::printline(statusDivisjonene);  
+        IO::printline(Search::makeStatus(resultatene, statusDivisjonene));  
         IO::printline(options); options = "";
-
+        IO::printline(result); result = "";
 
 
         // 5. User Input
-        auto cmdid = IO::readCommand(validCommands);
+        auto cmdid = IO::readCommand(menu);
         switch(cmdid) 
         {
             case IO::cmdNameIdrett.id: 
@@ -831,11 +838,15 @@ void App::resultatene(DB::Context& ctx)
                 day = IO::readDay();
                 break;
 
-            case IO::cmdOptions.id:   
+            case IO::cmdOptions.id:
                 options = Encode::viewIdretteneCompact(ctx.idrettene, true);
                 break;
 
             case IO::cmdPrint.id:   
+                for (const auto& divisjon: divisjonene) { 
+                    auto[resultatene, statusResultatene] = Search::resultatene(ctx, divisjon, year, month, day); 
+                    result += (Encode::viewResultatene(resultatene));
+                }
                 break;
 
             case IO::cmdFile.id: {
@@ -1279,6 +1290,7 @@ auto Search::findAndPrintIdrettDivisjon(DB::Context & ctx, const string & navnId
     return Search::returnDivisjoneneMedIdrettNavn{ result, printout };
 }
 
+
 auto Search::divisjonene(DB::Context& ctx, const string& navnIdrett, const string& navnDivisjon)
     -> Search::returnDivisjonene
 {
@@ -1289,7 +1301,7 @@ auto Search::divisjonene(DB::Context& ctx, const string& navnIdrett, const strin
 
     // Error 1
     if (!idrett) {
-        statusmsg = "Idrett " + navnIdrett + " not found...";
+        statusmsg =  "Idrett " + navnIdrett + " not found...";
         return Search::returnDivisjonene{result, statusmsg};
     }
     // Error 2
@@ -1309,7 +1321,6 @@ auto Search::divisjonene(DB::Context& ctx, const string& navnIdrett, const strin
         }
 
         ctx.idrettene.data->add(idrett);   // because why no    
-        statusmsg = "Search: " + std::to_string(result.size()) + " hits";
         return Search::returnDivisjonene{result, statusmsg};
     }
 
@@ -1329,7 +1340,6 @@ auto Search::divisjonene(DB::Context& ctx, const string& navnIdrett, const strin
         return Search::returnDivisjonene{result, statusmsg};
     }
 
-    statusmsg = "Search: " + std::to_string(result.size()) + " hits";
     ctx.idrettene.data->add(idrett);   // because why no    
     return Search::returnDivisjonene{result, statusmsg};
 }
@@ -1369,11 +1379,10 @@ auto Search::resultatene(
     }
     // Error 4
     if (resultatene.empty()) { 
-        statusmsg = "No results on dato: " + encodedDato + "...";
+        statusmsg = "No results on current dato: " + encodedDato + "...";
         return Search::returnResultatene {resultatene, statusmsg};
     }
 
-    statusmsg = "Search: " + std::to_string(resultatene.size()) + " hits";
     return Search::returnResultatene {resultatene, statusmsg};
 } // ::Search
 } // ::gruppe32
