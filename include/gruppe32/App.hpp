@@ -83,12 +83,14 @@ using std::size_t;
 
 using returnSpillerene = pair<vector<DB::Spiller>, string>;
 using returnDivisjonene = pair<vector<DB::Divisjon>, string>;
+using returnDivisjoneneMedIdrettNavn = pair<vector<pair<DB::Divisjon, string>>, string>;
 using returnResultatene = pair<vector<DB::ViewResultat>, string>;
     //  functions
     
-auto spillerene(
+auto findAndPrintIdrettDivisjon(
     DB::Context& ctx,
-    const size_t spillerNummer) -> Search::returnSpillerene;
+    const string& navnIdrett,
+    const string& navnDivisjon)->Search::returnDivisjoneneMedIdrettNavn;
 
 auto divisjonene(
     DB::Context& ctx,

@@ -176,12 +176,12 @@ auto readEitherCommandName(const CommandMap & validCommands) -> CommandPairWithD
 }
 
 
-auto readNumber() -> size_t
+auto readNumber(std::string fieldName) -> size_t
 {
     std::string commandString{};
     for (;;)
     {
-        std::cout << "Number: ";
+        std::cout << fieldName << ": ";
         std::getline(std::cin, commandString);
         
         if (Valid::isUint(commandString))
@@ -262,12 +262,12 @@ auto readDay() -> size_t
 }
 
 
-auto readName() -> std::string 
+auto readName(std::string fieldName) -> std::string
 {
     std::string maybeName{};
     for (;;)
     {
-        std::cout << "Name: ";
+        std::cout << fieldName << ": ";
 
         std::getline(std::cin, maybeName);
 
@@ -296,9 +296,9 @@ auto readAddress() -> std::string
     }
 }
 
-auto readFilepath() -> std::string 
+auto readFilepath(std::string fieldName) -> std::string
 {
-    return IO::readName();
+    return IO::readName(fieldName);
 }
 
 void waitForAnyKey()
