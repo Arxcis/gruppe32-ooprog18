@@ -3,16 +3,18 @@
 namespace gruppe32::Terminal 
 {
 
+using namespace IO;
+
 void run(DB::Context& ctx) 
 {
     using string = std::string;
-    
+
 const Command::Map commandMap
 {
     {
         CMD_SPILLER, Command{
             string(1,CMD_SPILLER),
-            "Skriv Alle Spillerne eller spiller med <nr> / <navn>", 
+            "Skriv informasjon om spillere", 
             "Info spiller(e)",
             {
                 { CMD_SPILLER_ALLE, Command{ string(1, CMD_SPILLER_ALLE), "Skriv Alle Spillerne"} },
@@ -26,7 +28,7 @@ const Command::Map commandMap
     {
         CMD_IDRETT, Command{
             string(1,CMD_IDRETT),
-            "Skriv Alle Idrettene eller idretten med <navn>", 
+            "Skriv informasjon om idretter", 
             "Info Idrett(er)",
             {
                 { CMD_IDRETT_ALLE, Command{  string(1,CMD_IDRETT_ALLE), "Skriv Alle Idrettene"} },
@@ -50,6 +52,8 @@ const Command::Map commandMap
             },
         }
     },
+
+
     {
         CMD_FJERN, Command{
             string(1,CMD_FJERN),
@@ -64,11 +68,10 @@ const Command::Map commandMap
             },
         }
     },
-
     {   
         CMD_TERMIN, Command { 
             string(1,CMD_TERMIN), 
-            "Skriv terminListe for en gitt divisjon/avdeling til skjerm eller fil", 
+            "Skriv terminliste til skjerm eller fil", 
             "Termininfo"
         }
     },   
@@ -79,6 +82,7 @@ const Command::Map commandMap
             "Kampinfo"
         }
     },     
+
     {
         CMD_TABELL, Command{ 
             string(1,CMD_TABELL), 
@@ -86,6 +90,7 @@ const Command::Map commandMap
             "Tabellinfo"
         }
     },   
+
     {   CMD_RESULTAT, Command{ string(1,CMD_RESULTAT),"Lese Resultatliste inn fra fil", "Leser Resultatliste ..."}}, 
     {   CMD_LAG,      Command{ string(1,CMD_LAG), "Data om alle spillerne på et lag", "Laginfo"}},      
     {   
@@ -111,17 +116,33 @@ const Command::Map commandMap
     commandQuitPair
 };
 
+
+const auto menu = std::vector<IO::CMD> {
+    cmdSpiller,
+    cmdIdrett,
+    cmdNy,
+    cmdFjern,
+    cmdTermin,
+    cmdResultat,
+    cmdTabell,
+    cmdLesresultat,
+    cmdLag,
+    cmdLagEndre,
+    cmdQuit
+};
+
+
 // Main menu
 for(;;) 
 {   
     IO::newpage();
-    IO::printMenu(commandMap);
-    auto [cmdID, _] = IO::readCommand(commandMap);
+    IO::printMenu(menu);
+    auto cmdid = IO::readCommand(menu);
 
-    switch(cmdID) 
+    switch(cmdid) 
     {
-    case CMD_SPILLER:
-    cmdID = [&commandMap, &ctx]() -> CommandID {
+    case cmdSpiller.id:
+    cmdid = [&commandMap, &ctx]() -> CommandID {
         for(;;)
         {
             IO::newpage();
@@ -157,8 +178,8 @@ for(;;)
     }();
     break;
 
-    case CMD_IDRETT:
-    cmdID = [&commandMap, &ctx]() -> CommandID {
+    case cmdIdrett.id:
+    cmdid = [&commandMap, &ctx]() -> CommandID {
         for(;;) 
         {   
             IO::newpage();
@@ -189,8 +210,8 @@ for(;;)
     }();
     break;
 
-    case CMD_NY: 
-    cmdID = [&commandMap, &ctx]() -> CommandID {
+    case cmdNy.id:
+    cmdid = [&commandMap, &ctx]() -> CommandID {
         for(;;) 
         {
             IO::newpage();
@@ -224,8 +245,8 @@ for(;;)
     }();
     break;
 
-    case CMD_FJERN:
-    cmdID = [&commandMap, &ctx]() -> CommandID {
+    case cmdFjern.id:
+    cmdid = [&commandMap, &ctx]() -> CommandID {
         for(;;) 
         {   
             IO::newpage();
@@ -259,28 +280,28 @@ for(;;)
     }();
     break;
 
-    case CMD_TERMIN:
+    case cmdTermin.id:
         App::terminliste(ctx);
     break;
 
-    case CMD_KAMP:
+    case cmdResultat.id:
         App::resultatene(ctx);
     break;
 
-    case CMD_TABELL:
+    case cmdTabell.id:
         App::tabell(ctx); 
     break;
 
-    case CMD_RESULTAT:
+    case cmdLesresultat.id:
         App::readResultatliste(ctx);
     break;
 
-    case CMD_LAG:
+    case cmdLag.id:
         App::printLagSpillerdata(ctx);
     break;
 
-    case CMD_ENDRE:
-    cmdID = [&commandMap, &ctx](){
+    case cmdLagEndre.id:
+    cmdid = [&commandMap, &ctx](){
         for(;;) 
         {
 
@@ -311,22 +332,13 @@ for(;;)
     }();
     break;
 
-    case CMD_TOPPSCORE:
-        App::topp10(ctx);
-    break;
-
-    case CMD_BACK:
-        continue;
-    case CMD_QUIT:
-        break;
+    case cmdQuit.id:
+        return;
 
     default:
         assert(false && "Command Should never happen!!");
     }
 
-    if (cmdID == CMD_QUIT) {
-        return;
-    }
 } // end for
 } // end Terminal::run()
 } // end namespace Terminal

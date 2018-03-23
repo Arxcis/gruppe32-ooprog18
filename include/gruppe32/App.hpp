@@ -14,10 +14,13 @@
 /// <summary> Functions which satifised the functional requirements </summary>
 namespace gruppe32 {
 
+
 namespace App 
 {
     using std::string;
     using std::size_t;
+
+
 //
 // COMMAND FUNCTIONS
 //
