@@ -307,4 +307,12 @@ void waitForAnyKey()
     std::cin.get();
 }
 
+std::string toUpper(std::string str)
+{
+    for (std::size_t i = 0; i < str.size(); i++) {
+        str[i] = std::toupper(str[i]);
+    }
+    return std::move(str);
+}
+
 } // end namespace
