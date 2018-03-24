@@ -1010,7 +1010,31 @@ void App::tabell(DB::Context& ctx)
 
 void App::readResultatliste(DB::Context& ctx) 
 {
-    IO::printline("readResultatliste()");
+    IO::dividerHeading("Reading resultatene from file...");
+    IO::printline("Write a valid filename");
+    std::string filepath = IO::readFilepath();
+    
+    // @TODO Validate filepath - remove // 
+    std::ifstream infile("./data/read/" + filepath + ".yml");
+
+    if (!infile) {
+        IO::printline("ERROR - File not found  (!infile)");
+        IO::waitForAnyKey();
+        return;
+    }
+
+    std::stringstream ss;
+    ss << infile.rdbuf();
+    std::string instring = ss.str();
+
+    std::vector<DB::InputResultat> resultatene;
+
+    IO::printline(instring);
+    auto err = Decode::inputResultatene(resultatene, instring.c_str());
+    if (err) {
+        IO::printline("Error when encoding idrettene! ", filepath);
+        return;
+    } 
 }
 
 void App::printLagSpillerdata(DB::Context& ctx) 
@@ -1093,18 +1117,21 @@ auto App::computeTabell (
 
     for (const auto& [hjemmelag, bortelagene]: divisjon.terminliste) 
     {
-        if (tabell.lagene.find(hjemmelag) != tabell.lagene.end())
+        if (tabell.lagene.find(hjemmelag) == tabell.lagene.end()) {
             tabell.lagene[hjemmelag] = DB::Tabell::Lag{ };
+        }
 
         for(const auto& [bortelag, resultat]: bortelagene) 
         {
-            if (tabell.lagene.find(bortelag) != tabell.lagene.end())
+            if (tabell.lagene.find(bortelag) == tabell.lagene.end()) {
                 tabell.lagene[bortelag] = DB::Tabell::Lag{};
+            }
 
             // 0. Continue if kamp has not been spilt
             if (!(resultat.spilt)) {
                 continue;
             }
+
             // 1. Tell scoringer
             tabell.lagene[hjemmelag].hjemmeScoringer += resultat.hjemmeScorerene.size();
             tabell.lagene[hjemmelag].hjemmeBaklengs  += resultat.borteScorerene.size();
@@ -1112,7 +1139,8 @@ auto App::computeTabell (
             tabell.lagene[bortelag].borteBaklengs    += resultat.hjemmeScorerene.size();
 
             using namespace DB;
-            // 2. If   HJEMMELAG: SEIER                 BORTELAG: TAP                    
+            
+            // 2. If   HJEMMELAG: SEIER                 BORTELAG: TAP     ? 
             if (resultat.hjemmeScorerene.size() > resultat.borteScorerene.size()) 
             {
                 tabell.lagene[hjemmelag].seier += 1;
@@ -1190,7 +1218,7 @@ void App::readIdrettene(DB::Idrettene& idrettene, const std::string filepath)
 {
     std::ifstream infile(filepath);
     if (!infile) {
-        IO::printline("No files at filepath", filepath);
+        IO::printline("ERROR - No files at filepath", filepath);
         return;
     }
 
@@ -1209,7 +1237,7 @@ void App::readSpillerene(DB::Spillerene& spillerene, const std::string filepath)
 {
     std::ifstream instream(filepath);
     if (!instream) {
-        IO::printline("No files at filepath", filepath);
+        IO::printline("ERROR - No files at filepath", filepath);
         return;
     }
 
@@ -1226,7 +1254,7 @@ void App::writeIdrettene(DB::Idrettene& ctx, const std::string filepath)
 {
     std::ofstream outstream(filepath);
     if (!outstream) {
-        IO::printline("No files at filepath", filepath);
+        IO::printline("ERROR - No files at filepath", filepath);
         return;
     }
 
@@ -1238,7 +1266,7 @@ void App::writeSpillerene(DB::Spillerene& ctx, const std::string filepath)
 {
     std::ofstream outstream(filepath);
     if (!outstream) {
-        IO::printline("No files at filepath", filepath);
+        IO::printline("ERROR - No files at filepath", filepath);
         return;
     }
 
