@@ -1,0 +1,74 @@
+autoincrementer: 11
+spillereneCount: 2
+spillerene:
+
+- spiller: Yesman
+  guid: 10
+  adresse: Kristiansand
+
+- spiller: Noman
+  guid: 11
+  adresse: Grimstad
+
+idrett: Fotball
+divisjon: 1.div
+lageneCount: 3
+lagene:
+
+- lag: AA
+  adresse: Bergen, Norway
+  spillereneCount: 3
+  spillerene:
+  - spiller: 1
+  - spiller: 2
+  - spiller: 3
+
+- lag: BB
+  adresse: Trondheim, Norway 
+  spillereneCount: 7
+  spillerene: 
+  - spiller: 4
+  - spiller: 5
+  - spiller: 6
+  - spiller: 7
+  - spiller: 8
+  - spiller: 9
+  - spiller: 10
+
+- lag: CC
+  adresse: Tromsø, Norway 
+  spillereneCount: 4
+  spillerene: 
+  - spiller: 2
+  - spiller: 5
+  - spiller: 10
+  - spiller: 11
+
+terminliste:
+
+- hjemmelag: AA
+  bortelagene:
+
+  - bortelag: BB
+    dato: 2012-01-01
+
+  - bortelag: CC
+    dato: 2013-01-01
+
+- hjemmelag: BB
+  bortelagene:
+
+  - bortelag: AA
+    dato: 2014-01-01
+
+  - bortelag: CC
+    dato: 2015-01-01
+
+- hjemmelag: CC
+  bortelagene:
+
+  - bortelag: AA
+    dato: 2015-01-01
+
+  - bortelag: BB
+    dato: 2016-01-01

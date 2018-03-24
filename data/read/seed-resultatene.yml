@@ -1,0 +1,35 @@
+resultateneCount: 2
+resultatene:
+
+- resultat:
+  idrett: Fotball
+  divisjon: 1.div
+  hjemmelag: AA
+  bortelag: BB
+  dato: 2012-03-19
+  overtid: false
+  hjemmeScorereneCount: 4
+  hjemmeScorerene:
+  - spiller: 0
+  - spiller: 0
+  - spiller: 0
+  - spiller: 1
+  borteScorereneCount: 2
+  borteScorerene:
+  - spiller: 0
+  - spiller: 0
+
+- resultat:
+  idrett: Fotball
+  divisjon: 1.div
+  bortelag: Brann
+  hjemmelag: Rosenborg
+  dato: 2013-03-19
+  overtid: true
+  hjemmeScorereneCount: 1
+  hjemmeScorerene:
+  - spiller: 1
+  borteScorereneCount: 2
+  borteScorerene:
+  - spiller: 0
+  - spiller: 0
