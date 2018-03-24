@@ -31,6 +31,25 @@ void divider(char c, size_t count)
         IO::printline();
 }
 
+void dividerHeading(const std::string& heading, char c, size_t count)
+{
+    std::string divider(count, c);
+
+    std::size_t dividermid    = count / 2;
+    std::size_t headingoffset = heading.size() / 2;
+
+    divider[dividermid - headingoffset - 1] = ' ';
+    
+    int i = 0;
+    for (char c : heading) {
+        divider[dividermid - (headingoffset) + (i++)] = c; 
+    }
+    divider[dividermid + headingoffset+1 ] = ' ';
+
+    IO::printline(divider);
+}
+
+
 void printMenu(const CommandMap & commands, const std::string & title)
 {
     //newpage();
@@ -303,7 +322,7 @@ auto readFilepath(std::string fieldName) -> std::string
 
 void waitForAnyKey()
 {
-    IO::printline("Press any key to continue...");
+    IO::printline("Press enter to continue....");
     std::cin.get();
 }
 

@@ -82,8 +82,8 @@ void printSubMenu(const CommandMap& commands,
                   const std::string& parentTitle = "HOME");
 
 
-
-void divider(char c, size_t count=80);
+void dividerHeading(const std::string& heading, char c = '*', size_t count=80); 
+void divider(char c='*', size_t count=80);
 
 void newpage();
 
