@@ -745,7 +745,7 @@ void App::terminliste(DB::Context& ctx)
                 IO::printline(result);
                 IO::waitForEnterPress();
             } break;
-
+            
             case IO::cmdFile.id: 
             {
                 string filepath = IO::readFilepath();
