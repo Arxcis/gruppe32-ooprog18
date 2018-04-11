@@ -21,7 +21,6 @@ const Command::Map commandMap
                 { CMD_SPILLER_NR,   Command{ "<navn>", "Skriv spiller med <navn>"}                },
                 { CMD_SPILLER_NAVN, Command{ "<nr>",   "Skriv spiller med <nr>"}                  },
                 commandBackPair,
-                commandQuitPair
             },
         }
     },
@@ -34,7 +33,6 @@ const Command::Map commandMap
                 { CMD_IDRETT_ALLE, Command{  string(1,CMD_IDRETT_ALLE), "Skriv Alle Idrettene"} },
                 { CMD_IDRETT_NAVN, Command{ "<navn>", "Søk med navn på idrett"} },
                 commandBackPair,
-                commandQuitPair
             },
         }
     },
@@ -48,7 +46,6 @@ const Command::Map commandMap
                 { CMD_NY_IDRETT, Command{  string(1,CMD_NY_IDRETT), "Ny Idrett"} },
                 { CMD_NY_DIVISJON, Command{string(1,CMD_NY_DIVISJON), "Ny Divisjon/avdeling"} },
                 commandBackPair,
-                commandQuitPair
             },
         }
     },
@@ -64,7 +61,6 @@ const Command::Map commandMap
                 { CMD_FJERN_IDRETT,  Command{ string(1,CMD_FJERN_IDRETT), "Fjern Idrett"} },
                 { CMD_FJERN_DIVISJON,Command{ string(1,CMD_FJERN_DIVISJON), "Fjern Divisjon/avdeling"} },
                 commandBackPair,
-                commandQuitPair
             },
         }
     },
@@ -102,7 +98,6 @@ const Command::Map commandMap
                 {CMD_ENDRE_LEGG_TIL_SPILLER, Command{ string(1, CMD_ENDRE_LEGG_TIL_SPILLER), "Legg til spiller til lag"}},
                 {CMD_ENDRE_FJERN_SPILLER,    Command{ string(1, CMD_ENDRE_FJERN_SPILLER),    "Fjern spiller fra lag"}},
                 commandBackPair,
-                commandQuitPair
             },
         }
     },    
@@ -166,9 +161,7 @@ for(;;)
                 break;
 
             case CMD_BACK:
-            case CMD_QUIT:
                 return subcmdID;
-                break;
 
             default:
                 assert(false && "Command Should never happen!!");
@@ -199,9 +192,7 @@ for(;;)
                 break;
 
             case CMD_BACK:
-            case CMD_QUIT:
                 return subcmdID;
-                break;
 
             default:
                 assert(false && "Command Should never happen!!");
@@ -234,9 +225,7 @@ for(;;)
             break;
 
             case CMD_BACK:
-            case CMD_QUIT:
                 return subcmdID;
-                break;
 
             default:
                 assert(false && "Command Should never happen!!");
@@ -270,7 +259,6 @@ for(;;)
             break;
 
             case CMD_BACK:
-            case CMD_QUIT:
                 return subcmdID;
 
             default:
@@ -321,9 +309,7 @@ for(;;)
             break;
 
             case CMD_BACK:
-            case CMD_QUIT:
                 return subcmdID;
-                break;
 
             default:
                 assert(false && "Command Should never happen!!");
