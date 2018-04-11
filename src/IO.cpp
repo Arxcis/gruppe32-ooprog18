@@ -303,7 +303,7 @@ auto readFilepath(std::string fieldName) -> std::string
 
 void waitForAnyKey()
 {
-    IO::printline("Press any key to continue...");
+    IO::printline("Press Enter to continue...");
     std::cin.get();
 }
 

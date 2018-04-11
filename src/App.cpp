@@ -842,7 +842,7 @@ void App::readResultatliste(DB::Context& ctx)
     IO::printline("readResultatliste()");
 }
 
-void App::printLagSpillerdata(DB::Context& ctx) 
+void lagSpillerdataAction(DB::Context& ctx, const IO::CommandPair& actionCommand)
 {
     IO::printline("printLagSpillerdata()");
 
@@ -850,15 +850,13 @@ void App::printLagSpillerdata(DB::Context& ctx)
     using std::string;
     using std::pair;
 
-    const auto CMD_VELG_IDRETT =    Terminal::CommandID('I');
-    const auto CMD_VELG_DIVISJON =  Terminal::CommandID('D');
-    const auto CMD_VELG_LAG =       Terminal::CommandID('L');
-    const auto CMD_BACK =   Terminal::CommandID('B');
+    const auto CMD_VELG_IDRETT = Terminal::CommandID('I');
+    const auto CMD_VELG_DIVISJON = Terminal::CommandID('D');
+    const auto CMD_VELG_LAG = Terminal::CommandID('L');
+    const auto CMD_BACK = Terminal::CommandID('B');
     const auto CMD_VIS = Terminal::CommandID('V');
-
-    const auto displayCommand = IO::CommandPair{
-        CMD_VIS, Terminal::Command{ "[V]is", "Vis alle spillere i det valgte laget" }
-    };
+    const auto CMD_ADD = Terminal::CommandID('A');
+    const auto CMD_REMOVE = Terminal::CommandID('F');
 
     auto menu = IO::CommandMap{
         { CMD_BACK,           Terminal::Command{ "[B]ack", "Gå tilbake" } },
@@ -867,38 +865,38 @@ void App::printLagSpillerdata(DB::Context& ctx)
         { CMD_VELG_LAG,       Terminal::Command{ "[L]ag",      "Filtrer Lag" } }
     };
 
-    string searchNavnIdrett   = "";
+    string searchNavnIdrett = "";
     string searchNavnDivisjon = "";
-    string searchNavnLag      = "";
+    string searchNavnLag = "";
     string selectedLag = "INGEN";
 
     for (;;)
     {
         IO::newpage();
-        const auto[resultatene, resultStr, status] = Search::filterLag(ctx, searchNavnIdrett, searchNavnDivisjon, searchNavnLag);
-       
+        auto[resultatene, resultStr, status] = Search::filterLag(ctx, searchNavnIdrett, searchNavnDivisjon, searchNavnLag);
+
         if (resultatene.size() == 1)
         {
             selectedLag = resultatene[0].first.navn;
-            if (menu.find(CMD_VIS) == menu.end())
+            if (menu.find(actionCommand.first) == menu.end())
             {
-                menu.insert(menu.begin(), displayCommand);
+                menu.insert(menu.begin(), actionCommand);
             }
         }
         else
         {
             selectedLag = "INGEN";
-            if (menu.find(CMD_VIS) != menu.end())
+            if (menu.find(actionCommand.first) != menu.end())
             {
-                menu.erase(CMD_VIS);
+                menu.erase(actionCommand.first);
             }
         }
 
         IO::printSubMenu(menu, "Print Spillere på Lag - " + selectedLag);
         IO::printline("------------------------------------ FILTRE ------------------------------------");
-        IO::printline("Idrett:      ", "[", searchNavnIdrett,   "]");
+        IO::printline("Idrett:      ", "[", searchNavnIdrett, "]");
         IO::printline("Divisjon:    ", "[", searchNavnDivisjon, "]");
-        IO::printline("Lag:         ", "[", searchNavnLag,      "]");
+        IO::printline("Lag:         ", "[", searchNavnLag, "]");
         IO::divider('-', 80);
         IO::printline(resultStr);
         IO::divider('-', 80);
@@ -925,13 +923,91 @@ void App::printLagSpillerdata(DB::Context& ctx)
         case CMD_BACK:
             return;
 
+        case CMD_REMOVE:
+        {
+            unsigned int spillerToRemove = IO::readNumber("SpillerNr");
+
+            auto idretten = (DB::Idrett*)ctx.idrettene.data->remove(resultatene[0].second[0].c_str()); //remove the idrett with the name from the filtered result's backtraced name
+            for (auto& divisjon : idretten->divisjonene)
+            {
+                if (divisjon.navn.find(resultatene[0].second[1]) != std::string::npos)
+                {
+                    for (auto& laget : divisjon.lagene)
+                    {
+                        if (laget.navn.find(resultatene[0].first.navn) != std::string::npos)
+                        {
+                            std::size_t spillerCount = laget.spillerene.size();
+                            laget.spillerene.erase(
+                                std::remove_if(
+                                    laget.spillerene.begin(),
+                                    laget.spillerene.end(),
+                                    [spillerToRemove](unsigned int nr) { return spillerToRemove == nr; }
+                                ), laget.spillerene.end()
+                            );
+                            if (spillerCount != laget.spillerene.size())
+                            {
+                                IO::printline("Spiller nr", spillerToRemove, "Fjernet fra", resultatene[0].second[2]);
+                                break;
+                            }
+                            IO::printline("Spiller nr", spillerToRemove, "var ikke å finne i", resultatene[0].second[2]);
+                        }
+                    }
+                }
+            }
+            ctx.idrettene.data->add(idretten);
+            IO::waitForAnyKey(); //i.e. wait for ENTER
+            break;
+        }
+        case CMD_ADD:
+        {
+            IO::printline("add");
+            unsigned int spillerToAdd = IO::readNumber("SpillerNr");
+            
+            auto spilleren = (DB::Spiller*)ctx.spillerene.data->remove(spillerToAdd);
+            if (!spilleren)
+            {
+                IO::printline("Spiller nr", spillerToAdd, "finnes ikke!");
+                IO::printline("Legg spilleren til via hovedmenyen");
+                IO::waitForAnyKey();
+                break;
+            }
+            ctx.spillerene.data->add(spilleren);
+            //HERE WE GOOOOOOOOOO!!!!! WHEoiahiishdia fml
+            auto idretten = (DB::Idrett*)ctx.idrettene.data->remove(resultatene[0].second[0].c_str()); //remove the idrett with the name from the filtered result's backtraced name
+            for (auto& divisjon : idretten->divisjonene)
+            {
+                if (divisjon.navn.find(resultatene[0].second[1]) != std::string::npos)
+                {
+                    for (auto& laget : divisjon.lagene)
+                    {
+                        if (laget.navn.find(resultatene[0].first.navn) != std::string::npos)
+                        {
+                            std::size_t spillerCount = laget.spillerene.size();
+                            
+                            if(std::find(laget.spillerene.begin(), laget.spillerene.end(), spillerToAdd) != laget.spillerene.end())
+                            {
+                                IO::printline("Spiller nr", spillerToAdd, "er allerede medlem i", resultatene[0].second[2]);
+                                break;
+                            }
+                            IO::printline("Spiller nr", spillerToAdd, "lagt inn som medlem i", resultatene[0].second[2]);
+                            laget.spillerene.push_back(spillerToAdd);
+                            break;
+                        }
+                    }
+                }
+            }
+            ctx.idrettene.data->add(idretten);
+            
+            IO::waitForAnyKey();
+            break;
+        }
         case CMD_VIS:
         {
             DB::Spillerene lagSpillerene(0);
             for (const auto& spillerID : resultatene[0].first.spillerene)
             {
                 const auto spiller = (DB::Spiller*)ctx.spillerene.data->remove(spillerID);
-                
+
                 lagSpillerene.data->add(new DB::Spiller(*spiller));
                 ctx.spillerene.data->add(spiller);
             }
@@ -945,13 +1021,39 @@ void App::printLagSpillerdata(DB::Context& ctx)
         }
     }
 }
+
+void App::printLagSpillerdata(DB::Context& ctx) 
+{
+    IO::printline("printLagSpillerdata()");
+
+
+    const auto CMD_VIS = Terminal::CommandID('V');
+    const auto displayCommand = IO::CommandPair{
+        CMD_VIS, Terminal::Command{ "[V]is", "Vis alle spillere i det valgte laget" }
+    };
+    lagSpillerdataAction(ctx, displayCommand);
+}
 void App::insertLagSpiller(DB::Context& ctx)
 {
     IO::printline("insertLagSpiller()");
+
+    const auto CMD_ADD = Terminal::CommandID('A');
+    const auto insertCommand = IO::CommandPair{
+        CMD_ADD, Terminal::Command{ "[A]dd", "legg inn spiller" }
+    };
+
+    lagSpillerdataAction(ctx, insertCommand);
 }
 void App::removeLagSpiller(DB::Context& ctx) 
 {
     IO::printline("removeLagSpiller()");
+
+    const auto CMD_REMOVE = Terminal::CommandID('F');
+    const auto insertCommand = IO::CommandPair{
+        CMD_REMOVE, Terminal::Command{ "[F]jern", "legg inn spiller" }
+    };
+
+    lagSpillerdataAction(ctx, insertCommand);
 }
 
 
