@@ -320,9 +320,9 @@ auto IO::readFilepath(std::string fieldName) -> std::string
     return IO::readName(fieldName);
 }
 
-void IO::waitForAnyKey()
+void IO::waitForEnterPress()
 {
-    IO::printline("Press enter to continue....");
+    IO::printline("Press Enter to continue...");
     std::cin.get();
 }
 

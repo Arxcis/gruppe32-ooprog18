@@ -138,7 +138,7 @@ auto readAddress() -> std::string;
 auto readNumber(std::string fieldName = "Number")->size_t;
 auto readFilepath(std::string fieldName = "File") -> std::string;
 
-void waitForAnyKey();
+void waitForEnterPress();
 
 std::string toUpper(std::string str);
 

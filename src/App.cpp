@@ -14,7 +14,7 @@ void App::printSpillereAll(DB::Context& ctx)
     IO::printline(Encode::viewSpillerene(ctx.spillerene));
 
 
-    IO::waitForAnyKey();
+    IO::waitForEnterPress();
 }
 
 
@@ -39,7 +39,7 @@ void App::printSpillereByName(DB::Context& ctx, const std::string name)
     IO::printline();
     IO::printline(Encode::viewSpillerene(viewSpillerene));
 
-    IO::waitForAnyKey();
+    IO::waitForEnterPress();
 
 }
 
@@ -64,7 +64,7 @@ void App::printSpillereByNumber(DB::Context& ctx, const std::size_t number)
     IO::printline();
     IO::printline(Encode::viewSpillerene(viewSpillerene));
 
-    IO::waitForAnyKey();
+    IO::waitForEnterPress();
 
 }
 
@@ -74,7 +74,7 @@ void App::printIdretterAll(DB::Context& ctx)
     IO::printline();
     IO::printline(Encode::viewIdrettene(ctx.idrettene));
 
-    IO::waitForAnyKey();
+    IO::waitForEnterPress();
 }
 
 
@@ -101,7 +101,7 @@ void App::printIdretterByName( DB::Context& ctx, const std::string name)
         ctx.idrettene.data->add(current);
     }
 
-    IO::waitForAnyKey();
+    IO::waitForEnterPress();
 }
 
 
@@ -346,7 +346,7 @@ void App::deleteSpiller(DB::Context& ctx)
             {
                 IO::printlineNoSpace("Spiller \"", spiller->name, "\" fjernet");
                 delete spiller;
-                IO::waitForAnyKey();
+                IO::waitForEnterPress();
             }
             else 
             {
@@ -489,7 +489,7 @@ void App::deleteIdrett(DB::Context& ctx)
                 case CMD_YES:
                     IO::printline("Fjerner", valgtIdrett->name);
                     delete valgtIdrett;
-                    IO::waitForAnyKey();
+                    IO::waitForEnterPress();
                     break;
                 default:
                     IO::printline("It's a simple YES/NO answer!!! please answer Y/N!");
@@ -630,7 +630,7 @@ void App::deleteDivisjon(DB::Context& ctx)
                 case CMD_NO:
                     IO::printline("Avbryter...");
                     IO::printline("Ingen divisjon fjernes");
-                    IO::waitForAnyKey();
+                    IO::waitForEnterPress();
                     ctx.idrettene.data->add(valgtIdrett); //putt idretten tilbake!
                     return;
                 case CMD_YES:
@@ -645,7 +645,7 @@ void App::deleteDivisjon(DB::Context& ctx)
                         ), valgtIdrett->divisjonene.end()
                     );
 
-                    IO::waitForAnyKey();
+                    IO::waitForEnterPress();
                     ctx.idrettene.data->add(valgtIdrett); //putt idretten tilbake!
                     return;
                 default:
@@ -743,9 +743,9 @@ void App::terminliste(DB::Context& ctx)
                     result += Encode::viewTerminliste(terminliste);
                 }
                 IO::printline(result);
-                IO::waitForAnyKey();
+                IO::waitForEnterPress();
             } break;
-
+            
             case IO::cmdFile.id: 
             {
                 string filepath = IO::readFilepath();
@@ -753,7 +753,7 @@ void App::terminliste(DB::Context& ctx)
                 if(!outfile) 
                 {   
                     IO::printline("Error when writing to file (!outfile)");
-                    IO::waitForAnyKey();
+                    IO::waitForEnterPress();
                     break;
                 }
                 for (const auto& divisjon: divisjonene) { 
@@ -763,7 +763,7 @@ void App::terminliste(DB::Context& ctx)
                 outfile.close();
 
                 IO::printlineNoSpace("\nTerminlistene written to file: ", filepath, ".yml");
-                IO::waitForAnyKey();
+                IO::waitForEnterPress();
             } break;
 
             case IO::cmdBack.id:
@@ -870,7 +870,7 @@ void App::resultatene(DB::Context& ctx)
                 }
 
                 IO::printline(result);
-                IO::waitForAnyKey();
+                IO::waitForEnterPress();
             } break;
 
             case IO::cmdFile.id: 
@@ -881,7 +881,7 @@ void App::resultatene(DB::Context& ctx)
                 if(!outfile) 
                 {   
                     IO::printline("Error when writing to file (!outfile)");
-                    IO::waitForAnyKey();
+                    IO::waitForEnterPress();
                     break;
                 }
                 for (const auto& divisjon: divisjonene) { 
@@ -891,7 +891,7 @@ void App::resultatene(DB::Context& ctx)
                 outfile.close();
 
                 IO::printlineNoSpace("\nResultatene written to file: ", filepath, ".yml");
-                IO::waitForAnyKey();
+                IO::waitForEnterPress();
 
             } break;
 
@@ -970,7 +970,7 @@ void App::tabell(DB::Context& ctx)
             case IO::cmdPrint.id:
 
                 IO::printline(Encode::viewTabellene(tabellene));
-                IO::waitForAnyKey();                
+                IO::waitForEnterPress();                
                 break;
 
             case IO::cmdOptions.id:
@@ -985,7 +985,7 @@ void App::tabell(DB::Context& ctx)
                 if(!outfile) 
                 {   
                     IO::printline("Error when writing to file (!outfile)");
-                    IO::waitForAnyKey();
+                    IO::waitForEnterPress();
                     break;
                 }
                 auto _result = Encode::viewTabellene(tabellene);
@@ -995,7 +995,7 @@ void App::tabell(DB::Context& ctx)
 
                 IO::printline();
                 IO::printlineNoSpace("\nTabellene written to file: ", filepath, ".yml");
-                IO::waitForAnyKey();
+                IO::waitForEnterPress();
             } break;
 
             case IO::cmdBack.id:   
@@ -1019,7 +1019,7 @@ void App::readResultatliste(DB::Context& ctx)
 
     if (!infile) {
         IO::printline("ERROR - File not found  (!infile)");
-        IO::waitForAnyKey();
+        IO::waitForEnterPress();
         return;
     }
 
@@ -1037,7 +1037,7 @@ void App::readResultatliste(DB::Context& ctx)
     } 
 }
 
-void App::printLagSpillerdata(DB::Context& ctx) 
+void lagSpillerdataAction(DB::Context& ctx, const IO::CommandPair& actionCommand)
 {
     IO::printline("printLagSpillerdata()");
 
@@ -1045,15 +1045,13 @@ void App::printLagSpillerdata(DB::Context& ctx)
     using std::string;
     using std::pair;
 
-    const auto CMD_VELG_IDRETT =    Terminal::CommandID('I');
-    const auto CMD_VELG_DIVISJON =  Terminal::CommandID('D');
-    const auto CMD_VELG_LAG =       Terminal::CommandID('L');
-    const auto CMD_BACK =   Terminal::CommandID('B');
+    const auto CMD_VELG_IDRETT = Terminal::CommandID('I');
+    const auto CMD_VELG_DIVISJON = Terminal::CommandID('D');
+    const auto CMD_VELG_LAG = Terminal::CommandID('L');
+    const auto CMD_BACK = Terminal::CommandID('B');
     const auto CMD_VIS = Terminal::CommandID('V');
-
-    const auto displayCommand = IO::CommandPair{
-        CMD_VIS, Terminal::Command{ "[V]is", "Vis alle spillere i det valgte laget" }
-    };
+    const auto CMD_ADD = Terminal::CommandID('A');
+    const auto CMD_REMOVE = Terminal::CommandID('F');
 
     auto menu = IO::CommandMap{
         { CMD_BACK,           Terminal::Command{ "[B]ack", "G?tilbake" } },
@@ -1062,38 +1060,38 @@ void App::printLagSpillerdata(DB::Context& ctx)
         { CMD_VELG_LAG,       Terminal::Command{ "[L]ag",      "Filtrer Lag" } }
     };
 
-    string searchNavnIdrett   = "";
+    string searchNavnIdrett = "";
     string searchNavnDivisjon = "";
-    string searchNavnLag      = "";
+    string searchNavnLag = "";
     string selectedLag = "INGEN";
 
     for (;;)
     {
         IO::newpage();
-        const auto[resultatene, resultStr, status] = Search::filterLag(ctx, searchNavnIdrett, searchNavnDivisjon, searchNavnLag);
-       
+        auto[resultatene, resultStr, status] = Search::filterLag(ctx, searchNavnIdrett, searchNavnDivisjon, searchNavnLag);
+
         if (resultatene.size() == 1)
         {
             selectedLag = resultatene[0].first.navn;
-            if (menu.find(CMD_VIS) == menu.end())
+            if (menu.find(actionCommand.first) == menu.end())
             {
-                menu.insert(menu.begin(), displayCommand);
+                menu.insert(menu.begin(), actionCommand);
             }
         }
         else
         {
             selectedLag = "INGEN";
-            if (menu.find(CMD_VIS) != menu.end())
+            if (menu.find(actionCommand.first) != menu.end())
             {
-                menu.erase(CMD_VIS);
+                menu.erase(actionCommand.first);
             }
         }
 
         IO::printSubMenu(menu, "Print Spillere p?Lag - " + selectedLag);
         IO::printline("------------------------------------ FILTRE ------------------------------------");
-        IO::printline("Idrett:      ", "[", searchNavnIdrett,   "]");
+        IO::printline("Idrett:      ", "[", searchNavnIdrett, "]");
         IO::printline("Divisjon:    ", "[", searchNavnDivisjon, "]");
-        IO::printline("Lag:         ", "[", searchNavnLag,      "]");
+        IO::printline("Lag:         ", "[", searchNavnLag, "]");
         IO::divider('-', 80);
         IO::printline(resultStr);
         IO::divider('-', 80);
@@ -1120,19 +1118,97 @@ void App::printLagSpillerdata(DB::Context& ctx)
         case CMD_BACK:
             return;
 
+        case CMD_REMOVE:
+        {
+            unsigned int spillerToRemove = IO::readNumber("SpillerNr");
+
+            auto idretten = (DB::Idrett*)ctx.idrettene.data->remove(resultatene[0].second[0].c_str()); //remove the idrett with the name from the filtered result's backtraced name
+            for (auto& divisjon : idretten->divisjonene)
+            {
+                if (divisjon.navn.find(resultatene[0].second[1]) != std::string::npos)
+                {
+                    for (auto& laget : divisjon.lagene)
+                    {
+                        if (laget.navn.find(resultatene[0].first.navn) != std::string::npos)
+                        {
+                            std::size_t spillerCount = laget.spillerene.size();
+                            laget.spillerene.erase(
+                                std::remove_if(
+                                    laget.spillerene.begin(),
+                                    laget.spillerene.end(),
+                                    [spillerToRemove](unsigned int nr) { return spillerToRemove == nr; }
+                                ), laget.spillerene.end()
+                            );
+                            if (spillerCount != laget.spillerene.size())
+                            {
+                                IO::printline("Spiller nr", spillerToRemove, "Fjernet fra", resultatene[0].second[2]);
+                                break;
+                            }
+                            IO::printline("Spiller nr", spillerToRemove, "var ikke å finne i", resultatene[0].second[2]);
+                        }
+                    }
+                }
+            }
+            ctx.idrettene.data->add(idretten);
+            IO::waitForEnterPress(); //i.e. wait for ENTER
+            break;
+        }
+        case CMD_ADD:
+        {
+            IO::printline("add");
+            unsigned int spillerToAdd = IO::readNumber("SpillerNr");
+            
+            auto spilleren = (DB::Spiller*)ctx.spillerene.data->remove(spillerToAdd);
+            if (!spilleren)
+            {
+                IO::printline("Spiller nr", spillerToAdd, "finnes ikke!");
+                IO::printline("Legg spilleren til via hovedmenyen");
+                IO::waitForEnterPress();
+                break;
+            }
+            ctx.spillerene.data->add(spilleren);
+            //HERE WE GOOOOOOOOOO!!!!! WHEoiahiishdia fml
+            auto idretten = (DB::Idrett*)ctx.idrettene.data->remove(resultatene[0].second[0].c_str()); //remove the idrett with the name from the filtered result's backtraced name
+            for (auto& divisjon : idretten->divisjonene)
+            {
+                if (divisjon.navn.find(resultatene[0].second[1]) != std::string::npos)
+                {
+                    for (auto& laget : divisjon.lagene)
+                    {
+                        if (laget.navn.find(resultatene[0].first.navn) != std::string::npos)
+                        {
+                            std::size_t spillerCount = laget.spillerene.size();
+                            
+                            if(std::find(laget.spillerene.begin(), laget.spillerene.end(), spillerToAdd) != laget.spillerene.end())
+                            {
+                                IO::printline("Spiller nr", spillerToAdd, "er allerede medlem i", resultatene[0].second[2]);
+                                break;
+                            }
+                            IO::printline("Spiller nr", spillerToAdd, "lagt inn som medlem i", resultatene[0].second[2]);
+                            laget.spillerene.push_back(spillerToAdd);
+                            break;
+                        }
+                    }
+                }
+            }
+            ctx.idrettene.data->add(idretten);
+            
+            IO::waitForEnterPress();
+            break;
+        }
         case CMD_VIS:
         {
             DB::Spillerene lagSpillerene(0);
             for (const auto& spillerID : resultatene[0].first.spillerene)
             {
                 const auto spiller = (DB::Spiller*)ctx.spillerene.data->remove(spillerID);
-                
+
                 lagSpillerene.data->add(new DB::Spiller(*spiller));
                 ctx.spillerene.data->add(spiller);
             }
             IO::printline("Spillerene p?laget: ", resultatene[0].first.navn);
             IO::printline(Encode::viewSpillerene(lagSpillerene));
-            IO::waitForAnyKey();
+            IO::waitForEnterPress();
             break;
         }
         default:
@@ -1140,14 +1216,40 @@ void App::printLagSpillerdata(DB::Context& ctx)
         }
     }
 }
+
+void App::printLagSpillerdata(DB::Context& ctx) 
+{
+    IO::printline("printLagSpillerdata()");
+
+
+    const auto CMD_VIS = Terminal::CommandID('V');
+    const auto displayCommand = IO::CommandPair{
+        CMD_VIS, Terminal::Command{ "[V]is", "Vis alle spillere i det valgte laget" }
+    };
+    lagSpillerdataAction(ctx, displayCommand);
+}
 void App::insertLagSpiller(DB::Context& ctx)
 {
     IO::printline("insertLagSpiller()");
+
+    const auto CMD_ADD = Terminal::CommandID('A');
+    const auto insertCommand = IO::CommandPair{
+        CMD_ADD, Terminal::Command{ "[A]dd", "legg inn spiller" }
+    };
+
+    lagSpillerdataAction(ctx, insertCommand);
 }
 
 void App::removeLagSpiller(DB::Context& ctx) 
 {
     IO::printline("removeLagSpiller()");
+
+    const auto CMD_REMOVE = Terminal::CommandID('F');
+    const auto insertCommand = IO::CommandPair{
+        CMD_REMOVE, Terminal::Command{ "[F]jern", "legg inn spiller" }
+    };
+
+    lagSpillerdataAction(ctx, insertCommand);
 }
 
 

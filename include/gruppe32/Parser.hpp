@@ -4,8 +4,7 @@
 #include <string>
 #include <cassert>
 #include <vector>
-#include <experimental/string_view>
-
+#include <string_view>
 #include <gruppe32/DB.hpp>
 #include <gruppe32/IO.hpp>
 
@@ -15,7 +14,7 @@ namespace gruppe32
 using std::size_t;
 using std::string;
 using std::pair;
-using std::experimental::string_view;
+using std::string_view;
 
 /// <summary> Translates files into internal datastructure </summary>
 class Parser
@@ -40,7 +39,7 @@ namespace Decode
 using std::string;
 using std::size_t;
 using std::vector;
-using std::experimental::string_view;
+using std::string_view;
 using Error = std::size_t;
 constexpr Decode::Error ERROR = 1;
 
@@ -100,7 +99,7 @@ namespace Encode
 {
 using std::size_t;
 using std::string;
-using std::experimental::string_view;
+using std::string_view;
 using std::vector;
 
 
