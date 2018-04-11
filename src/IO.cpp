@@ -1,6 +1,6 @@
 #include <gruppe32/IO.hpp>
 
-namespace gruppe32::IO
+namespace gruppe32
 {
 
 void IO::printline()
