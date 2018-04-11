@@ -1,11 +1,11 @@
 #include <gruppe32/IO.hpp>
 
-namespace gruppe32::IO  
+namespace gruppe32
 {
 
 void IO::printline()
-{  
-    std::cout << '\n';    
+{
+    std::cout << '\n';
 }
 
 void IO::printSubMenu(const CommandMap & commands, const std::string & title, const std::string & parentTitle)
@@ -13,17 +13,17 @@ void IO::printSubMenu(const CommandMap & commands, const std::string & title, co
     printMenu(commands, parentTitle + " -> " + title);
 }
 
-void IO::newpage() 
+void IO::newpage()
 {
     for(size_t i = 0; i < 40; ++i) {
         IO::printline();
     }
 }
 
-void IO::divider(char c, size_t count) 
+void IO::divider(char c, size_t count)
 {
     for(size_t i = 0; i < count; ++i) {
-        std::cout << c;   
+        std::cout << c;
     }
     std::cout << '\n';
 
@@ -39,10 +39,10 @@ void IO::dividerHeading(const std::string& heading, char c, size_t count)
     std::size_t headingoffset = heading.size() / 2;
 
     divider[dividermid - headingoffset - 1] = ' ';
-    
+
     int i = 0;
     for (char c : heading) {
-        divider[dividermid - (headingoffset) + (i++)] = c; 
+        divider[dividermid - (headingoffset) + (i++)] = c;
     }
     divider[dividermid + headingoffset+1 ] = ' ';
 
@@ -73,7 +73,7 @@ void IO::printMenu(const CommandMap & commands, const std::string & title)
 
 auto IO::readCommand(const CommandMap& validCommands)  -> CommandPair {
     std::string commandString{};
-    for(;;) 
+    for(;;)
     {
         std::cout << "-> ";
         std::getline(std::cin, commandString);
@@ -104,7 +104,7 @@ auto IO::readEitherCommandNumberName(const CommandMap & validCommands) -> Comman
     {
         std::cout << "-> ";
         std::getline(std::cin, commandString);
-        
+
         //TODO put into the ifs
         bool userWroteAscii = Valid::isAsciiChar(commandString);
         bool userWroteName = Valid::isName(commandString);
@@ -116,7 +116,7 @@ auto IO::readEitherCommandNumberName(const CommandMap & validCommands) -> Comman
             Terminal::CommandID writtenCommand = (Terminal::CommandID)std::toupper(commandString[0]);
             if (auto pair = validCommands.find(writtenCommand); pair != validCommands.end())
             {
-                return {
+                return CommandPairWithData{
                     pair->first, //commandID
                     pair->second, //command
                     0,
@@ -133,7 +133,7 @@ auto IO::readEitherCommandNumberName(const CommandMap & validCommands) -> Comman
             strStream << commandString;
             std::size_t number;
             strStream >> number;
-            return{
+            return CommandPairWithData{
                 Terminal::CMD_SPILLER_NR,
                 cmd,
                 number,
@@ -143,7 +143,7 @@ auto IO::readEitherCommandNumberName(const CommandMap & validCommands) -> Comman
         else if (userWroteName)
         {
             auto cmd = validCommands.at(Terminal::CMD_SPILLER_NAVN);
-            return {
+            return CommandPairWithData{
                 Terminal::CMD_SPILLER_NAVN,
                 cmd,
                 0,
@@ -169,7 +169,7 @@ auto IO::readEitherCommandName(const CommandMap & validCommands) -> CommandPairW
             Terminal::CommandID writtenCommand = (Terminal::CommandID)std::toupper(commandString[0]);
             if (auto pair = validCommands.find(writtenCommand); pair != validCommands.end())
             {
-                return {
+                return CommandPairWithData{
                     pair->first, //commandID
                     pair->second, //command
                     0,
@@ -182,7 +182,7 @@ auto IO::readEitherCommandName(const CommandMap & validCommands) -> CommandPairW
         else if (Valid::isName(commandString))
         {
             auto cmd = validCommands.at(Terminal::CMD_NAME);
-            return {
+            return CommandPairWithData{
                 Terminal::CMD_NAME,
                 cmd,
                 0,
@@ -202,14 +202,14 @@ auto IO::readNumber(std::string fieldName) -> size_t
     {
         std::cout << fieldName << ": ";
         std::getline(std::cin, commandString);
-        
+
         if (Valid::isUint(commandString))
         {
             std::stringstream strStream;
             strStream << commandString;
             std::size_t number;
             strStream >> number;
-            
+
             return number;
         }
         printline("Not a number.");
@@ -218,10 +218,10 @@ auto IO::readNumber(std::string fieldName) -> size_t
 }
 
 
-auto IO::readYear() -> size_t 
+auto IO::readYear() -> size_t
 {
     std::string commandString{};
-    for(;;) 
+    for(;;)
     {
         std::cout << "Year: ";
         std::getline(std::cin, commandString);
@@ -239,14 +239,14 @@ auto IO::readYear() -> size_t
 }
 
 
-auto IO::readMonth() -> size_t 
+auto IO::readMonth() -> size_t
 {
     std::string commandString{};
-    for(;;) 
+    for(;;)
     {
         std::cout << "Month: ";
         std::getline(std::cin, commandString);
-   
+
         if (Valid::isMonth(commandString)) {
             std::stringstream strStream;
             strStream << commandString;
@@ -260,10 +260,10 @@ auto IO::readMonth() -> size_t
 }
 
 
-auto IO::readDay() -> size_t 
+auto IO::readDay() -> size_t
 {
     std::string commandString{};
-    for(;;) 
+    for(;;)
     {
         std::cout << "Day: ";
         std::getline(std::cin, commandString);
@@ -273,7 +273,7 @@ auto IO::readDay() -> size_t
             strStream << commandString;
             std::size_t number;
             strStream >> number;
-            
+
             return number;
         }
         IO::printline("Not a day: 01-31");
@@ -290,7 +290,7 @@ auto IO::readName(std::string fieldName) -> std::string
 
         std::getline(std::cin, maybeName);
 
-        if (Valid::isName(maybeName)) 
+        if (Valid::isName(maybeName))
         {
             return maybeName;
         }
@@ -336,7 +336,7 @@ void IO::printMenu(const std::vector<IO::CMD> & commands, const std::string & ti
     IO::printline("** ", title);
     IO::divider('*',80);
 
-    for (const auto[id, textshort, textlong] : commands) {
+    for (auto[id, textshort, textlong] : commands) {
         std::cout << "*   "
             << std::setw(columnSymbolWidth)
             << std::left
@@ -348,10 +348,10 @@ void IO::printMenu(const std::vector<IO::CMD> & commands, const std::string & ti
 }
 
 
-auto IO::readCommand(const std::vector<IO::CMD>& validCommands)  -> char 
+auto IO::readCommand(const std::vector<IO::CMD>& validCommands)  -> char
 {
     std::string commandString{};
-    for(;;) 
+    for(;;)
     {
         std::cout << "-> ";
         std::getline(std::cin, commandString);
@@ -365,9 +365,9 @@ auto IO::readCommand(const std::vector<IO::CMD>& validCommands)  -> char
             continue;
         }
 
-        for(const auto [id, textshort, _] : validCommands) {
+        for(auto [id, textshort, _] : validCommands) {
             if (std::toupper(id) == std::toupper(commandString[0])) {
- 
+
                 IO::printline(textshort);
                 return id;
             }

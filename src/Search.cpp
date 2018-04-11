@@ -17,7 +17,7 @@ auto Search::filterLag(
     const string& navnDivisjon,
     const string& navnLag
 ) ->filterResult<DB::Lag>
-{   
+{
     vector<pair<DB::Lag, vector<string>>> result{};
     string resultTreeString = "";
     string statusMsg = "";
@@ -39,7 +39,7 @@ auto Search::filterLag(
                     resultTreeString += "    |=>[ " + IO::toUpper(lag.navn) + " ]\n";
                     result.push_back(std::pair<DB::Lag,vector<string>>{ lag, {idrett->name, divisjon.navn, lag.navn} });
                 }
-                else 
+                else
                 {
                     resultTreeString += "    |-" + lag.navn + "\n";
                 }
@@ -59,8 +59,8 @@ auto Search::filterLag(
     {
         statusMsg = "Ingen lag i filteret, venligst ompresiser";
     }
-    
-    return { result, resultTreeString, statusMsg };
+
+    return filterResult<DB::Lag>{ result, resultTreeString, statusMsg };
 }
 
 auto Search::findAndPrintIdrettDivisjon(DB::Context & ctx, const string & navnIdrett, const string & navnDivisjon) -> Search::returnDivisjoneneMedIdrettNavn
@@ -133,20 +133,20 @@ auto Search::divisjonene(DB::Context& ctx, const string& navnIdrett, const strin
     // Error 2
     if (idrett->divisjonene.size() == 0) {
         statusmsg = "Idrett " + navnIdrett + " has no divisjoner...";
-        
+
         ctx.idrettene.data->add(idrett);   // because why no
         return Search::returnDivisjonene{result, statusmsg};
     }
 
-    // Success 1 
-    if (navnDivisjon.empty()) 
+    // Success 1
+    if (navnDivisjon.empty())
     {
         for (const auto& divisjon : idrett->divisjonene)
         {
             result.push_back(divisjon);
         }
 
-        ctx.idrettene.data->add(idrett);   // because why no    
+        ctx.idrettene.data->add(idrett);   // because why no
         return Search::returnDivisjonene{result, statusmsg};
     }
 
@@ -159,24 +159,24 @@ auto Search::divisjonene(DB::Context& ctx, const string& navnIdrett, const strin
         }
     }
     // Error 4
-    if (result.empty()) { 
+    if (result.empty()) {
         statusmsg = "Idrett " + navnIdrett + " has no divisjon matching " + navnDivisjon + "...";
 
         ctx.idrettene.data->add(idrett);   // because why no
         return Search::returnDivisjonene{result, statusmsg};
     }
 
-    ctx.idrettene.data->add(idrett);   // because why no    
+    ctx.idrettene.data->add(idrett);   // because why no
     return Search::returnDivisjonene{result, statusmsg};
 }
 
 auto Search::resultatene(
-    DB::Context& ctx, 
-    const DB::Divisjon& divisjon, 
-    const size_t year, 
-    const size_t month, 
-    const size_t day) 
-    -> Search::returnResultatene 
+    DB::Context& ctx,
+    const DB::Divisjon& divisjon,
+    const size_t year,
+    const size_t month,
+    const size_t day)
+    -> Search::returnResultatene
 {
     string statusmsg = "";
     std::stringstream ss;
@@ -186,11 +186,11 @@ auto Search::resultatene(
 
     vector<DB::ViewResultat> resultatene;
 
-    for (const auto [hjemmelag, bortelagene] : divisjon.terminliste) // map 
+    for (const auto [hjemmelag, bortelagene] : divisjon.terminliste) // map
     {
         for (const auto [bortelag, resultat] : bortelagene)    // map
         {
-            if (resultat.dato == encodedDato) 
+            if (resultat.dato == encodedDato)
             {
                 resultatene.push_back(DB::ViewResultat {
                     divisjon.navn,
@@ -204,12 +204,12 @@ auto Search::resultatene(
         }
     }
     // Error 4
-    if (resultatene.empty()) { 
+    if (resultatene.empty()) {
         statusmsg = "No results on current dato: " + encodedDato + "...";
         return Search::returnResultatene {resultatene, statusmsg};
     }
 
     return Search::returnResultatene {resultatene, statusmsg};
-} 
+}
 
 } // ::gruppe32

@@ -4,7 +4,7 @@
 #include <string>
 #include <cassert>
 #include <vector>
-#include <string_view>
+#include <experimental/string_view>
 
 #include <gruppe32/DB.hpp>
 #include <gruppe32/IO.hpp>
@@ -15,10 +15,10 @@ namespace gruppe32
 using std::size_t;
 using std::string;
 using std::pair;
-using std::string_view;
+using std::experimental::string_view;
 
 /// <summary> Translates files into internal datastructure </summary>
-class Parser 
+class Parser
 {
 public:
     string_view strview;
@@ -26,7 +26,7 @@ public:
     int endofline = 9999999;
     int linecount = 0;
     const string whitelistedCharacters = "0123456789abcdefghijklmnopqrstuvwxyzæøåABCDEFGHIJKLMNOPQRSTUVWXYZÆØÅ-:";
-    
+
     auto nextLine() -> string;
     auto nextStringString() -> pair<string,string>;
     auto nextStringUint() -> pair<string, size_t>;
@@ -40,7 +40,7 @@ namespace Decode
 using std::string;
 using std::size_t;
 using std::vector;
-using std::string_view;
+using std::experimental::string_view;
 using Error = std::size_t;
 constexpr Decode::Error ERROR = 1;
 
@@ -60,7 +60,7 @@ auto inputResultatene(vector<DB::InputResultat>& resultatene, string_view strvie
 
 /// <summary> Decode-only. </summary>
 /// <param name="strview"> example found in format-input-divisjon.yml </param>
-auto inputDivisjon(DB::Divisjon& divisjon, string_view strview) -> Decode::Error; 
+auto inputDivisjon(DB::Divisjon& divisjon, string_view strview) -> Decode::Error;
 
 
 } // ::Decode
@@ -72,7 +72,7 @@ using std::stringstream;
 using std::size_t;
 
 /// <summary> Translates internal datastructure to file format </summary>
-class Printer 
+class Printer
 {
 public:
     string outString = "";
@@ -86,7 +86,7 @@ public:
     void lineStringBool(const string key, const bool value);
     void lineDashString(const string key);
     void lineDashStringString(const string key, const string value);
-    void lineDashStringUint(const string key, const size_t value); 
+    void lineDashStringUint(const string key, const size_t value);
     void tabRight();
     void tabLeft();
     auto getString() -> string;
@@ -94,19 +94,19 @@ public:
 
 
 
-/// <summary> Encoding internal datastructure into strings, 
+/// <summary> Encoding internal datastructure into strings,
 ///           which can be shipped to console or file. </summary>
-namespace Encode 
+namespace Encode
 {
 using std::size_t;
 using std::string;
-using std::string_view;
+using std::experimental::string_view;
 using std::vector;
 
 
 auto viewTabelltype(DB::Idrett::TabellType tabellType) -> string;
 
-/// <summary> Encode entire 'Idrettene' to string as yaml. Lossless encoding. 
+/// <summary> Encode entire 'Idrettene' to string as yaml. Lossless encoding.
 //              Use case: Store internal datastructure 'idrettene' to file. /summary>
 /// <returns> string - example found in format-data-idrettene.yml </returns>
 auto dataIdrettene(DB::Idrettene& idrettene) -> string;
@@ -121,7 +121,7 @@ auto dataSpillerene(DB::Spillerene& spillerene) -> string;
 auto dataDato(const size_t year, const size_t month, const size_t day) -> string;
 
 
-/// <summary> Encode a single Idrett to a viewable format. 
+/// <summary> Encode a single Idrett to a viewable format.
 //            Not showing details about spillerene.  </summary>
 /// <returns> string - example found in format-view-idrett.yml </returns>
 auto viewIdrett(const DB::Idrett& idrett) -> string;
