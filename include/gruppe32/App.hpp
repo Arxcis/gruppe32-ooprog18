@@ -1,4 +1,4 @@
-    #pragma once
+#pragma once
 
 #include <cassert>
 #include <string>
@@ -10,14 +10,18 @@
 #include <gruppe32/IO.hpp>
 #include <gruppe32/DB.hpp>
 #include <gruppe32/Parser.hpp>
+#include <gruppe32/Search.hpp>
 
-/// <summary> Functions which satifised the functional requirements </summary>
 namespace gruppe32 {
 
+
+/// <summary> Functions which satifised the functional requirements </summary>
 namespace App 
 {
     using std::string;
     using std::size_t;
+
+
 //
 // COMMAND FUNCTIONS
 //
@@ -40,6 +44,9 @@ void deleteDivisjon(DB::Context& ctx);
 void terminliste(DB::Context& ctx);
 void resultatene(DB::Context& ctx);
 void tabell(DB::Context& ctx);
+auto computeTabell(
+    const DB::Divisjon& divisjon,
+    const DB::Idrett::TabellType tabelltype)->DB::Tabell;
 
 void readResultatliste(DB::Context& ctx);
 
@@ -68,49 +75,5 @@ void writeSpillerene(DB::Spillerene& ctx, const string filepath);
 
 
 } // ::App
-
-/// <summary> Doing a search through the data, and returning a vector with the resutls </summary>
-namespace Search 
-{
-
-using std::vector;
-using std::string;
-using std::size_t;
-using std::tuple;
-using std::pair;
-
-using returnSpillerene = pair<vector<DB::Spiller>, string>;
-using returnDivisjonene = pair<vector<DB::Divisjon>, string>;
-using returnDivisjoneneMedIdrettNavn = pair<vector<pair<DB::Divisjon, string>>, string>;
-using returnResultatene = pair<vector<DB::ViewResultat>, string>;
-    //  functions
-    
-template<typename T >// RESULT DATA, RESULT STRING, STATUS STRING
-using filterResult = tuple<vector<pair<T, vector<string>>>, string, string>;
-
-auto filterLag(
-    DB::Context & ctx,
-    const string & navnIdrett,
-    const string & navnDivisjon,
-    const string & navnLag)
-    ->filterResult<DB::Lag>;
-
-auto findAndPrintIdrettDivisjon(
-    DB::Context& ctx,
-    const string& navnIdrett,
-    const string& navnDivisjon)->Search::returnDivisjoneneMedIdrettNavn;
-
-auto divisjonene(
-    DB::Context& ctx,
-    const string& navnIdrett, 
-    const string& navnDivisjon) -> Search::returnDivisjonene;
-
-auto resultatene(
-    DB::Context& ctx, 
-    const DB::Divisjon& divisjonene, 
-    const size_t year, 
-    const size_t month, 
-    const size_t day) -> Search::returnResultatene;
-} // ::Search
 
 } // ::gruppe32

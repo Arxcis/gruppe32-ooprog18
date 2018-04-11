@@ -1,4 +1,4 @@
-# Logg møte1: onsdag 14.03.2018
+# Logg møte 1: onsdag 14.03.2018
 
 ### Saksliste
 * Hva har vi gjort? Hvor mange prosent er vi ferdig?
@@ -117,7 +117,6 @@ $ sloc include/gruppe32/ src/ test/ --details --format cli-table  --keys todo,co
 * Add support for choosing context with command-line args, or just default.
 
 **Jonas**
-
 * Last inn spilllere.dta
 * last inn idretter.dta automatisk inn i context
 * Skriv ut spiller.dta fra context til fil.

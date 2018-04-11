@@ -118,7 +118,7 @@ auto dataIdrettene(DB::Idrettene& idrettene) -> string;
 auto dataSpillerene(DB::Spillerene& spillerene) -> string;
 
 
-
+auto dataDato(const size_t year, const size_t month, const size_t day) -> string;
 
 
 /// <summary> Encode a single Idrett to a viewable format. 
@@ -146,17 +146,7 @@ auto viewSpillerene(DB::Spillerene& spiller) -> string;
 
 
 /// <summary> Helper function for encodeTabellDivisjon and encodeTabelleneIdrett </summary>
-void viewTabellLagene(Printer& p, const vector<DB::Tabell::Lag>& lagene);
-
-/// <summary> Encode a Tabell for a given Divisjon to a viewable format. </summary>
-/// <returns> string - example found in format-view-tabell-divisjon.yml </returns>
-auto viewTabellDivisjon(const DB::Tabell& tabellDivisjon) -> string;
-
-/// <summary> Encode a collection of Tabell to a viewable format. </summary>
-/// <returns> string - example found in format-view-tabellene-idrett.yml </returns>
-auto viewTabelleneIdrett(const vector<DB::Tabell>& tabellene,
-                           const string idrett) -> string;
-
+auto viewTabellene(const std::vector<DB::Tabell>& tabellene) -> string;
 
 
 /// <summary> Helper function for encodeToppscorereneDivisjon and encodeToppscorereneLag </summary>

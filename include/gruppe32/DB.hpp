@@ -14,6 +14,10 @@ namespace gruppe32::DB
 
 using std::string;
 using std::size_t;
+using std::vector;
+using std::map;
+
+
 
 class Spiller : public listtool::NumElement
 {
@@ -29,7 +33,6 @@ public:
         address(_address){} // @TODO address or adresse ? - jsolsvik 17.03.2018
 };
 
-using std::size_t;
 
 class Spillerene
 {
@@ -44,10 +47,6 @@ public:
 };
 
 
-using std::size_t;
-using std::vector;
-using std::string;
-
 class Lag 
 {
 public:
@@ -56,10 +55,6 @@ public:
     vector<size_t> spillerene;
 };
 
-
-using std::size_t;
-using std::vector;
-using std::string;
 
 class Resultat
 {    
@@ -72,28 +67,14 @@ public:
 };
 
 
-using std::size_t;
-using std::string;
-using std::vector;
-using std::map;
-
 class Divisjon
 {
 public:
     string navn;
     vector<Lag> lagene;
     map<string, map<string,Resultat>> terminliste;
-    /*
-    size_t lagCount() {
-        return lag.size();
-    }
-    */
 };
 
-
-using std::size_t;
-using std::string;
-using std::vector;
 
 class Idrett : public listtool::TextElement
 {
@@ -117,8 +98,6 @@ public:
 };
 
 
-using std::size_t;
-
 class Idrettene 
 {
 public:
@@ -130,6 +109,7 @@ public:
         data = new listtool::List(listtool::Sorted); 
     }
 };
+
 
 struct Context 
 {
@@ -151,9 +131,6 @@ struct Context
 //
 
 
-using std::vector;
-using std::size_t;
-using std::string;
 ///
 /// <summary> Used for importing new Resultat's from a user provided file.
 ///           File format specified in format-input-resultatene.yml </summary>
@@ -174,8 +151,6 @@ public:
 };
 
 
-using std::size_t;
-using std::string;
 ///
 /// <summary> Used for displaying resultat to the user.
 ///           Format found at format-view-resultatene.yml </summary>
@@ -192,9 +167,6 @@ public:
 };
 
 
-using std::string;
-using std::size_t;
-using std::vector;
 ///
 /// <summary> Used for exporting a representation of the current table of a given Divisjon.
 ///           Can be exported to console or file. 
@@ -205,26 +177,22 @@ class Tabell
 public:
     struct Lag 
     {
-        string navn;
-        size_t plassering;
-        size_t poeng;
-        size_t hjemmeScoringer;
-        size_t hjemmeBaklengs;
-        size_t borteScoringer;
-        size_t borteBaklengs;
-        size_t seier;
-        size_t uavgjort;
-        size_t tap;
+        size_t poeng = 0;
+        size_t hjemmeScoringer = 0;
+        size_t hjemmeBaklengs = 0;
+        size_t borteScoringer = 0;
+        size_t borteBaklengs = 0;
+        size_t seier = 0;
+        size_t uavgjort = 0;
+        size_t tap = 0;
     };
 
-    string idrett;
-    string divisjon;    
-    vector<Lag> lagene;
+    string idrett = "";
+    string divisjon = "";
+    map<string, Lag> lagene;
 };
 
 
-using std::string;
-using std::map;
 ///
 /// <summary> Used for exporting only the dates on which matches are held. 
 ///           Used like this: terminListe.data[hjemmelag][bortelag] = "2018-03-27"; 
@@ -238,8 +206,6 @@ public:
 };
 
 
-using std::string;
-using std::size_t;
 ///
 /// <summary> Used for exporting tables with topp 10 players. Exports to console of file.
 ///           File formate specified in format-toppscorerene.yml </summary>

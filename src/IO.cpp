@@ -3,24 +3,24 @@
 namespace gruppe32::IO  
 {
 
-void printline()
+void IO::printline()
 {  
     std::cout << '\n';    
 }
 
-void printSubMenu(const CommandMap & commands, const std::string & title, const std::string & parentTitle)
+void IO::printSubMenu(const CommandMap & commands, const std::string & title, const std::string & parentTitle)
 {
     printMenu(commands, parentTitle + " -> " + title);
 }
 
-void newpage() 
+void IO::newpage() 
 {
     for(size_t i = 0; i < 40; ++i) {
         IO::printline();
     }
 }
 
-void divider(char c, size_t count) 
+void IO::divider(char c, size_t count) 
 {
     for(size_t i = 0; i < count; ++i) {
         std::cout << c;   
@@ -31,7 +31,26 @@ void divider(char c, size_t count)
         IO::printline();
 }
 
-void printMenu(const CommandMap & commands, const std::string & title)
+void IO::dividerHeading(const std::string& heading, char c, size_t count)
+{
+    std::string divider(count, c);
+
+    std::size_t dividermid    = count / 2;
+    std::size_t headingoffset = heading.size() / 2;
+
+    divider[dividermid - headingoffset - 1] = ' ';
+    
+    int i = 0;
+    for (char c : heading) {
+        divider[dividermid - (headingoffset) + (i++)] = c; 
+    }
+    divider[dividermid + headingoffset+1 ] = ' ';
+
+    IO::printline(divider);
+}
+
+
+void IO::printMenu(const CommandMap & commands, const std::string & title)
 {
     //newpage();
     const std::size_t columnSymbolWidth = 6;
@@ -52,7 +71,7 @@ void printMenu(const CommandMap & commands, const std::string & title)
 }
 
 
-auto readCommand(const CommandMap& validCommands)  -> CommandPair {
+auto IO::readCommand(const CommandMap& validCommands)  -> CommandPair {
     std::string commandString{};
     for(;;) 
     {
@@ -78,7 +97,7 @@ auto readCommand(const CommandMap& validCommands)  -> CommandPair {
 }
 
 
-auto readEitherCommandNumberName(const CommandMap & validCommands) -> CommandPairWithData
+auto IO::readEitherCommandNumberName(const CommandMap & validCommands) -> CommandPairWithData
 {
     std::string commandString{};
     for (;;)
@@ -136,7 +155,7 @@ auto readEitherCommandNumberName(const CommandMap & validCommands) -> CommandPai
     return CommandPairWithData();
 }
 
-auto readEitherCommandName(const CommandMap & validCommands) -> CommandPairWithData
+auto IO::readEitherCommandName(const CommandMap & validCommands) -> CommandPairWithData
 {
     std::string commandString{};
     for (;;)
@@ -176,7 +195,7 @@ auto readEitherCommandName(const CommandMap & validCommands) -> CommandPairWithD
 }
 
 
-auto readNumber(std::string fieldName) -> size_t
+auto IO::readNumber(std::string fieldName) -> size_t
 {
     std::string commandString{};
     for (;;)
@@ -199,7 +218,7 @@ auto readNumber(std::string fieldName) -> size_t
 }
 
 
-auto readYear() -> size_t 
+auto IO::readYear() -> size_t 
 {
     std::string commandString{};
     for(;;) 
@@ -220,7 +239,7 @@ auto readYear() -> size_t
 }
 
 
-auto readMonth() -> size_t 
+auto IO::readMonth() -> size_t 
 {
     std::string commandString{};
     for(;;) 
@@ -241,7 +260,7 @@ auto readMonth() -> size_t
 }
 
 
-auto readDay() -> size_t 
+auto IO::readDay() -> size_t 
 {
     std::string commandString{};
     for(;;) 
@@ -262,7 +281,7 @@ auto readDay() -> size_t
 }
 
 
-auto readName(std::string fieldName) -> std::string
+auto IO::readName(std::string fieldName) -> std::string
 {
     std::string maybeName{};
     for (;;)
@@ -279,7 +298,7 @@ auto readName(std::string fieldName) -> std::string
     }
 }
 
-auto readAddress() -> std::string
+auto IO::readAddress() -> std::string
 {
     std::string maybeAddress{};
     for (;;)
@@ -296,23 +315,74 @@ auto readAddress() -> std::string
     }
 }
 
-auto readFilepath(std::string fieldName) -> std::string
+auto IO::readFilepath(std::string fieldName) -> std::string
 {
     return IO::readName(fieldName);
 }
 
-void waitForAnyKey()
+void IO::waitForEnterPress()
 {
     IO::printline("Press Enter to continue...");
     std::cin.get();
 }
 
-std::string toUpper(std::string str)
+
+void IO::printMenu(const std::vector<IO::CMD> & commands, const std::string & title)
+{
+    //newpage();
+    const std::size_t columnSymbolWidth = 16;
+
+    IO::divider('*', 80);
+    IO::printline("** ", title);
+    IO::divider('*',80);
+
+    for (const auto[id, textshort, textlong] : commands) {
+        std::cout << "*   "
+            << std::setw(columnSymbolWidth)
+            << std::left
+            << textshort
+            << " - "
+            << textlong << '\n';
+    }
+    IO::divider('*', 80);
+}
+
+
+auto IO::readCommand(const std::vector<IO::CMD>& validCommands)  -> char 
+{
+    std::string commandString{};
+    for(;;) 
+    {
+        std::cout << "-> ";
+        std::getline(std::cin, commandString);
+        if (commandString.size() > 1) {
+            printline("commandString string too long");
+            continue;
+        }
+
+        if (commandString.size() < 1) {
+            printline("Please type something");
+            continue;
+        }
+
+        for(const auto [id, textshort, _] : validCommands) {
+            if (std::toupper(id) == std::toupper(commandString[0])) {
+ 
+                IO::printline(textshort);
+                return id;
+            }
+        }
+        printline("Command not valid");
+    }
+}
+
+std::string IO::toUpper(std::string str)
 {
     for (std::size_t i = 0; i < str.size(); i++) {
         str[i] = std::toupper(str[i]);
     }
     return std::move(str);
 }
+
 
 } // end namespace

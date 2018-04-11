@@ -14,7 +14,8 @@ target_sources(gruppe32
     PRIVATE "${CMAKE_SOURCE_DIR}/src/App.cpp"
     PRIVATE "${CMAKE_SOURCE_DIR}/src/Terminal.cpp"
 	PRIVATE "${CMAKE_SOURCE_DIR}/src/Valid.cpp"
-	PRIVATE "${CMAKE_SOURCE_DIR}/src/Parser.cpp"
+    PRIVATE "${CMAKE_SOURCE_DIR}/src/Parser.cpp"
+	PRIVATE "${CMAKE_SOURCE_DIR}/src/Search.cpp"
 )
 
 set_target_properties(gruppe32

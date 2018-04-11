@@ -67,6 +67,7 @@ enum CommandID : char
     CMD_QUIT     = 'Q',
     CMD_COMMIT   = 'F',
     CMD_SEARCH   = 'S',
+    CMD_PRINT   = 'P',
     CMD_NAME     = 'N',
     CMD_FILE     = 'F',
     CMD_NAME_DIVISJON = 'D',
@@ -74,7 +75,7 @@ enum CommandID : char
     CMD_DATE_DAY = 'A',
     CMD_DATE_MONTH = 'M',
     CMD_DATE_YEAR = 'Y',
-
+    CMD_OPTIONS = 'O'
  };
 
 struct Command {
@@ -87,20 +88,9 @@ struct Command {
     Map subcmd{};
 };
 
-const Command::Pair commandNamePair         = { CMD_NAME, Command{ "<name>", "A name" }};     
-const Command::Pair commandCommitPair       = { CMD_COMMIT, Command{ string(1,CMD_COMMIT), "Fullført!" } };
-const Command::Pair commandBackPair         = { CMD_BACK, Command{ string(1,CMD_BACK), "Back to last menu" }};     
-const Command::Pair commandQuitPair         = { CMD_QUIT, Command{ string(1,CMD_QUIT), "Quit the application"}};   
-
-const Command::Pair keyCommandSearch        = { CMD_SEARCH,         Command{ "[S]earch",     "Search with given data" }};     
-const Command::Pair keyCommandFile          = { CMD_FILE,           Command{ "[F]ile",     "Write search result to file" }};     
-const Command::Pair keyCommandNameIdrett    = { CMD_IDRETT_NAVN,    Command{ "<idrett>",     "A name of an Idrett"   }};     
-const Command::Pair keyCommandNameDivisjon  = { CMD_NAME_DIVISJON,  Command{ "<divisjon>",   "A name of a Divisjon"  }};
-const Command::Pair keyCommandBack          = { CMD_BACK,           Command{ "[B]ack",       "Back to previous menu" }};     
-
-const Command::Pair keyCommandYear   = { CMD_NAME, Command{ "<year>",     "Example: 2018" }};     
-const Command::Pair keyCommandMonth  = { CMD_NAME, Command{ "<month>",   "Example: 07"   }};     
-const Command::Pair keyCommandDay    = { CMD_NAME, Command{ "<day>",     "Example: 21" }};     
+static const Command::Pair commandCommitPair       = { CMD_COMMIT, Command{ string(1,CMD_COMMIT), "Fullført!" } };
+static const Command::Pair commandBackPair         = { CMD_BACK, Command{ string(1,CMD_BACK), "Back to last menu" }};     
+static const Command::Pair commandQuitPair         = { CMD_QUIT, Command{ string(1,CMD_QUIT), "Quit the application"}};   
 
 
 void run(DB::Context& ctx);
