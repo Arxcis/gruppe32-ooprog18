@@ -9,8 +9,6 @@
     - resultatene-\<idrett\>-\<divisjon\>-\<dato\>.yml
     - tabellene-\<idrett\>.yml
     - tabell-\<idrett\>-\<divisjon\>.yml
-    - toppscorerne-\<idrett\>-\<divisjon\>.yml
-    - toppscorerne-\<idrett\>-\<divisjon\>-\<lag\>.yml
 
 * An example of the file formats is documented in:
     - document/format*

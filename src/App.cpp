@@ -915,8 +915,8 @@ void App::tabell(DB::Context& ctx)
         IO::cmdNameIdrett,
         IO::cmdNameDivisjon,
         IO::cmdPrint,
-        IO::cmdOptions,
         IO::cmdFile,
+        IO::cmdOptions,
         IO::cmdBack,
     };
 
@@ -1144,7 +1144,7 @@ void lagSpillerdataAction(DB::Context& ctx, const IO::CommandPair& actionCommand
                                 IO::printline("Spiller nr", spillerToRemove, "Fjernet fra", resultatene[0].second[2]);
                                 break;
                             }
-                            IO::printline("Spiller nr", spillerToRemove, "var ikke å finne i", resultatene[0].second[2]);
+                            IO::printline("Spiller nr", spillerToRemove, "var ikke ?finne i", resultatene[0].second[2]);
                         }
                     }
                 }
