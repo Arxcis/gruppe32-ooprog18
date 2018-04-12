@@ -9,6 +9,7 @@ lagene:
   - spiller: 1
   - spiller: 2
   - spiller: 3
+  nyspillereneCount: 0
 
 - lag: BB
   adresse: Trondheim, Norway
@@ -21,15 +22,21 @@ lagene:
   - spiller: 8
   - spiller: 9
   - spiller: 10
+  nyspillereneCount: 0
+
 
 - lag: CC
   adresse: Tromsø, Norway
-  spillereneCount: 4
+  spillereneCount: 2
   spillerene:
   - spiller: 2
   - spiller: 5
-  - spiller: 10
-  - spiller: 11
+  nyspillereneCount: 2
+  nyspillerene:
+  - spiller: Yesman
+    adresse: Himmalaya
+  - spiller: Noman
+    adresse: Himmalaya
 
 terminliste:
 

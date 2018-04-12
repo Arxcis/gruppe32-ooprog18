@@ -324,9 +324,10 @@ auto Decode::inputResultatene(vector<DB::InputResultat>& resultatene, string_vie
 }
 
 
-auto Decode::inputDivisjon(DB::Divisjon& divisjon, string_view strview) -> Decode::Error
+auto Decode::inputDivisjon(DB::Divisjon& divisjon, DB::Spillerene& spillerene, string_view strview) -> Decode::Error
 {
     auto gen = Parser{strview};
+
 
     auto[divisjonkey, divisjonName] = gen.nextStringString();
     auto[lageneCountkey, lageneCount] = gen.nextStringUint();
@@ -353,6 +354,28 @@ auto Decode::inputDivisjon(DB::Divisjon& divisjon, string_view strview) -> Decod
             auto[spillerkey, spiller] = gen.nextStringUint();
             lag.spillerene.push_back(spiller);
         }
+
+
+        auto[nyspillerneCountKey, nyspillereneCount] = gen.nextStringUint();
+
+        if(nyspillereneCount)gen.nextLine(); // ignore nyspillerene:
+
+        for (size_t iNySpiller = 0; iNySpiller < nyspillereneCount; ++iNySpiller)
+        {
+            auto[nySpillerKey, nySpillerNavn] = gen.nextStringString();
+            auto[nySpillerAdresseKey, nySpillerAdresse] = gen.nextStringString();
+
+            auto nySpiller = new DB::Spiller{
+                ++spillerene.autoIncrementer,
+                nySpillerNavn,
+                nySpillerAdresse
+            };
+
+            lag.spillerene.push_back(nySpiller->guid);
+
+            spillerene.data->add(nySpiller);
+        }
+
         divisjon.lagene.push_back(lag);
     }   
     

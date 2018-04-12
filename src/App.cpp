@@ -295,7 +295,7 @@ void App::createDivisjon(DB::Context& ctx)
     DB::Divisjon divisjonen;
 
     //IO::printline(instring);
-    auto err = Decode::inputDivisjon(divisjonen, instring.c_str());
+    auto err = Decode::inputDivisjon(divisjonen, ctx.spillerene, instring.c_str());
     if (err) {
         IO::printline("Error when decoding divisjon! ", filepath);
         IO::waitForEnterPress();

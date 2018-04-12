@@ -59,7 +59,7 @@ auto inputResultatene(vector<DB::InputResultat>& resultatene, string_view strvie
 
 /// <summary> Decode-only. </summary>
 /// <param name="strview"> example found in format-input-divisjon.yml </param>
-auto inputDivisjon(DB::Divisjon& divisjon, string_view strview) -> Decode::Error;
+auto inputDivisjon(DB::Divisjon& divisjon, DB::Spillerene& spillerene, string_view strview)->Decode::Error;
 
 
 } // ::Decode
