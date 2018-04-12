@@ -142,7 +142,7 @@ void App::createSpiller(DB::Context& ctx)
             break;
         case Terminal::CMD_COMMIT:
         {
-            auto nySpiller = new DB::Spiller(++ctx.spillerene.autoIncrementer, "", "");
+            auto nySpiller = new DB::Spiller(++ctx.spillerene.autoIncrementer, spillerNavn, spillerAdresse);
             IO::printline("Legger til ", nySpiller->name, "...");
             ctx.spillerene.data->add(nySpiller);
             IO::printline(nySpiller->name, "lagt til med nr:", nySpiller->guid);
@@ -261,6 +261,61 @@ void App::createIdrett(DB::Context& ctx)
 void App::createDivisjon(DB::Context& ctx) 
 {
     IO::printline("createDivisjon()");
+    /*
+    
+    spør etter filnavn [RETURN: fil finnes ikke]
+
+    les fra fil [RETURN: fil finnes ikke]
+
+    parse filstrengen -> nyDivisjon
+
+    smett inn nyDivisjon i context
+    
+    */
+    IO::printline("Velg idrett...");
+    auto idrettName = IO::readName("Idrett");
+
+    IO::printline("Choose file to read divisjon from (e.g. \"seed-divisjon\")");
+    std::string filepath = IO::readFilepath();
+    IO::printline();
+    IO::printline("reading", "./data/read/" + filepath + ".yml");
+    // @TODO Validate filepath - remove // 
+    std::ifstream infile("./data/read/" + filepath + ".yml");
+
+    if (!infile) {
+        IO::printline("ERROR - File not found  (!infile)");
+        IO::waitForEnterPress();
+        return;
+    }
+
+    std::stringstream ss;
+    ss << infile.rdbuf();
+    std::string instring = ss.str();
+
+    DB::Divisjon divisjonen;
+
+    //IO::printline(instring);
+    auto err = Decode::inputDivisjon(divisjonen, instring.c_str());
+    if (err) {
+        IO::printline("Error when decoding divisjon! ", filepath);
+        IO::waitForEnterPress();
+        return;
+    }
+
+
+
+    const size_t count = ctx.idrettene.data->noOfElements();
+    for (size_t i = 1; i <= count; i++)
+    {
+        auto idrett = (DB::Idrett*)ctx.idrettene.data->removeNo(i);
+        if (idrett->name == idrettName)
+        {
+            IO::printline("FOUND IDRETT", idrett->name);
+            idrett->divisjonene.push_back(divisjonen);
+        }
+        ctx.idrettene.data->add(idrett);
+    }
+
 }
 
 
@@ -1032,7 +1087,7 @@ void App::readResultatliste(DB::Context& ctx)
     //IO::printline(instring);
     auto err = Decode::inputResultatene(resultatene, instring.c_str());
     if (err) {
-        IO::printline("Error when encoding idrettene! ", filepath);
+        IO::printline("Error when decoding resultatene! ", filepath);
         IO::waitForEnterPress();
         return;
     } 

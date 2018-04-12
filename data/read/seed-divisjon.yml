@@ -1,16 +1,3 @@
-autoincrementer: 11
-spillereneCount: 2
-spillerene:
-
-- spiller: Yesman
-  guid: 10
-  adresse: Kristiansand
-
-- spiller: Noman
-  guid: 11
-  adresse: Grimstad
-
-idrett: Fotball
 divisjon: 1.div
 lageneCount: 3
 lagene:
@@ -24,9 +11,9 @@ lagene:
   - spiller: 3
 
 - lag: BB
-  adresse: Trondheim, Norway 
+  adresse: Trondheim, Norway
   spillereneCount: 7
-  spillerene: 
+  spillerene:
   - spiller: 4
   - spiller: 5
   - spiller: 6
@@ -36,9 +23,9 @@ lagene:
   - spiller: 10
 
 - lag: CC
-  adresse: Tromsø, Norway 
+  adresse: Tromsø, Norway
   spillereneCount: 4
-  spillerene: 
+  spillerene:
   - spiller: 2
   - spiller: 5
   - spiller: 10

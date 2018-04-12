@@ -137,6 +137,6 @@ int main(int argc, char* argv[])
         IO::printline("Writing existing data @", pathDataSpillerene);
         App::writeSpillerene(ctx.spillerene,"./data/read-write/spillerene.yml");
     }
-
+    IO::waitForEnterPress();
     return 0;
 }
