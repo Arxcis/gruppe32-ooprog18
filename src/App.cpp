@@ -261,19 +261,14 @@ void App::createIdrett(DB::Context& ctx)
 void App::createDivisjon(DB::Context& ctx) 
 {
     IO::printline("createDivisjon()");
-    /*
-    
-    spør etter filnavn [RETURN: fil finnes ikke]
-
-    les fra fil [RETURN: fil finnes ikke]
-
-    parse filstrengen -> nyDivisjon
-
-    smett inn nyDivisjon i context
-    
-    */
     IO::printline("Velg idrett...");
-    auto idrettName = IO::readName("Idrett");
+   
+    DB::Idrett* idrett;
+    for (std::string idrettName = IO::readName("Idrett");!(idrett = (DB::Idrett*)ctx.idrettene.data->remove(idrettName.c_str()));)
+    {
+        IO::printlineNoSpace("Idrett: \"", idrettName, "\" finnes ikke");
+        idrettName = IO::readName("Idrett");
+    }
 
     IO::printline("Choose file to read divisjon from (e.g. \"seed-divisjon\")");
     std::string filepath = IO::readFilepath();
@@ -304,17 +299,9 @@ void App::createDivisjon(DB::Context& ctx)
 
 
 
-    const size_t count = ctx.idrettene.data->noOfElements();
-    for (size_t i = 1; i <= count; i++)
-    {
-        auto idrett = (DB::Idrett*)ctx.idrettene.data->removeNo(i);
-        if (idrett->name == idrettName)
-        {
             IO::printline("FOUND IDRETT", idrett->name);
             idrett->divisjonene.push_back(divisjonen);
-        }
-        ctx.idrettene.data->add(idrett);
-    }
+            ctx.idrettene.data->add(idrett);
 
 }
 
