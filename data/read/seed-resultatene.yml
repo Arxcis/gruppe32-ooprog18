@@ -21,9 +21,9 @@ resultatene:
 
 - resultat:
   idrett: Fotball
-  divisjon: 1.div
-  bortelag: Brann
+  divisjon: Elite
   hjemmelag: Rosenborg
+  bortelag: Brann
   dato: 2013-03-19
   overtid: true
   hjemmeScorereneCount: 1

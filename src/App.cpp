@@ -1029,13 +1029,69 @@ void App::readResultatliste(DB::Context& ctx)
 
     std::vector<DB::InputResultat> resultatene;
 
-    IO::printline(instring);
+    //IO::printline(instring);
     auto err = Decode::inputResultatene(resultatene, instring.c_str());
     if (err) {
         IO::printline("Error when encoding idrettene! ", filepath);
+        IO::waitForEnterPress();
         return;
     } 
+
+    // @NOTE Insert data into ctx tree structure
+    for(auto& result : resultatene) 
+    {
+        IO::printline(
+            result.idrett, 
+            result.divisjon,
+            result.hjemmelag,
+            result.bortelag);
+
+
+        const size_t count = ctx.idrettene.data->noOfElements();
+        for (size_t i = 1; i <= count; i++)
+        {
+            auto idrett = (DB::Idrett*)ctx.idrettene.data->removeNo(i);
+            if (idrett->name == result.idrett) 
+            {
+                IO::printline("FOUND IDRETT", idrett->name);
+                for (auto& divisjon : idrett->divisjonene)
+                {
+                    if (divisjon.navn == result.divisjon) 
+                    {
+                        IO::printline("FOUND DIVISJON", divisjon.navn);
+                    
+                        for (auto& [hjemmelag, bortelagene]: divisjon.terminliste) 
+                        {
+                            IO::printline("hjemmelag", hjemmelag);
+                            if (hjemmelag == result.hjemmelag)
+                            {
+                                IO::printline("FOUND hjemmelag", hjemmelag);
+
+                                for (auto& [bortelag, resultat]: bortelagene) 
+                                {
+                                    if (bortelag == result.bortelag) 
+                                    {
+                                        IO::printline("FOUND bortelag", bortelag);
+
+                                        resultat = DB::Resultat {
+                                            result.dato,
+                                            result.spilt,
+                                            result.overtid,
+                                            result.hjemmeScorerene,
+                                            result.borteScorerene
+                                        };
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            ctx.idrettene.data->add(idrett);
+        }
+    }
 }
+
 
 void lagSpillerdataAction(DB::Context& ctx, const IO::CommandPair& actionCommand)
 {
