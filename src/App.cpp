@@ -1072,10 +1072,10 @@ void App::readResultatliste(DB::Context& ctx)
                                     if (bortelag == result.bortelag) 
                                     {
                                         IO::printline("FOUND bortelag", bortelag);
-
+                                        
                                         resultat = DB::Resultat {
                                             result.dato,
-                                            result.spilt,
+                                            true,
                                             result.overtid,
                                             result.hjemmeScorerene,
                                             result.borteScorerene
