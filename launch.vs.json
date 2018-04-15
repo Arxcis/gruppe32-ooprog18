@@ -1,21 +1,30 @@
 {
   "version": "0.2.1",
   "defaults": {},
-  "configurations": [
-    {
-      "type": "default",
-      "project": "CMakeLists.txt",
-      "projectTarget": "gruppe32.exe",
-      "name": "gruppe32.exe"
-    },
-    {
-      "type": "default",
-      "project": "CMakeLists.txt",
-      "projectTarget": "gruppe32.exe",
-      "name": "gruppe32.exe seed",
-      "args": [
-        "seed"
-      ]
-    }
-  ]
+    "configurations": [
+        {
+            "type": "default",
+            "project": "CMakeLists.txt",
+            "projectTarget": "gruppe32.exe",
+            "name": "gruppe32.exe"
+        },
+        {
+            "type": "default",
+            "project": "CMakeLists.txt",
+            "projectTarget": "gruppe32.exe",
+            "name": "gruppe32.exe seed",
+            "args": [
+                "seed"
+            ]
+        },
+        {
+            "type": "default",
+            "project": "CMakeLists.txt",
+            "projectTarget": "gruppe32.exe",
+            "name": "gruppe32.exe test",
+            "args": [
+                "test"
+            ]
+        }
+    ]
 }
