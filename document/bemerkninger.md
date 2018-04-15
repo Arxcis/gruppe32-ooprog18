@@ -76,10 +76,10 @@ uint spillerIDFørsteMåletIEnkamp = idrettene[0].divisjonene[0]
 
 Vi ønsker å bevare denne nøstingen i filformatet. Vi ønsker også at det skal være enkelt å lese og forstå det som ligger på fil. Det en del standard filformater der ute for dette.
 
-JSON vurderer vi som for vanskelig å parse. Det har mye rar syntax, og blir litt for generisk. Det at vi ikke kan lese linje for linje gjør det også vanskeligere å parse JSON.
+JSON vurderer vi som for vanskelig å parse. Det har mye syntax (verbose), og blir litt for generisk. Det at vi ikke kan lese linje for linje gjør det også vanskeligere å parse JSON.
 
 YAML kan representere det samme som JSON, men har en mye enklere syntax å parse dersom skriver så enkel YAML som mulig.
-I tillegg kan YAML leses linje for linje som key-value par.
+I tillegg kan YAML i vårt tilfelle leses linje for linje som key-value par.
 
 Om vi hadde snekret sammen en egen datastruktur, så hadde vi uansett endt opp med noe som ligner på en key-value store. Derfor så er steget ganske lite over til YAML.
 
@@ -87,8 +87,8 @@ Om vi bruker YAML så får vi også fordeler med at det er mange andre verktøy 
 
 Det er også en bonus å lære seg standarder som blir mye brukt i profesjonell sammenheng.
 
-#### 6. Menyer som tar imot <navn\>  
-Vi har valgt å la menyer som tar imot <navn\> gjøre et oppslag på substrengen <navn\> dersom ListTool ikke finner en egnet node med TextElementet med verdien <navn\>, dette kan medføre et sett med resultater vi i såfall tar hensyn til, og printer ut alle resultater.
+#### 6. Menyer som tar imot navn
+Vi har valgt å la menyer som tar imot navn, gjøre et oppslag på substrengen <navn\>. Et søk kan derfor returnere flere treff, og vil skrive ut alle treff som matcher substrengen.
 
 **Eksempel**
 ```
