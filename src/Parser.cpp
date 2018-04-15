@@ -6,7 +6,7 @@
 #include <map>
 #include <sstream>
 
-namespace gruppe32 
+namespace gruppe32
 {
 
 auto Parser::nextLine() -> std::string
@@ -46,9 +46,9 @@ auto Parser::nextLine() -> std::string
         linecount++;
     }
 
-    auto line = std::string { 
+    auto line = std::string {
         strview.substr(startofline, endofline-startofline)
-    };        
+    };
     auto lastCharacter = (endofline-startofline)-1;
     auto lastValidCharacter = line.find_last_of(whitelistedCharacters);
     if (lastValidCharacter != lastCharacter) {
@@ -86,17 +86,18 @@ auto Parser::nextStringString() -> pair<string,string>
         valueString = line.substr(line.find(":")+2);
 
     // @debug
-    std::cout << std::setw(35) << std::left 
-              << line  
+/*
+    std::cout << std::setw(35) << std::left
+              << line
 
-              << " key: " 
-              << std::setw(18) << std::left 
+              << " key: "
+              << std::setw(18) << std::left
               << key
-              
-              << " val: " 
+
+              << " val: "
               << valueString
               << '\n';
-
+*/
     return pair<string,string>{ key, valueString };
 };
 
@@ -124,7 +125,7 @@ auto Parser::nextStringBool() -> pair<string,bool>
 };
 
 
-auto Decode::dataIdrettene(DB::Idrettene& idrettene, string_view strview) -> Decode::Error 
+auto Decode::dataIdrettene(DB::Idrettene& idrettene, string_view strview) -> Decode::Error
 {
     auto gen = Parser{strview, 0};
 
@@ -164,24 +165,24 @@ auto Decode::dataIdrettene(DB::Idrettene& idrettene, string_view strview) -> Dec
                 auto[lagkey, lagName]     = gen.nextStringString();
                 auto[adressekey, adresse] = gen.nextStringString();
                 auto[spillereneCountkey, spillereneCount] = gen.nextStringUint();
-                
+
                 auto lag = DB::Lag {
                     lagName,
                     adresse
                 };
 
                 gen.nextLine(); // ignore spillerene:
-                
+
                 for (size_t iSpiller = 0; iSpiller < spillereneCount; ++iSpiller)
                 {
 
                     auto[spillerkey, spiller] = gen.nextStringUint();
-                    lag.spillerene.push_back(spiller);         
+                    lag.spillerene.push_back(spiller);
                 }
                 divisjon.lagene.push_back(lag);
-            }   
+            }
 
-            
+
             auto whoareouy = gen.nextLine(); // ignore terminliste:
 
             for (size_t iHjemmelag = 0; iHjemmelag < lageneCount; ++iHjemmelag)
@@ -202,7 +203,7 @@ auto Decode::dataIdrettene(DB::Idrettene& idrettene, string_view strview) -> Dec
                         dato
                     };
 
-                    if (isResult) 
+                    if (isResult)
                     {
                         auto[overtidkey, overtid] = gen.nextStringBool();
                         auto[hjemmepoengCountkey, hjemmepoengCount] = gen.nextStringUint();
@@ -217,7 +218,7 @@ auto Decode::dataIdrettene(DB::Idrettene& idrettene, string_view strview) -> Dec
                             auto[spillerkey, spiller] = gen.nextStringUint();
                             resultat.hjemmeScorerene.push_back(spiller);
                         }
-                        
+
                         auto[bortepoengCountKey, bortepoengCount] = gen.nextStringUint();
 
                         gen.nextLine(); // ignore 'bortepoeng:'
@@ -242,7 +243,7 @@ auto Decode::dataIdrettene(DB::Idrettene& idrettene, string_view strview) -> Dec
 
 auto Decode::dataSpillerene(DB::Spillerene& spillerene, string_view strview) -> Decode::Error
 {
- 
+
     auto gen = Parser{strview};
 
     auto[autoIncrementerKey, autoIncrementer] = gen.nextStringUint();
@@ -257,7 +258,7 @@ auto Decode::dataSpillerene(DB::Spillerene& spillerene, string_view strview) -> 
         auto[spillerNameKey, spillerName] = gen.nextStringString();
         auto[guidKey, guid]               = gen.nextStringUint();
         auto[adresseKey, adresse]         = gen.nextStringString();
-    
+
         auto spiller = new DB::Spiller {
             guid,
             spillerName,
@@ -265,7 +266,7 @@ auto Decode::dataSpillerene(DB::Spillerene& spillerene, string_view strview) -> 
         };
         spillerene.data->add(spiller);
     }
-    return 0;    
+    return 0;
 }
 
 
@@ -336,19 +337,19 @@ auto Decode::inputDivisjon(DB::Divisjon& divisjon, DB::Spillerene& spillerene, s
 
     gen.nextLine(); // ignore lagene:
 
-    for (size_t iLag = 0; iLag < lageneCount; ++iLag) 
+    for (size_t iLag = 0; iLag < lageneCount; ++iLag)
     {
         auto[lagkey, lagNavn]     = gen.nextStringString();
         auto[adressekey, adresse] = gen.nextStringString();
         auto[spillereneCountkey, spillereneCount] = gen.nextStringUint();
-        
+
         auto lag = DB::Lag {
             lagNavn,
             adresse
         };
 
         gen.nextLine(); // ignore spillerene:
-            
+
         for (size_t iSpiller = 0; iSpiller < spillereneCount; ++iSpiller)
         {
             auto[spillerkey, spiller] = gen.nextStringUint();
@@ -377,8 +378,8 @@ auto Decode::inputDivisjon(DB::Divisjon& divisjon, DB::Spillerene& spillerene, s
         }
 
         divisjon.lagene.push_back(lag);
-    }   
-    
+    }
+
     gen.nextLine(); // ignore terminliste:
 
     for (size_t iHjemmelag = 0; iHjemmelag < lageneCount; ++iHjemmelag)
@@ -409,11 +410,11 @@ void Printer::lineEmpty()
     outString += "\n";
 }
 
-void Printer::lineIndent() 
+void Printer::lineIndent()
 {
     for (size_t i = 0; i < indent; ++i) {
         outString += "  ";
-    }  
+    }
 }
 
 void Printer::lineString(const string key)
@@ -463,7 +464,7 @@ void Printer::lineDashStringString(const string key, const string value)
     outString += "\n";
 }
 
-void Printer::lineDashStringUint(const string key, const size_t value) 
+void Printer::lineDashStringUint(const string key, const size_t value)
 {
     stringstream ss;
     ss << value;
@@ -471,12 +472,12 @@ void Printer::lineDashStringUint(const string key, const size_t value)
 }
 
 
-void Printer::tabRight() 
+void Printer::tabRight()
 {
     indent += 1;
 }
 
-void Printer::tabLeft() 
+void Printer::tabLeft()
 {
     if (indent > 0) indent -= 1;
 }
@@ -487,48 +488,48 @@ auto Printer::getString() -> string {
 }
 
 
-auto Encode::viewIdretteneCompact(DB::Idrettene& idrettene, bool divisjon, bool lag, bool spiller) -> string 
+auto Encode::viewIdretteneCompact(DB::Idrettene& idrettene, bool divisjon, bool lag, bool spiller) -> string
 {
     Printer print;
     auto idretteneCount = idrettene.data->noOfElements();
-            
+
             print.lineString(    "idrettene");
 
     for (auto iIdrett = 1; iIdrett <= idretteneCount; ++iIdrett)
     {
         auto idrett = (DB::Idrett*)(idrettene.data->removeNo(iIdrett));
-    
+
             print.lineDashString(idrett->name);
 
-        if (divisjon && idrett->divisjonene.size()) 
+        if (divisjon && idrett->divisjonene.size())
         { // bool divisjon
             print.tabRight();
 
             print.lineString(    "divisjonene");
 
-            for (const auto& divisjon: idrett->divisjonene) 
+            for (const auto& divisjon: idrett->divisjonene)
             {
 
             print.lineDashString(divisjon.navn);
 
-                if (lag && divisjon.lagene.size()) 
+                if (lag && divisjon.lagene.size())
                 { // bool divisjon
                     print.tabRight();
             print.lineString(    "lagene");
 
-                    for(const auto& lag: divisjon.lagene) 
+                    for(const auto& lag: divisjon.lagene)
                     {
 
             print.lineDashString(lag.navn);
 
-                        if (spiller && lag.spillerene.size()) 
+                        if (spiller && lag.spillerene.size())
                         { // bool spiller
             print.lineString(    "spillerene");
 
                             print.tabRight();
-                            for (const auto& spiller: lag.spillerene) 
+                            for (const auto& spiller: lag.spillerene)
                             {
-        
+
             print.lineDashString(std::to_string(spiller));
 
                             }
@@ -536,7 +537,7 @@ auto Encode::viewIdretteneCompact(DB::Idrettene& idrettene, bool divisjon, bool 
                         }
                     }
                     print.tabLeft();
-                }    
+                }
             }
             print.tabLeft();
         }
@@ -547,7 +548,7 @@ auto Encode::viewIdretteneCompact(DB::Idrettene& idrettene, bool divisjon, bool 
 }
 
 
-auto Encode::dataIdrettene(DB::Idrettene& idrettene) -> string 
+auto Encode::dataIdrettene(DB::Idrettene& idrettene) -> string
 {
  //  // IO::printline("\n\n------ DEBUG encodeIdrettene ------\n\n");
 
@@ -557,40 +558,40 @@ auto Encode::dataIdrettene(DB::Idrettene& idrettene) -> string
     print.lineStringUint("idretteneCount", idretteneCount);
     print.lineString(    "idrettene");
 
-    for (auto iIdrett = 1; iIdrett <= idretteneCount; ++iIdrett) 
+    for (auto iIdrett = 1; iIdrett <= idretteneCount; ++iIdrett)
     {
         auto idrett = (DB::Idrett*)(idrettene.data->removeNo(iIdrett));
 
         print.lineEmpty();
         print.lineDashStringString("idrett", idrett->name);
-       
+
         print.tabRight();
-      
+
         print.lineStringUint(      "tabelltype", idrett->tabell);
         print.lineStringUint(      "divisjoneneCount", idrett->divisjonene.size());
         print.lineString(         "divisjonene");
 
-        for (const auto& divisjon: idrett->divisjonene) 
+        for (const auto& divisjon: idrett->divisjonene)
         {
             print.lineEmpty();
             print.lineDashStringString("divisjon", divisjon.navn);
-           
+
             print.tabRight();
-            
+
             print.lineStringUint(      "lageneCount", divisjon.lagene.size());
             print.lineString(          "lagene");
 
-            for (const auto& lag: divisjon.lagene) 
+            for (const auto& lag: divisjon.lagene)
             {
                 print.lineEmpty();
                 print.lineDashStringString("lag", lag.navn);
-              
+
                 print.tabRight();
-              
+
                 print.lineStringString(    "adresse", lag.adresse);
                 print.lineStringUint(      "spillereneCount", lag.spillerene.size());
                 print.lineString(          "spillerene");
-                
+
                 for (const auto spiller: lag.spillerene) {
                     print.lineDashStringUint("spiller", spiller);
                 }
@@ -599,27 +600,27 @@ auto Encode::dataIdrettene(DB::Idrettene& idrettene) -> string
             }
 
             print.lineEmpty();
-           
+
             print.lineString("terminliste");
 
-            for (const auto& [hjemmelag, bortelagene]: divisjon.terminliste) 
+            for (const auto& [hjemmelag, bortelagene]: divisjon.terminliste)
             {
                 print.lineEmpty();
                 print.lineDashStringString("hjemmelag", hjemmelag);
-              
+
                 print.tabRight();
-              
+
                 print.lineString(      "bortelagene");
 
-                for (const auto& [bortelag, resultat]: bortelagene) 
+                for (const auto& [bortelag, resultat]: bortelagene)
                 {
                     print.lineEmpty();
                     print.lineDashStringString("bortelag", bortelag);
-                
+
                     print.tabRight();
-                
+
                     print.lineStringString("dato", resultat.dato);
-                    
+
 
                     print.lineStringBool("resultat", resultat.spilt);
 
@@ -631,14 +632,14 @@ auto Encode::dataIdrettene(DB::Idrettene& idrettene) -> string
 
                         print.lineStringUint("hjemmeScorereneCount", resultat.hjemmeScorerene.size());
                         print.lineString("hjemmeScorerene");
-                        for (const auto& spiller: resultat.hjemmeScorerene) 
+                        for (const auto& spiller: resultat.hjemmeScorerene)
                         {
                             print.lineDashStringUint("spiller", spiller);
                         }
-                        
+
                         print.lineStringUint("borteScorereneCount", resultat.borteScorerene.size());
                         print.lineString("borteScorerene");
-                        for (const auto& spiller: resultat.borteScorerene) 
+                        for (const auto& spiller: resultat.borteScorerene)
                         {
                             print.lineDashStringUint("spiller", spiller);
                         }
@@ -646,11 +647,11 @@ auto Encode::dataIdrettene(DB::Idrettene& idrettene) -> string
                     }
                     print.tabLeft();
                 }
-                print.tabLeft();    
+                print.tabLeft();
             }
             print.tabLeft();
         }
-        print.tabLeft();        
+        print.tabLeft();
         idrettene.data->add(idrett);
     }
  //  // IO::printline("\n\n------ DEBUG encodeIdrettene ------\n\n");
@@ -659,7 +660,7 @@ auto Encode::dataIdrettene(DB::Idrettene& idrettene) -> string
 }
 
 
-auto Encode::dataSpillerene(DB::Spillerene& spillerene) -> string 
+auto Encode::dataSpillerene(DB::Spillerene& spillerene) -> string
 {
 
     Printer print;
@@ -697,11 +698,11 @@ auto Encode::viewResultatene(const vector<DB::ViewResultat>& resultatene) -> str
     p.lineStringUint("resultateneCount", resultatene.size());
     p.lineString("resultatene");
 
-    for (const auto& resultat: resultatene) 
+    for (const auto& resultat: resultatene)
     {
         p.lineEmpty();
         p.lineDashString("resultat");
-        
+
         p.tabRight();
 
         p.lineStringString("hjemmelag", resultat.hjemmelag);
@@ -727,7 +728,7 @@ auto Encode::viewTabellene(const std::vector<DB::Tabell>& tabellene) -> string
     p.lineString("tabellene");
 
 
-    for (const auto& tabell: tabellene) 
+    for (const auto& tabell: tabellene)
     {
         p.lineEmpty();
         p.lineDashStringString("tabell", tabell.divisjon);
@@ -735,13 +736,13 @@ auto Encode::viewTabellene(const std::vector<DB::Tabell>& tabellene) -> string
         p.lineStringUint("lageneCount", tabell.lagene.size());
         p.lineString("lagene");
 
-        for (const auto& [navn, lag]: tabell.lagene) 
+        for (const auto& [navn, lag]: tabell.lagene)
         {
-            p.lineEmpty(); 
+            p.lineEmpty();
             p.lineDashStringString("lag", navn);
-        
+
             p.tabRight();
-        
+
             p.lineStringUint("poeng", lag.poeng);
             p.lineStringUint("hjemmeScoringer", lag.hjemmeScoringer);
             p.lineStringUint("hjemmeBaklengs", lag.hjemmeBaklengs);
@@ -750,7 +751,7 @@ auto Encode::viewTabellene(const std::vector<DB::Tabell>& tabellene) -> string
             p.lineStringUint("seier", lag.seier);
             p.lineStringUint("uavgjort", lag.uavgjort);
             p.lineStringUint("tap", lag.tap);
-        
+
             p.tabLeft();
         }
         p.tabLeft();
@@ -759,7 +760,7 @@ auto Encode::viewTabellene(const std::vector<DB::Tabell>& tabellene) -> string
 }
 
 
-auto Encode::viewTerminliste(const DB::Terminliste& terminliste) -> string 
+auto Encode::viewTerminliste(const DB::Terminliste& terminliste) -> string
 {
 
     Printer p;
@@ -772,7 +773,7 @@ auto Encode::viewTerminliste(const DB::Terminliste& terminliste) -> string
     {
         p.lineEmpty();
         p.lineDashStringString("hjemmelag", hjemmelag);
-        
+
         p.tabRight();
         p.lineString("bortelagene");
         p.lineEmpty();
@@ -781,20 +782,20 @@ auto Encode::viewTerminliste(const DB::Terminliste& terminliste) -> string
         for (const auto [bortelag, resultat]: bortelagene)
         {
             p.lineDashStringString("bortelag", bortelag);
-            
+
             p.tabRight();
 
             p.lineStringString("dato", resultat.dato);
 
             p.tabLeft();
         }
-        p.tabLeft();    
-    } 
+        p.tabLeft();
+    }
     return p.getString();
 }
 
 
-void Encode::viewToppscorerene(Printer& p, const vector<DB::Toppscorer>& toppscorerene) 
+void Encode::viewToppscorerene(Printer& p, const vector<DB::Toppscorer>& toppscorerene)
 {
     p.lineStringUint("toppscorereneCount", toppscorerene.size());
     p.lineString("toppscorerene");
@@ -803,9 +804,9 @@ void Encode::viewToppscorerene(Printer& p, const vector<DB::Toppscorer>& toppsco
     {
         p.lineEmpty();
         p.lineDashStringString("spiller", spiller.name);
-        
+
         p.tabRight();
-        
+
         p.lineStringUint("score", spiller.score);
 
         p.tabLeft();
@@ -814,7 +815,7 @@ void Encode::viewToppscorerene(Printer& p, const vector<DB::Toppscorer>& toppsco
 
 
 auto Encode::viewToppscorereneDivisjon(const vector<DB::Toppscorer>& toppscorerene,
-                                       const string divisjon) -> string 
+                                       const string divisjon) -> string
 {
     Printer p;
     p.lineStringString("divisjon", divisjon);
@@ -824,7 +825,7 @@ auto Encode::viewToppscorereneDivisjon(const vector<DB::Toppscorer>& toppscorere
 
 
 auto Encode::viewToppscorereneLag(const vector<DB::Toppscorer>& toppscorerene,
-                            const string lag) -> string 
+                            const string lag) -> string
 {
     Printer p;
     p.lineStringString("lag", lag);
@@ -849,9 +850,9 @@ auto Encode::dataDato(const size_t year, const size_t month, const size_t day) -
 }
 
 
-auto Encode::viewTabelltype(DB::Idrett::TabellType tabellType) -> string 
+auto Encode::viewTabelltype(DB::Idrett::TabellType tabellType) -> string
 {
-    switch(tabellType) 
+    switch(tabellType)
     {
     case DB::Idrett::SEIER_2_UAVGJORT_1_TAP_0:
         return "Seier 2, Uavgjort 1, Tap 0";
@@ -866,29 +867,29 @@ auto Encode::viewTabelltype(DB::Idrett::TabellType tabellType) -> string
     return "";
 };
 
-auto Encode::viewIdrett(const DB::Idrett& idrett) -> string 
+auto Encode::viewIdrett(const DB::Idrett& idrett) -> string
 {
     Printer p;
 
     p.lineStringString("idrett", idrett.name);
-    
+
     p.tabRight();
 
     p.lineStringString("tabelltype", Encode::viewTabelltype(idrett.tabell));
     p.lineStringUint(  "divisjoneneCount", idrett.divisjonene.size());
     p.lineString("divisjonene");
 
-    for (const auto& divisjon : idrett.divisjonene) 
+    for (const auto& divisjon : idrett.divisjonene)
     {
         p.lineEmpty();
         p.lineDashStringString("divisjon", divisjon.navn);
-        
+
         p.tabRight();
 
         p.lineStringUint("lageneCount", divisjon.lagene.size());
         p.lineString("lagene");
 
-        for (const auto& lag : divisjon.lagene) 
+        for (const auto& lag : divisjon.lagene)
         {
             p.lineEmpty();
             p.lineDashStringString("lag", lag.navn);
@@ -906,7 +907,7 @@ auto Encode::viewIdrett(const DB::Idrett& idrett) -> string
 }
 
 
-auto Encode::viewIdrettene(DB::Idrettene& idrettene) -> string 
+auto Encode::viewIdrettene(DB::Idrettene& idrettene) -> string
 {
 
     Printer p;
@@ -914,7 +915,7 @@ auto Encode::viewIdrettene(DB::Idrettene& idrettene) -> string
     p.lineStringUint("idretteneCount", idrettene.data->noOfElements());
     p.lineString(    "idrettene");
 
-    for (size_t i = 1; i <= idrettene.data->noOfElements(); ++i) 
+    for (size_t i = 1; i <= idrettene.data->noOfElements(); ++i)
     {
         auto idrett = (DB::Idrett* ) idrettene.data->removeNo(i);
 
@@ -933,20 +934,20 @@ auto Encode::viewIdrettene(DB::Idrettene& idrettene) -> string
 }
 
 
-auto Encode::viewSpillerene(DB::Spillerene& spillerene) -> string 
+auto Encode::viewSpillerene(DB::Spillerene& spillerene) -> string
 {
     Printer p;
 
     p.lineStringUint("spillereneCount", spillerene.data->noOfElements());
     p.lineString(    "spillerene");
 
-    for (size_t i = 1; i <= spillerene.data->noOfElements(); ++i) 
+    for (size_t i = 1; i <= spillerene.data->noOfElements(); ++i)
     {
         auto spiller = (DB::Spiller* ) spillerene.data->removeNo(i); //TODO - remove elements in order to print out in order
 
         p.lineEmpty();
         p.lineDashStringString("spiller", spiller->name);
-        
+
         p.tabRight();
 
         p.lineStringUint("nummer", spiller->guid);
