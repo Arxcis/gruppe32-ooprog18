@@ -92,8 +92,28 @@ Det er også en bonus å lære seg standarder som blir mye brukt i profesjonell 
 #### 6. Menyer som tar imot navn
 Vi har valgt å la menyer som tar imot navn, gjøre et oppslag på substrengen <navn\>. Et søk kan derfor returnere flere treff, og vil skrive ut alle treff som matcher substrengen.
 
-#### 7. Legg til ny divisjon
+#### 7. Legg til ny divisjon + resultat
 Navnet på den nye divisjon spesifiseres øverst i filen `./data/read/<divisjonfilnavn>.yml`, og IKKE fra kommandolinjen. Grunnen til dette er at det virker mest naturlig å skrive navnet på divisjonen du ønsker å legge til i selve filen, siden du uansett må skrive all annen data som hører til den divisjonen.
+
+
+I `seed-divisjon.yml`
+```YAML
+divisjon: <Navn på ny divisjon her>
+lageneCount: 3
+lagene:
+```
+
+I `seed-resultat.yml`
+```YAML
+- resultat:
+  idrett: Fotball
+  divisjon: <Navn på ny divisjon her>
+  hjemmelag: AA
+  bortelag: BB
+...
+```
+
+
 
 **Eksempel**
 ```

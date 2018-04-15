@@ -3,7 +3,7 @@ resultatene:
 
 - resultat:
   idrett: Fotball
-  divisjon: 1.div
+  divisjon: <Navn på ny divisjon her>
   hjemmelag: AA
   bortelag: BB
   dato: 2012-03-19
