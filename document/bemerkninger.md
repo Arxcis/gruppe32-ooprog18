@@ -1,5 +1,7 @@
 ## Bemerkninger
 
+* En student som ikke var med i gruppe32 gjorde en commit. Dette var fordi vi spurte om han kunne teste at prosjektet kjørte på Linux. Han måtte gjøre noen nødvendige endringer for at det skulle gå bra. Disse endringene fikk han lov til å pushe fra sin egen maskin. Committen det er snakk om kan du finne her --> https://bitbucket.org/account/signin/?next=/jonasjso/gruppe32-ooprog18/commits/4c2c6a0bf39480338f7d5a910e5928bf7e8df033
+
 ### Egne vurderinger
 
 #### 1. Navneendring DivAvd -> Divisjon
