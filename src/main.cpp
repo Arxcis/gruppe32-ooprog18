@@ -12,14 +12,11 @@
 
 using namespace gruppe32;
 
-const std::string DEFAULT_CONTEXT = "default";
-
 int main(int argc, char* argv[]) 
 {
     //===================================================================================
     // SET UP CONTEXTS
     //===================================================================================
-    auto defaultContext  = DB::Context();
     auto seedContext     = DB::Context();
     auto fileContext     = DB::Context();
     auto testPrintsContext = DB::Context();
@@ -52,18 +49,18 @@ int main(int argc, char* argv[])
     }
 
 
-    // Map contexts
-    auto ctxMap = std::unordered_map<std::string, DB::Context&>{
-        {DEFAULT_CONTEXT, defaultContext },
-        {"testPrints",    testPrintsContext },
-        {"seed",          seedContext },
-        {"file",          fileContext } 
-    };
 
     //===================================================================================
     // CONTEXT SELECTION
     //===================================================================================
-    std::string ctxSelector = DEFAULT_CONTEXT;
+
+    auto ctxMap = std::unordered_map<std::string, DB::Context&> {
+        {"test", testPrintsContext },
+        {"seed", seedContext },
+        {"file", fileContext } 
+    };
+
+    std::string ctxSelector = "file";  // <-- file is default argument
     if (argc > 1)
     {
         if (argc > 2)
@@ -87,9 +84,11 @@ int main(int argc, char* argv[])
             return -1;
         }
     }
+    IO::printline("Using context:", ctxSelector);
+    auto ctx = ctxMap.at(ctxSelector);
 
     //===================================================================================
-    // READ FILE (optional)
+    // READ FILE only for "seed" and "file"
     //===================================================================================
     const string pathSeedIdrettene = "./data/read/seed-idrettene.yml";
     const string pathSeedSpillerene = "./data/read/seed-spillerene.yml";
@@ -110,7 +109,7 @@ int main(int argc, char* argv[])
     if (ctxSelector == "file")
     {
         IO::printline("Reading existing data @", pathDataIdrettene);
-        App::readIdrettene(fileContext.idrettene,"./data/read-write/idrettene.yml");
+        App::readIdrettene(fileContext.idrettene, pathDataIdrettene);
 
         IO::printline("Reading existing data @", pathDataSpillerene);
         App::readSpillerene(fileContext.spillerene, pathDataSpillerene);
@@ -120,14 +119,11 @@ int main(int argc, char* argv[])
     //===================================================================================
     // RUN APP
     //===================================================================================
-    auto ctx = ctxMap.at(ctxSelector);
-    IO::printline("Using context:", ctxSelector);
-
     Terminal::run(ctx);
 
 
     //===================================================================================
-    // WRITE FILE (optional)
+    // WRITE to FILE (only for "seed" and "file")
     //===================================================================================
     if (ctxSelector == "seed" || ctxSelector == "file") 
     {
@@ -135,7 +131,7 @@ int main(int argc, char* argv[])
         App::writeIdrettene(ctx.idrettene, pathDataIdrettene);
 
         IO::printline("Writing existing data @", pathDataSpillerene);
-        App::writeSpillerene(ctx.spillerene,"./data/read-write/spillerene.yml");
+        App::writeSpillerene(ctx.spillerene, pathDataSpillerene);
     }
     IO::waitForEnterPress();
     return 0;
