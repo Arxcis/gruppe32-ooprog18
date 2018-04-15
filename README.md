@@ -63,32 +63,28 @@ _NOTE: Om det skulle være nødvendig å kjøre programmet fra kommandolinja man
 * Last ned nyeste CMake fra https://cmake.org/download/ Eller last ned igjennom commandline
 
     ```bash
-    # lag en temp-mappe
-    mkdir ~/temp
+    mkdir ~/temp # lag en temp-mappe
     cd ~/temp
 
-    # hent cmake binaries
-    wget https://cmake.org/files/v3.11/cmake-3.11.0-Linux-x86_64.tar.gz
+    wget https://cmake.org/files/v3.11/cmake-3.11.0-Linux-x86_64.tar.gz # hent cmake binaries
     ```
 
 * Installer CMake på systemet, slik at du kan kjøre det fra kommandolinjen.
-    ```bash
-    tar -xzvf cmake-3.11.0-Linux-x86_64.tar.gz
-    cd ~/temp/cmake-3.11.0-Linux-x86_64/
 
-    # kopier alle "binaries" til deres plass i systemet
-    cp -r ./bin     /usr/
-    cp -r ./doc     /usr/share/
-    cp -r ./man     /usr/share/
-    cp -r ./share   /usr/
+  ```bash
+  tar -xzvf cmake-3.11.0-Linux-x86_64.tar.gz
+  cd ~/temp/cmake-3.11.0-Linux-x86_64/
 
-    # test om installasjonen var velykket:
-    cmake --version
-        cmake version 3.11.0
+  cp -r ./bin     /usr/    # installer binaries
+  cp -r ./doc     /usr/share/
+  cp -r ./man     /usr/share/
+  cp -r ./share   /usr/
 
-    # rydde opp/fjern temp
-    rm -r ~/temp
-    ```
+  cmake --version         # test om installasjonen var velykket:
+      cmake version 3.11.0
+
+  rm -r ~/temp    # rydde opp/fjern temp
+  ```
 
 #### 2. Installer Clang++ 5.0 for c++17 support
 
