@@ -296,12 +296,22 @@ void App::createDivisjon(DB::Context& ctx)
         IO::waitForEnterPress();
         return;
     }
-
-
-
-            IO::printline("FOUND IDRETT", idrett->name);
-            idrett->divisjonene.push_back(divisjonen);
-            ctx.idrettene.data->add(idrett);
+    for (const auto& d : idrett->divisjonene)
+    {
+        if (d.navn == divisjonen.navn)
+        {
+            IO::newpage();
+            IO::printline("Error: divisjonen finnes allerede! ", filepath);
+            IO::waitForEnterPress();
+            return;
+        }
+    }
+    
+    idrett->divisjonene.push_back(divisjonen);
+    ctx.idrettene.data->add(idrett);
+    IO::newpage();
+    IO::printline("La til ", divisjonen.navn, "som divisjon under idretten ", idrett->name);
+    IO::waitForEnterPress();
 
 }
 
