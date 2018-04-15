@@ -31,6 +31,7 @@ git clone git@bitbucket.org:jonasjso/gruppe32-ooprog18.git
 
 Du får valgene **gruppe32.exe**, **gruppe32.exe seed**, og **gruppe32.exe test**.
 _Disse brukes for å velge kommandolinjeargument du vil kjøre med_
+
 * **gruppe32.exe** - (ingen kommandolinjeargument) kjører programmet på vanlig vis, dvs. leser inn dataer fra `./data/read-write/`
 
 * **gruppe32.exe seed** - vil fylle inn programmet med testdatene spessifisert i oppgaven , dvs. leser inn dataer fra `./data/read/`. _OBS dette vil altså overskrive dataene som tidligere er skrevet ut når programmet lukkes_.
