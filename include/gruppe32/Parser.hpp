@@ -24,7 +24,7 @@ public:
     int startofline =  0;
     int endofline = 9999999;
     int linecount = 0;
-    const string whitelistedCharacters = "0123456789abcdefghijklmnopqrstuvwxyzæøåABCDEFGHIJKLMNOPQRSTUVWXYZÆØÅ-:";
+    const string whitelistedCharacters = "0123456789abcdefghijklmnopqrstuvwxyzæøåABCDEFGHIJKLMNOPQRSTUVWXYZÆØÅ-:<>\"";
 
     auto nextLine() -> string;
     auto nextStringString() -> pair<string,string>;

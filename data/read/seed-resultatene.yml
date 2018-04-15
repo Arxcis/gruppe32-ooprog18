@@ -3,9 +3,9 @@ resultatene:
 
 - resultat:
   idrett: Fotball
-  divisjon: <Navn på ny divisjon her>
-  hjemmelag: AA
-  bortelag: BB
+  divisjon: Elite
+  hjemmelag: Brann
+  bortelag: Rosenborg
   dato: 2012-03-19
   overtid: false
   hjemmeScorereneCount: 4
